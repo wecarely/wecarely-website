@@ -46,11 +46,10 @@ export default async function HoustonPage({ searchParams }: PageProps) {
           </h1>
 
           <p className="mt-7 max-w-[640px] text-[17px] leading-[1.6] text-[var(--ink-2)]">
-            Every licensed home care agency in Houston — sourced from CMS Home
-            Health Compare and Google. Filter by language, insurance, and
-            clinical specialty.{' '}
+            Every home care agency licensed in Houston, in one place. Filter by
+            language, insurance, and the kind of care you need.{' '}
             <span className="text-[var(--ink)] font-medium">
-              Free to browse, with or without an account.
+              Free to browse — no sign-up required.
             </span>
           </p>
 
