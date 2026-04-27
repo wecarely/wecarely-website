@@ -22,13 +22,14 @@ export function FilterBar() {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3.5">
       {(['language', 'insurance', 'clinical'] as const).map((axis) => (
-        <div key={axis} className="flex flex-wrap items-center gap-2">
-          <span className="text-xs uppercase tracking-wide text-slate-500 w-20 shrink-0">
-            {t(AXIS_LABEL_KEY[axis])}
-          </span>
-          <div className="flex flex-wrap gap-2">
+        <div
+          key={axis}
+          className="grid grid-cols-[88px_1fr] md:grid-cols-[100px_1fr] gap-x-4 md:gap-x-6 items-baseline"
+        >
+          <span className="eyebrow pt-1">{t(AXIS_LABEL_KEY[axis])}</span>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 md:gap-x-5">
             {grouped[axis].map((f) => (
               <FilterChip
                 key={f.key}

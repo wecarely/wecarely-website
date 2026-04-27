@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/*
+ * WeCarely v1 — "The Civic Almanac"
+ * Display: Fraunces (Google) · Body: Geist · Mono: Geist Mono
+ * Single primary accent: forest. Brick reserved for ONE pledge moment.
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --paper:        #F5EFE3;
+  --paper-card:   #FFFCF5;
+  --paper-soft:   #EDE5D2;
+
+  /* Ink */
+  --ink:          #1A1F1B;
+  --ink-2:        #4A574F;
+  --ink-3:        #8A9389;
+  --ink-4:        #B8BEB5;
+
+  /* Accents */
+  --forest:       #25453A;
+  --forest-deep:  #16341F;
+  --forest-soft:  #DCE6DD;
+
+  --brick:        #B5481E;  /* Use SPARINGLY — pledge moments only */
+  --gold:         #B58430;
+  --gold-soft:    #F0E5C4;
+
+  /* Lines */
+  --line:         #E5DDC9;
+  --line-soft:    #F0E9D6;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-fraunces);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Editorial display utilities */
+.font-display {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-variation-settings: "opsz" 96, "SOFT" 30;
+  letter-spacing: -0.02em;
+}
+
+.font-display-text {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-variation-settings: "opsz" 14, "SOFT" 30;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Refined link underline default */
+a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
 }

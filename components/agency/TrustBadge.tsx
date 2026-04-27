@@ -1,4 +1,4 @@
-import { t } from '@/lib/i18n/t';
+import { StarRating } from './StarRating';
 
 interface Props {
   cmsStar: number | null;
@@ -6,27 +6,45 @@ interface Props {
   googleReviews: number | null;
 }
 
+function TrustCell({
+  label,
+  value,
+  reviews,
+}: {
+  label: string;
+  value: number;
+  reviews?: number | null;
+}) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span
+        className="font-display text-[18px] tabular-nums text-[var(--ink)]"
+        style={{ fontVariationSettings: '"opsz" 24, "SOFT" 30' }}
+      >
+        {value.toFixed(1)}
+      </span>
+      <StarRating value={value} size={11} />
+      <span className="eyebrow">
+        {label}
+        {reviews ? ` · ${reviews}` : ''}
+      </span>
+    </div>
+  );
+}
+
 export function TrustBadge({ cmsStar, googleRating, googleReviews }: Props) {
   if (cmsStar == null && googleRating == null) return null;
 
   return (
-    <div className="flex flex-wrap gap-3 text-sm">
-      {cmsStar != null && (
-        <div className="flex items-center gap-1">
-          <span className="text-slate-500">{t('card.cmsRating')}</span>
-          <span className="font-semibold text-slate-900">{cmsStar.toFixed(1)} ★</span>
-        </div>
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+      {cmsStar != null && <TrustCell label="CMS" value={cmsStar} />}
+      {cmsStar != null && googleRating != null && (
+        <span className="text-[var(--ink-4)] text-sm select-none" aria-hidden>
+          ⁂
+        </span>
       )}
       {googleRating != null && (
-        <div className="flex items-center gap-1">
-          <span className="text-slate-500">{t('card.googleRating')}</span>
-          <span className="font-semibold text-slate-900">{googleRating.toFixed(1)} ★</span>
-          {googleReviews != null && (
-            <span className="text-slate-400 text-xs">
-              ({t('card.reviews', { n: googleReviews })})
-            </span>
-          )}
-        </div>
+        <TrustCell label="Google" value={googleRating} reviews={googleReviews} />
       )}
     </div>
   );

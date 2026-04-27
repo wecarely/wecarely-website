@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Fraunces } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -14,10 +14,18 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  axes: ['SOFT', 'opsz'],
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   title: 'WeCarely — Houston Home Care, Honestly Compared',
   description:
-    "Find Houston home care agencies by language, insurance, and clinical specialty. CMS ratings + Google reviews. We don't sell leads.",
+    "Every licensed home care agency in Houston, ranked by CMS clinical ratings and verified Google reviews — never by who paid us. We don't sell leads.",
 };
 
 export default function RootLayout({
@@ -28,9 +36,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-slate-900">
+      <body className="min-h-full flex flex-col">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
