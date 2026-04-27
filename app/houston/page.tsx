@@ -69,36 +69,39 @@ export default async function HoustonPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* FILTERS — sticky */}
-      <section className="sticky top-0 z-10 bg-[var(--bg)]/90 backdrop-blur-md border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1200px] px-6 sm:px-10 py-5">
-          <FilterBar />
-        </div>
-      </section>
-
-      {/* RESULTS */}
+      {/* MAIN: 2-col layout, sidebar filter + results */}
       <section className="mx-auto max-w-[1200px] px-6 sm:px-10 py-12">
-        <div className="flex items-baseline justify-between mb-8">
-          <p className="text-[var(--ink-2)] flex items-baseline gap-2.5">
-            <span
-              className="font-display tabular-nums text-[var(--ink)] font-medium"
-              style={{
-                fontSize: '28px',
-                lineHeight: 1,
-                fontVariationSettings: '"opsz" 48, "SOFT" 0',
-              }}
-            >
-              {agencies.length}
-            </span>
-            <span className="text-[14px]">
-              {agencies.length === 1 ? 'agency' : 'agencies'}
-              {totalActive > 0 && ' match your filters'}
-            </span>
-          </p>
-          <p className="eyebrow hidden sm:block">Sorted by trust score</p>
-        </div>
+        <div className="grid lg:grid-cols-[220px_1fr] gap-x-12 gap-y-10">
+          {/* Sidebar */}
+          <aside className="lg:sticky lg:top-8 lg:self-start lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto pr-2">
+            <FilterBar />
+          </aside>
 
-        <AgencyList agencies={agencies} />
+          {/* Results column */}
+          <div>
+            <div className="flex items-baseline justify-between mb-7 pb-5 border-b border-[var(--line)]">
+              <p className="text-[var(--ink-2)] flex items-baseline gap-2.5">
+                <span
+                  className="font-display tabular-nums text-[var(--ink)] font-medium"
+                  style={{
+                    fontSize: '26px',
+                    lineHeight: 1,
+                    fontVariationSettings: '"opsz" 48, "SOFT" 0',
+                  }}
+                >
+                  {agencies.length}
+                </span>
+                <span className="text-[14px]">
+                  {agencies.length === 1 ? 'agency' : 'agencies'}
+                  {totalActive > 0 && ' match your filters'}
+                </span>
+              </p>
+              <p className="eyebrow hidden sm:block">Sorted by trust score</p>
+            </div>
+
+            <AgencyList agencies={agencies} />
+          </div>
+        </div>
       </section>
     </>
   );

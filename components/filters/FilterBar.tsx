@@ -1,4 +1,5 @@
 import { FilterChip } from './FilterChip';
+import { ClearFilters } from './ClearFilters';
 import { FILTERS } from '@/lib/constants/filters';
 import { t } from '@/lib/i18n/t';
 
@@ -22,14 +23,11 @@ export function FilterBar() {
   };
 
   return (
-    <div className="space-y-3">
+    <nav aria-label="Filters" className="space-y-8">
       {(['language', 'insurance', 'clinical'] as const).map((axis) => (
-        <div
-          key={axis}
-          className="grid grid-cols-[88px_1fr] md:grid-cols-[100px_1fr] gap-x-5 items-center"
-        >
-          <span className="eyebrow">{t(AXIS_LABEL_KEY[axis])}</span>
-          <div className="flex flex-wrap items-center gap-2">
+        <div key={axis}>
+          <p className="eyebrow mb-3">{t(AXIS_LABEL_KEY[axis])}</p>
+          <div className="space-y-0.5">
             {grouped[axis].map((f) => (
               <FilterChip
                 key={f.key}
@@ -41,6 +39,8 @@ export function FilterBar() {
           </div>
         </div>
       ))}
-    </div>
+
+      <ClearFilters />
+    </nav>
   );
 }

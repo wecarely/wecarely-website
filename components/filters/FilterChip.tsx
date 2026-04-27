@@ -7,6 +7,10 @@ interface Props {
   label: string;
 }
 
+/**
+ * Sidebar list-item style: plain text, active = forest + semibold.
+ * No chip shape, no border — quiet sidebar list.
+ */
 export function FilterChip({ paramKey, value, label }: Props) {
   const router = useRouter();
   const params = useSearchParams();
@@ -30,18 +34,22 @@ export function FilterChip({ paramKey, value, label }: Props) {
       type="button"
       aria-pressed={active}
       className={
-        'px-3.5 py-1.5 rounded-full text-[13px] font-medium border transition-all duration-150 inline-flex items-center gap-1.5 ' +
+        'group/chip block w-full text-left py-[5px] text-[14px] leading-[1.4] transition-colors flex items-center gap-2.5 ' +
         (active
-          ? 'bg-[var(--ink)] text-[var(--bg)] border-[var(--ink)] hover:bg-[var(--ink-2)]'
-          : 'bg-[var(--bg)] text-[var(--ink-2)] border-[var(--line)] hover:border-[var(--ink-3)] hover:text-[var(--ink)]')
+          ? 'text-[var(--accent)] font-semibold'
+          : 'text-[var(--ink-2)] hover:text-[var(--ink)]')
       }
     >
-      {label}
-      {active && (
-        <span className="text-[var(--bg)]/70 text-[10px] leading-none" aria-hidden>
-          ✕
-        </span>
-      )}
+      <span
+        className={
+          'inline-block w-1.5 h-1.5 rounded-full shrink-0 transition-all ' +
+          (active
+            ? 'bg-[var(--accent)] scale-100'
+            : 'bg-[var(--ink-4)] scale-0 group-hover/chip:scale-100')
+        }
+        aria-hidden
+      />
+      <span>{label}</span>
     </button>
   );
 }
