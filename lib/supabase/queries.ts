@@ -7,7 +7,9 @@ const SELECT_COLUMNS = `
   medicare_star, google_rating, google_reviews_count, trust_score,
   has_spanish, has_vietnamese, has_chinese,
   accepts_medicare, accepts_medicaid,
-  has_skilled_nursing, has_dementia_care, has_hospice,
+  has_skilled_nursing, has_home_health_aide, has_personal_care,
+  has_companion_care, has_physical_therapy, has_occupational_therapy,
+  has_speech_therapy, has_dementia_care, has_hospice,
   ai_summary
 `;
 

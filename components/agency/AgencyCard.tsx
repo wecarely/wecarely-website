@@ -8,12 +8,11 @@ import type { AgencyCardProps } from '@/lib/types/agency';
  *   Agency Name                                    [Sponsored]
  *   4.5 ★★★★★ CMS    4.2 ★★★★★ Google · 87
  *   Plain summary (max 2 lines, sans-serif).
- *   Spanish · Medicare · Medicaid · Dementia Care
+ *   Spanish · Medicare · Medicaid · Skilled Nursing · ...
  *   ─────────────────────────────────────────────
  *   (713) 555-0100                          View →
  *
  * White card on white-ish bg, hairline border, generous padding.
- * No rank numbers, no italic deck — minimal premium aesthetic.
  */
 export function AgencyCard({ agency, isSponsored = false }: AgencyCardProps) {
   const langs = [
@@ -29,6 +28,12 @@ export function AgencyCard({ agency, isSponsored = false }: AgencyCardProps) {
 
   const services = [
     agency.has_skilled_nursing && 'Skilled Nursing',
+    agency.has_home_health_aide && 'Home Health Aide',
+    agency.has_personal_care && 'Personal Care',
+    agency.has_companion_care && 'Companion Care',
+    agency.has_physical_therapy && 'Physical Therapy',
+    agency.has_occupational_therapy && 'Occupational Therapy',
+    agency.has_speech_therapy && 'Speech Therapy',
     agency.has_dementia_care && 'Dementia Care',
     agency.has_hospice && 'Hospice',
   ].filter(Boolean) as string[];

@@ -82,23 +82,31 @@ We're following the **Yelp ad-listing model + Zocdoc transparent lead model**, N
 
 ## 4. The data — Filter axes & schema
 
-### 3-axis filter set (exactly these 8 options — `key | label`)
+### 3-axis filter set (exactly these 14 options — `key | label | DB column`)
 
 ```
-LANGUAGE
-  spanish        | Spanish
-  vietnamese     | Vietnamese
-  chinese        | Chinese
+LANGUAGE (3)
+  spanish        | Spanish     | has_spanish
+  vietnamese     | Vietnamese  | has_vietnamese
+  chinese        | Chinese     | has_chinese
 
-INSURANCE
-  medicare       | Medicare
-  medicaid       | Medicaid
+INSURANCE (2)
+  medicare       | Medicare    | accepts_medicare
+  medicaid       | Medicaid    | accepts_medicaid
 
-SERVICE
-  skilled-nursing | Skilled Nursing
-  dementia        | Dementia Care
-  hospice         | Hospice
+SERVICE (9)
+  skilled-nursing      | Skilled Nursing       | has_skilled_nursing
+  home-health-aide     | Home Health Aide      | has_home_health_aide
+  personal-care        | Personal Care         | has_personal_care
+  companion-care       | Companion Care        | has_companion_care
+  physical-therapy     | Physical Therapy      | has_physical_therapy
+  occupational-therapy | Occupational Therapy  | has_occupational_therapy
+  speech-therapy       | Speech Therapy        | has_speech_therapy
+  dementia             | Dementia Care         | has_dementia_care
+  hospice              | Hospice               | has_hospice
 ```
+
+**Total: 14 filters**, matching the "14 trust filters" stat in the hero strip.
 
 ### Filter behavior
 
@@ -125,13 +133,19 @@ interface Agency {
   google_reviews_count: number | null;
   trust_score: number | null;         // pre-computed, sort by this DESC
 
-  // Filter booleans (the 8 above)
+  // Filter booleans — all 14
   has_spanish: boolean;
   has_vietnamese: boolean;
   has_chinese: boolean;
   accepts_medicare: boolean;
   accepts_medicaid: boolean;
   has_skilled_nursing: boolean;
+  has_home_health_aide: boolean;
+  has_personal_care: boolean;
+  has_companion_care: boolean;
+  has_physical_therapy: boolean;
+  has_occupational_therapy: boolean;
+  has_speech_therapy: boolean;
   has_dementia_care: boolean;
   has_hospice: boolean;
 

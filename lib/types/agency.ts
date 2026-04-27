@@ -18,13 +18,19 @@ export interface Agency {
   google_reviews_count: number | null;
   trust_score: number | null;         // pre-computed in DB
 
-  // Filter booleans (3-axis)
+  // Filter booleans — all 14
   has_spanish: boolean;
   has_vietnamese: boolean;
   has_chinese: boolean;
   accepts_medicare: boolean;
   accepts_medicaid: boolean;
   has_skilled_nursing: boolean;
+  has_home_health_aide: boolean;
+  has_personal_care: boolean;
+  has_companion_care: boolean;
+  has_physical_therapy: boolean;
+  has_occupational_therapy: boolean;
+  has_speech_therapy: boolean;
   has_dementia_care: boolean;
   has_hospice: boolean;
 
