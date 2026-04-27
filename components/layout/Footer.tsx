@@ -1,55 +1,43 @@
 export function Footer() {
   return (
-    <footer className="mt-32 border-t border-[var(--ink)] bg-[var(--paper-soft)]">
-      <div className="mx-auto max-w-[1180px] px-6 sm:px-10 py-16">
-        {/* Manifesto */}
+    <footer className="mt-32 border-t border-[var(--line)] bg-[var(--bg)]">
+      <div className="mx-auto max-w-[1200px] px-6 sm:px-10 py-16">
         <p
-          className="font-display font-medium leading-[1.25] tracking-[-0.015em] text-[var(--ink)] max-w-2xl"
-          style={{ fontSize: 'clamp(22px, 3vw, 32px)' }}
+          className="font-display font-medium leading-[1.2] tracking-[-0.02em] text-[var(--ink)] max-w-2xl"
+          style={{ fontSize: 'clamp(20px, 2.4vw, 28px)' }}
         >
           We don&apos;t sell leads. We don&apos;t share your contact information.
-          <span className="text-[var(--ink-2)]"> Our rankings cannot be bought.</span>
+          Our rankings cannot be bought.
         </p>
 
-        <span
-          className="block text-[var(--ink-3)] my-12 select-none"
-          aria-hidden
-          style={{ fontSize: 24 }}
-        >
-          ⁂
-        </span>
-
-        {/* Colophon grid */}
-        <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8 text-[13px]">
+        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 text-[13px]">
           <div>
-            <dt className="eyebrow mb-2">Data</dt>
-            <dd className="text-[var(--ink-2)] leading-relaxed">
+            <p className="eyebrow mb-3">Data</p>
+            <p className="text-[var(--ink-2)] leading-relaxed">
               CMS Home Health Compare · Google · Verified updates
-            </dd>
+            </p>
           </div>
           <div>
-            <dt className="eyebrow mb-2">Coverage</dt>
-            <dd className="text-[var(--ink-2)] leading-relaxed">Houston, Texas</dd>
+            <p className="eyebrow mb-3">Coverage</p>
+            <p className="text-[var(--ink-2)] leading-relaxed">Houston, Texas</p>
           </div>
           <div>
-            <dt className="eyebrow mb-2">Languages</dt>
-            <dd className="text-[var(--ink-2)] leading-relaxed">
+            <p className="eyebrow mb-3">Languages</p>
+            <p className="text-[var(--ink-2)] leading-relaxed">
               English · Español · Tiếng Việt · 中文
-            </dd>
+            </p>
           </div>
           <div>
-            <dt className="eyebrow mb-2">For Agencies</dt>
-            <dd className="text-[var(--ink-2)] leading-relaxed underline underline-offset-2 decoration-[var(--ink-4)] hover:decoration-[var(--ink)] cursor-default">
+            <p className="eyebrow mb-3">For agencies</p>
+            <p className="text-[var(--ink-2)] leading-relaxed">
               Claim your listing
-            </dd>
+            </p>
           </div>
-        </dl>
+        </div>
 
-        <div className="mt-16 pt-6 border-t border-[var(--line)] flex justify-between items-baseline text-[12px] text-[var(--ink-3)]">
+        <div className="mt-16 pt-6 border-t border-[var(--line-soft)] flex justify-between items-baseline text-[12px] text-[var(--ink-3)]">
           <span>© 2026 WeCarely</span>
-          <span className="font-display italic" style={{ fontVariationSettings: '"opsz" 14' }}>
-            Made in Houston.
-          </span>
+          <span>Made in Houston</span>
         </div>
       </div>
     </footer>

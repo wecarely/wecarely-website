@@ -7,11 +7,6 @@ interface Props {
   label: string;
 }
 
-/**
- * Editorial filter:
- *  - Inactive: plain text with hover-underline (Resy-style ToC entry)
- *  - Active:   forest-filled pill (commits to selection visibly)
- */
 export function FilterChip({ paramKey, value, label }: Props) {
   const router = useRouter();
   const params = useSearchParams();
@@ -29,30 +24,24 @@ export function FilterChip({ paramKey, value, label }: Props) {
     router.push(qs ? `${pathname}?${qs}` : pathname);
   };
 
-  if (active) {
-    return (
-      <button
-        onClick={toggle}
-        type="button"
-        aria-pressed
-        className="px-3.5 py-1 rounded-full bg-[var(--forest)] text-[var(--paper)] text-[13px] font-medium tracking-[0.005em] inline-flex items-center gap-1.5 transition-colors hover:bg-[var(--forest-deep)]"
-      >
-        {label}
-        <span className="text-[var(--paper)]/70 text-[10px] leading-none" aria-hidden>
-          ✕
-        </span>
-      </button>
-    );
-  }
-
   return (
     <button
       onClick={toggle}
       type="button"
-      aria-pressed={false}
-      className="text-[14px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-[6px] decoration-[var(--ink-4)] hover:decoration-[var(--ink)] decoration-1 hover:underline transition-colors whitespace-nowrap"
+      aria-pressed={active}
+      className={
+        'px-3.5 py-1.5 rounded-full text-[13px] font-medium border transition-all duration-150 inline-flex items-center gap-1.5 ' +
+        (active
+          ? 'bg-[var(--ink)] text-[var(--bg)] border-[var(--ink)] hover:bg-[var(--ink-2)]'
+          : 'bg-[var(--bg)] text-[var(--ink-2)] border-[var(--line)] hover:border-[var(--ink-3)] hover:text-[var(--ink)]')
+      }
     >
       {label}
+      {active && (
+        <span className="text-[var(--bg)]/70 text-[10px] leading-none" aria-hidden>
+          ✕
+        </span>
+      )}
     </button>
   );
 }

@@ -9,17 +9,11 @@ interface PageProps {
   searchParams: Promise<{ lang?: string; ins?: string; svc?: string }>;
 }
 
-interface Stat {
-  n: string;
-  l: string;
-  accent?: boolean;
-}
-
-const STATS: Stat[] = [
+const STATS = [
   { n: '259', l: 'Agencies' },
   { n: '14', l: 'Trust filters' },
   { n: '2', l: 'Data sources' },
-  { n: '0', l: 'Leads sold', accent: true },
+  { n: '0', l: 'Leads sold' },
 ];
 
 export default async function HoustonPage({ searchParams }: PageProps) {
@@ -38,76 +32,60 @@ export default async function HoustonPage({ searchParams }: PageProps) {
     <>
       {/* HERO */}
       <section className="border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1180px] px-6 sm:px-10 pt-14 pb-12 md:pt-24 md:pb-16">
-          <div className="flex items-center gap-3 mb-7 text-[var(--ink-3)]">
-            <span className="eyebrow">Vol. 01</span>
-            <span className="h-px w-8 bg-[var(--ink-4)]" />
-            <span className="eyebrow">Houston, TX · 2026</span>
-          </div>
-
+        <div className="mx-auto max-w-[1200px] px-6 sm:px-10 pt-20 pb-16 md:pt-32 md:pb-24">
           <h1
-            className="font-display font-medium text-[var(--ink)] leading-[1.02] tracking-[-0.025em] max-w-4xl"
+            className="font-display font-medium text-[var(--ink)] leading-[1.02] tracking-[-0.03em] max-w-4xl"
             style={{
-              fontSize: 'clamp(44px, 7vw, 76px)',
-              fontVariationSettings: '"opsz" 144, "SOFT" 30',
+              fontSize: 'clamp(40px, 6.5vw, 72px)',
+              fontVariationSettings: '"opsz" 144, "SOFT" 0',
             }}
           >
             Houston home care,
             <br />
-            <span
-              className="italic text-[var(--forest)]"
-              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 50' }}
-            >
-              honestly
-            </span>{' '}
-            compared.
+            honestly compared.
           </h1>
 
-          <p className="mt-7 max-w-[620px] text-[17px] leading-[1.6] text-[var(--ink-2)]">
+          <p className="mt-7 max-w-[600px] text-[17px] leading-[1.6] text-[var(--ink-2)]">
             Every licensed agency in Houston, ranked by CMS clinical ratings and
-            verified Google reviews.{' '}
-            <em className="not-italic font-medium text-[var(--ink)]">Never</em> by
-            who paid us.
+            verified Google reviews. Never by who paid us.
           </p>
 
-          <dl className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-7 max-w-3xl">
+          <dl className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-8 max-w-3xl">
             {STATS.map((s) => (
-              <div key={s.l} className="border-l border-[var(--line)] pl-4">
+              <div key={s.l}>
                 <dt
-                  className={`font-display tabular-nums leading-none tracking-tight ${
-                    s.accent ? 'text-[var(--brick)]' : 'text-[var(--ink)]'
-                  }`}
+                  className="font-display tabular-nums leading-none tracking-[-0.02em] text-[var(--ink)] font-medium"
                   style={{
-                    fontSize: 'clamp(28px, 4vw, 40px)',
-                    fontVariationSettings: '"opsz" 96, "SOFT" 30',
+                    fontSize: 'clamp(28px, 3.6vw, 36px)',
+                    fontVariationSettings: '"opsz" 96, "SOFT" 0',
                   }}
                 >
                   {s.n}
                 </dt>
-                <dd className="eyebrow mt-2.5">{s.l}</dd>
+                <dd className="eyebrow mt-3">{s.l}</dd>
               </div>
             ))}
           </dl>
         </div>
       </section>
 
-      {/* FILTER BAR — sticky */}
-      <section className="sticky top-0 z-10 bg-[var(--paper)]/95 backdrop-blur-md border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1180px] px-6 sm:px-10 py-5">
+      {/* FILTERS — sticky */}
+      <section className="sticky top-0 z-10 bg-[var(--bg)]/90 backdrop-blur-md border-b border-[var(--line)]">
+        <div className="mx-auto max-w-[1200px] px-6 sm:px-10 py-5">
           <FilterBar />
         </div>
       </section>
 
       {/* RESULTS */}
-      <section className="mx-auto max-w-[1180px] px-6 sm:px-10 py-10">
+      <section className="mx-auto max-w-[1200px] px-6 sm:px-10 py-12">
         <div className="flex items-baseline justify-between mb-8">
           <p className="text-[var(--ink-2)] flex items-baseline gap-2.5">
             <span
-              className="font-display tabular-nums text-[var(--ink)]"
+              className="font-display tabular-nums text-[var(--ink)] font-medium"
               style={{
-                fontSize: '32px',
+                fontSize: '28px',
                 lineHeight: 1,
-                fontVariationSettings: '"opsz" 48, "SOFT" 30',
+                fontVariationSettings: '"opsz" 48, "SOFT" 0',
               }}
             >
               {agencies.length}
@@ -117,9 +95,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
               {totalActive > 0 && ' match your filters'}
             </span>
           </p>
-          <p className="eyebrow text-[var(--ink-3)] hidden sm:block">
-            Sorted by trust score
-          </p>
+          <p className="eyebrow hidden sm:block">Sorted by trust score</p>
         </div>
 
         <AgencyList agencies={agencies} />
