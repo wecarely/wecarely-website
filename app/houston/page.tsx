@@ -13,7 +13,7 @@ const STATS = [
   { n: '259', l: 'Agencies' },
   { n: '14', l: 'Trust filters' },
   { n: '2', l: 'Data sources' },
-  { n: '0', l: 'Leads sold' },
+  { n: '100%', l: 'Free to browse' },
 ];
 
 export default async function HoustonPage({ searchParams }: PageProps) {
@@ -45,9 +45,13 @@ export default async function HoustonPage({ searchParams }: PageProps) {
             honestly compared.
           </h1>
 
-          <p className="mt-7 max-w-[600px] text-[17px] leading-[1.6] text-[var(--ink-2)]">
-            Every licensed agency in Houston, ranked by CMS clinical ratings and
-            verified Google reviews. Never by who paid us.
+          <p className="mt-7 max-w-[640px] text-[17px] leading-[1.6] text-[var(--ink-2)]">
+            Every licensed home care agency in Houston — sourced from CMS Home
+            Health Compare and Google. Filter by language, insurance, and
+            clinical specialty.{' '}
+            <span className="text-[var(--ink)] font-medium">
+              Free to browse, with or without an account.
+            </span>
           </p>
 
           <dl className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-8 max-w-3xl">
