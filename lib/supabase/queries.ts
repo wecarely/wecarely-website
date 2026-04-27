@@ -22,7 +22,7 @@ export async function getHoustonAgencies(filters: FilterState): Promise<Agency[]
   let query = sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .eq('city', 'Houston')
+    .ilike('city', 'houston')
     .order('trust_score', { ascending: false, nullsFirst: false });
 
   for (const col of columns) {
