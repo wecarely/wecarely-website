@@ -1,0 +1,19 @@
+{
+  "header.title": "WeCarely",
+  "header.tagline": "Houston Home Care, Honestly Compared",
+  "listing.heading": "Home Care Agencies in Houston",
+  "listing.subheading": "Filter by language, insurance, and clinical specialty.",
+  "listing.empty": "No agencies match these filters. Try removing one.",
+  "listing.count": "{count} agencies",
+  "filter.language": "Language",
+  "filter.insurance": "Insurance",
+  "filter.clinical": "Service",
+  "filter.clear": "Clear all",
+  "card.viewDetails": "View Details",
+  "card.cmsRating": "CMS",
+  "card.googleRating": "Google",
+  "card.reviews": "{n} reviews",
+  "card.sponsored": "Sponsored",
+  "footer.trust": "We don't sell leads. We don't share your contact info. Ever.",
+  "footer.dataSource": "Data: CMS Home Health Compare + Google + verified updates."
+}
