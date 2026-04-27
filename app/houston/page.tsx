@@ -2,19 +2,13 @@ import { getHoustonAgencies } from '@/lib/supabase/queries';
 import { parseFilterParams } from '@/lib/utils/filter-params';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { AgencyList } from '@/components/agency/AgencyList';
+import { HeroSearch } from '@/components/HeroSearch';
 
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
   searchParams: Promise<{ lang?: string; ins?: string; svc?: string }>;
 }
-
-const STATS = [
-  { n: '259', l: 'Agencies' },
-  { n: '14', l: 'Trust filters' },
-  { n: '2', l: 'Data sources' },
-  { n: '100%', l: 'Free to browse' },
-];
 
 export default async function HoustonPage({ searchParams }: PageProps) {
   const sp = await searchParams;
@@ -32,74 +26,78 @@ export default async function HoustonPage({ searchParams }: PageProps) {
     <>
       {/* HERO */}
       <section className="border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1200px] px-6 sm:px-10 pt-20 pb-16 md:pt-32 md:pb-24">
+        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 pt-20 pb-16 lg:pt-28 lg:pb-20">
+          <span className="eyebrow">Houston home care directory</span>
+
           <h1
-            className="font-display font-medium text-[var(--ink)] leading-[1.02] tracking-[-0.03em] max-w-4xl"
+            className="font-display mt-5 text-[var(--ink)] max-w-[20ch]"
             style={{
-              fontSize: 'clamp(40px, 6.5vw, 72px)',
-              fontVariationSettings: '"opsz" 144, "SOFT" 0',
+              fontSize: 'clamp(40px, 5.6vw, 76px)',
+              lineHeight: 1.06,
+              letterSpacing: '-0.005em',
+              fontWeight: 400,
             }}
           >
-            Houston home care,
-            <br />
-            honestly compared.
+            Houston home care,{' '}
+            <em className="italic" style={{ fontWeight: 400 }}>
+              honestly
+            </em>{' '}
+            compared.
           </h1>
 
-          <p className="mt-7 max-w-[640px] text-[17px] leading-[1.6] text-[var(--ink-2)]">
+          <p className="mt-7 max-w-[58ch] text-[16px] leading-[1.6] text-[var(--ink-2)]">
             Every home care agency licensed in Houston, in one place. Filter by
-            language, insurance, and the kind of care you need.{' '}
-            <span className="text-[var(--ink)] font-medium">
-              Free to browse — no sign-up required.
-            </span>
+            language, insurance, and the kind of care you need. Free to browse —
+            no sign-up required.
           </p>
 
-          <dl className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-8 max-w-3xl">
-            {STATS.map((s) => (
-              <div key={s.l}>
-                <dt
-                  className="font-display tabular-nums leading-none tracking-[-0.02em] text-[var(--ink)] font-medium"
-                  style={{
-                    fontSize: 'clamp(28px, 3.6vw, 36px)',
-                    fontVariationSettings: '"opsz" 96, "SOFT" 0',
-                  }}
-                >
-                  {s.n}
-                </dt>
-                <dd className="eyebrow mt-3">{s.l}</dd>
+          {/* Stat anchor + search bar */}
+          <div className="mt-12 flex flex-wrap items-end gap-x-12 gap-y-6">
+            <div className="border-t border-[var(--line)] pt-4 inline-block">
+              <div
+                className="font-display tabular-nums text-[var(--ink)]"
+                style={{
+                  fontSize: 38,
+                  fontWeight: 400,
+                  letterSpacing: '-0.005em',
+                  lineHeight: 1,
+                }}
+              >
+                259
               </div>
-            ))}
-          </dl>
+              <div className="eyebrow mt-1.5">Agencies indexed</div>
+            </div>
+
+            <HeroSearch />
+          </div>
         </div>
       </section>
 
-      {/* MAIN: 2-col layout, sidebar filter + results */}
-      <section className="mx-auto max-w-[1200px] px-6 sm:px-10 py-12">
-        <div className="grid lg:grid-cols-[220px_1fr] gap-x-12 gap-y-10">
+      {/* MAIN: 2-col layout — sidebar + results */}
+      <section className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12">
+        <div className="grid lg:grid-cols-[260px_1fr] gap-x-10 gap-y-10">
           {/* Sidebar */}
-          <aside className="lg:sticky lg:top-8 lg:self-start lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto pr-2">
+          <aside className="lg:sticky lg:top-7 lg:self-start lg:max-h-[calc(100vh-3.5rem)] lg:overflow-y-auto pr-2">
             <FilterBar />
           </aside>
 
-          {/* Results column */}
+          {/* Results */}
           <div>
             <div className="flex items-baseline justify-between mb-7 pb-5 border-b border-[var(--line)]">
               <p className="text-[var(--ink-2)] flex items-baseline gap-2.5">
                 <span
-                  className="font-display tabular-nums text-[var(--ink)] font-medium"
-                  style={{
-                    fontSize: '26px',
-                    lineHeight: 1,
-                    fontVariationSettings: '"opsz" 48, "SOFT" 0',
-                  }}
+                  className="font-display tabular-nums text-[var(--ink)]"
+                  style={{ fontSize: 28, lineHeight: 1, fontWeight: 400 }}
                 >
                   {agencies.length}
                 </span>
-                <span className="text-[14px]">
-                  {agencies.length === 1 ? 'agency' : 'agencies'}
-                  {totalActive > 0 && ' match your filters'}
+                <span className="font-display text-[var(--ink-2)]" style={{ fontSize: 22 }}>
+                  Houston {agencies.length === 1 ? 'agency' : 'agencies'}
                 </span>
               </p>
-              <p className="eyebrow hidden sm:block">Sorted by trust score</p>
+              <p className="eyebrow">
+                {totalActive > 0 ? 'Filtered' : 'Sorted by trust score'}
+              </p>
             </div>
 
             <AgencyList agencies={agencies} />

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Type Comparison · WeCarely</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Marcellus&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Inter+Tight:wght@300;400;500;600&family=Manrope:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet">
+
+<style>
+  :root{
+    --ink:       #0A0A0A;
+    --ink-2:     #525252;
+    --ink-3:     #A3A3A3;
+    --ink-4:     #D4D4D4;
+    --line:      #EAEAEA;
+    --line-2:    #F4F4F4;
+    --accent:    #F5C518;
+  }
+  *{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  html, body{
+    background: #fff;
+    color: var(--ink);
+    font-feature-settings: "ss01","ss02","cv11";
+  }
+
+  .eyebrow{
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .num{
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 10.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .hair{ border-color: var(--line); }
+  .stars i{
+    font-style: normal;
+    background: linear-gradient(90deg, #0A0A0A var(--p, 100%), #E4E4E7 var(--p, 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.06em;
+    font-size: 14px;
+  }
+
+  /* ================= Variant base ================= */
+  .v{
+    --display: 'Tenor Sans', serif;
+    --body: 'Inter Tight', system-ui, sans-serif;
+    --display-letter-h1: 0.18em;
+    --display-letter-h2: 0.06em;
+    --display-weight-h1: 400;
+    --display-weight-h2: 400;
+  }
+  .v .display{ font-family: var(--display); }
+  .v .body{ font-family: var(--body); }
+
+  /* Variant A — Tenor Sans */
+  .v-tenor{
+    --display: 'Tenor Sans', serif;
+    --display-letter-h1: 0.22em;
+    --display-letter-h2: 0.08em;
+    --display-weight-h1: 400;
+    --display-weight-h2: 400;
+  }
+  /* Variant B — Cormorant */
+  .v-cormorant{
+    --display: 'Cormorant Garamond', serif;
+    --display-letter-h1: 0.16em;
+    --display-letter-h2: 0.04em;
+    --display-weight-h1: 300;
+    --display-weight-h2: 400;
+  }
+  /* Variant C — Spectral */
+  .v-spectral{
+    --display: 'Spectral', serif;
+    --display-letter-h1: 0.10em;
+    --display-letter-h2: 0.02em;
+    --display-weight-h1: 300;
+    --display-weight-h2: 400;
+  }
+
+  /* ================= Type specimen ================= */
+  .h1{
+    font-family: var(--display);
+    font-size: clamp(38px, 4.4vw, 64px);
+    line-height: 1.04;
+    letter-spacing: var(--display-letter-h1);
+    font-weight: var(--display-weight-h1);
+    color: var(--ink);
+  }
+  .h1 em{
+    font-style: italic;
+    font-weight: var(--display-weight-h1);
+    letter-spacing: 0.04em;
+    color: var(--ink-2);
+  }
+  .h2{
+    font-family: var(--display);
+    font-size: 28px;
+    line-height: 1.18;
+    letter-spacing: var(--display-letter-h2);
+    font-weight: var(--display-weight-h2);
+    color: var(--ink);
+  }
+  .h3{
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    font-weight: var(--display-weight-h2);
+    color: var(--ink);
+  }
+  .body-l{
+    font-family: var(--body);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    letter-spacing: -0.005em;
+  }
+  .body-s{
+    font-family: var(--body);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  /* ================= Letter tile ================= */
+  .tile{
+    width: 96px; height: 96px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    background: oklch(96% 0.025 80);
+  }
+  .tile span{
+    font-family: var(--display);
+    font-size: 38px;
+    color: oklch(38% 0.06 80);
+    letter-spacing: 0;
+  }
+
+  /* ================= Stat ================= */
+  .stat-num{
+    font-family: var(--display);
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.005em;
+    font-weight: var(--display-weight-h1);
+  }
+
+  /* ================= Mini result card ================= */
+  .card{
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px;
+    background: #fff;
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .pill{
+    display: inline-flex; align-items: center;
+    height: 22px; padding: 0 8px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-family: var(--body);
+    font-size: 11px;
+    color: var(--ink-2);
+    background: #fff;
+  }
+  .btn-y{
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 34px; padding: 0 14px;
+    background: var(--accent);
+    color: var(--ink);
+    border: 1px solid #E5B306;
+    border-radius: 8px;
+    font-family: var(--body);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    cursor: pointer;
+    transition: filter .15s ease;
+  }
+  .btn-y:hover{ filter: brightness(0.96); }
+  .btn-g{
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 34px; padding: 0 14px;
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--ink-4);
+    border-radius: 8px;
+    font-family: var(--body);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* ================= Header strip ================= */
+  .topbar{ border-bottom: 1px solid var(--line); }
+  .col-head{
+    border-bottom: 1px solid var(--line);
+    padding: 22px 28px;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    backdrop-filter: blur(8px);
+  }
+  .col-head .name{
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    font-weight: var(--display-weight-h2);
+  }
+  .col{
+    border-right: 1px solid var(--line);
+    background: #fff;
+    min-height: 100vh;
+  }
+  .col:last-child{ border-right: 0; }
+
+  .specimen-block{
+    padding: 36px 28px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .specimen-block .lbl{
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  /* alphabet grid */
+  .alpha{
+    font-family: var(--display);
+    font-size: 22px;
+    line-height: 1.5;
+    letter-spacing: var(--display-letter-h2);
+    color: var(--ink);
+    word-spacing: 0.08em;
+  }
+  .alpha .punc{ color: var(--ink-3); }
+
+  /* spaced wordmark */
+  .word-spaced{
+    font-family: var(--display);
+    font-size: 28px;
+    letter-spacing: var(--display-letter-h1);
+    text-align: center;
+    font-weight: var(--display-weight-h1);
+    color: var(--ink);
+  }
+  .word-spaced .dot{
+    color: var(--ink-3);
+    margin: 0 0.4em;
+    font-weight: 400;
+  }
+
+  /* hero preview shell */
+  .hero-shell{
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+    background: #fff;
+  }
+
+  /* Selection footer */
+  .pick-bar{
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #0A0A0A;
+    color: #fff;
+    border-radius: 999px;
+    padding: 8px 8px 8px 18px;
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,.25);
+  }
+  .pick-bar .lab{
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 12px;
+    letter-spacing: -0.005em;
+  }
+  .pick-bar button{
+    height: 32px; padding: 0 14px;
+    border-radius: 999px;
+    background: #fff;
+    color: #0A0A0A;
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    border: 0;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .pick-bar button:hover{ background: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="max-w-[1480px] mx-auto px-8 h-[58px] flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="num">№ TYPE-01</span>
+      <span class="text-[12px]" style="color:var(--ink-3)">·</span>
+      <span class="eyebrow" style="letter-spacing:0.14em">Specimen comparison</span>
+    </div>
+    <div class="flex items-center gap-6 text-[12px]" style="color:var(--ink-2); font-family:'Inter Tight'">
+      <span>WeCarely · Houston listing</span>
+      <span style="color:var(--ink-4)">/</span>
+      <span>3 type pairings</span>
+    </div>
+  </div>
+</div>
+
+<!-- Intro -->
+<section class="max-w-[1480px] mx-auto px-8 py-12">
+  <div class="eyebrow">Pick one</div>
+  <h1 class="mt-3" style="font-family:'Tenor Sans'; font-size:clamp(34px,3.6vw,52px); line-height:1.05; letter-spacing:0.06em; font-weight:400">
+    Three modern, quiet serifs.
+  </h1>
+  <p class="mt-4 max-w-[60ch]" style="font-family:'Inter Tight'; font-size:14.5px; line-height:1.6; color:var(--ink-2)">
+    Each column shows the same WeCarely material set in a different display family — alphabet, hero headline, stat numerals, an agency card, a message-board pull. All three use Inter Tight for body so you're judging the display face only. Use the bar at the bottom of the page to select one and I'll apply it across the listing page.
+  </p>
+</section>
+
+<!-- 3-column comparison -->
+<div class="max-w-[1480px] mx-auto grid grid-cols-1 lg:grid-cols-3" style="border-top:1px solid var(--line); border-left:1px solid var(--line); border-right:1px solid var(--line); border-radius:14px 14px 0 0; overflow:hidden">
+
+  <!-- ================ COLUMN A — TENOR SANS ================ -->
+  <div class="col v v-tenor">
+    <div class="col-head">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="num">A</div>
+          <div class="name mt-2">Tenor Sans</div>
+          <div class="body-s mt-1" style="color:var(--ink-3)">Thin geometric · 1 weight · widest letter-spacing</div>
+        </div>
+        <span class="pill" style="font-family:'Inter Tight'">Coolest</span>
+      </div>
+    </div>
+
+    <!-- Wordmark -->
+    <div class="specimen-block">
+      <div class="lbl">Wordmark · spaced</div>
+      <div class="word-spaced">W<span class="dot">·</span>E<span class="dot">·</span>C<span class="dot">·</span>A<span class="dot">·</span>R<span class="dot">·</span>E<span class="dot">·</span>L<span class="dot">·</span>Y</div>
+    </div>
+
+    <!-- Headline -->
+    <div class="specimen-block">
+      <div class="lbl">H1 · Hero headline</div>
+      <h1 class="h1" style="text-transform:uppercase">Houston home<br/>care, <em style="text-transform:none">honestly compared.</em></h1>
+    </div>
+
+    <!-- H2 -->
+    <div class="specimen-block">
+      <div class="lbl">H2 · Section</div>
+      <h2 class="h2">The message board.</h2>
+      <div class="h3 mt-3" style="color:var(--ink-3); letter-spacing:0.06em">Real reviews from real families</div>
+    </div>
+
+    <!-- Alphabet -->
+    <div class="specimen-block">
+      <div class="lbl">Alphabet · 22px</div>
+      <div class="alpha">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br/>a b c d e f g h i j k l m n o p q r s t u v w x y z<br/><span class="punc">0 1 2 3 4 5 6 7 8 9 — & · / ½</span></div>
+    </div>
+
+    <!-- Stat -->
+    <div class="specimen-block">
+      <div class="lbl">Stat numerals</div>
+      <div class="flex items-baseline gap-8">
+        <div>
+          <div class="stat-num">259</div>
+          <div class="body-s mt-2" style="color:var(--ink-3)">Agencies indexed</div>
+        </div>
+        <div>
+          <div class="stat-num">10.0</div>
+          <div class="body-s mt-2" style="color:var(--ink-3)">Top trust score</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card preview -->
+    <div class="specimen-block">
+      <div class="lbl">Result card · sample</div>
+      <div class="card">
+        <div class="tile" style="background:oklch(96% 0.025 30)"><span style="color:oklch(38% 0.06 30)">P</span></div>
+        <div class="min-w-0">
+          <div class="num" style="color:var(--ink-3)">01</div>
+          <h3 class="display mt-1" style="font-size:18px; letter-spacing:0.03em; font-weight:400; color:var(--ink)">Phoenix Family Healthcare Inc.</h3>
+          <div class="flex items-center gap-2 mt-1.5">
+            <span class="stars"><i style="--p:100%">★★★★★</i></span>
+            <span class="body-s" style="font-size:11.5px; color:var(--ink)">4.7</span>
+            <span class="body-s" style="color:var(--ink-3)">· 25 reviews</span>
+          </div>
+          <p class="body-s mt-2" style="color:var(--ink-2)">Personalized in-home services, bilingual case managers, Medicare &amp; Medicaid accepted.</p>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="pill">Spanish</span>
+            <span class="pill">Skilled Nursing</span>
+            <span class="pill">Dementia</span>
+          </div>
+        </div>
+        <div class="flex flex-col justify-end gap-2">
+          <button class="btn-y">Request a quote</button>
+          <button class="btn-g">Visit website</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pull quote -->
+    <div class="specimen-block">
+      <div class="lbl">Message board · pull</div>
+      <blockquote class="display" style="font-size:20px; line-height:1.3; letter-spacing:0.02em; color:var(--ink); font-weight:400">
+        <span style="color:var(--ink-4)">"</span>Vietnamese-speaking aide on the second visit. That alone changed how he ate, slept, everything.<span style="color:var(--ink-4)">"</span>
+      </blockquote>
+      <div class="body-s mt-3" style="color:var(--ink-2)">— Daniel &amp; Trang P. · Sugar Land, TX</div>
+    </div>
+
+    <!-- Pros/Cons -->
+    <div class="specimen-block" style="background:oklch(98.5% 0.01 80)">
+      <div class="lbl">Notes</div>
+      <ul class="body-s" style="color:var(--ink-2)">
+        <li>＋ Coolest, most editorial of the three</li>
+        <li>＋ Wide letter-spacing reads "luxury" instantly</li>
+        <li>－ Single weight (no bold) — limits hierarchy</li>
+        <li>－ Less warm; risk of feeling clinical for caregiving</li>
+      </ul>
+    </div>
+
+    <button class="w-full text-center py-5 transition" style="background:#fff; border-top:1px solid var(--line); cursor:pointer; font-family:'Inter Tight'; font-size:13px; color:var(--ink); font-weight:500" onclick="pick('Tenor Sans')">
+      Use Tenor Sans →
+    </button>
+  </div>
+
+  <!-- ================ COLUMN B — CORMORANT ================ -->
+  <div class="col v v-cormorant">
+    <div class="col-head">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="num">B</div>
+          <div class="name mt-2">Cormorant Garamond</div>
+          <div class="body-s mt-1" style="color:var(--ink-3)">Hairline serif · 5 weights · italics</div>
+        </div>
+        <span class="pill" style="font-family:'Inter Tight'">Most refined</span>
+      </div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Wordmark · spaced</div>
+      <div class="word-spaced">W<span class="dot">·</span>E<span class="dot">·</span>C<span class="dot">·</span>A<span class="dot">·</span>R<span class="dot">·</span>E<span class="dot">·</span>L<span class="dot">·</span>Y</div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">H1 · Hero headline</div>
+      <h1 class="h1">Houston home care,<br/><em>honestly compared.</em></h1>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">H2 · Section</div>
+      <h2 class="h2">The message board.</h2>
+      <div class="h3 mt-3" style="color:var(--ink-3); font-style:italic">Real reviews from real families</div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Alphabet · 22px</div>
+      <div class="alpha">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br/>a b c d e f g h i j k l m n o p q r s t u v w x y z<br/><span class="punc">0 1 2 3 4 5 6 7 8 9 — & · / ½</span></div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Stat numerals</div>
+      <div class="flex items-baseline gap-8">
+        <div>
+          <div class="stat-num">259</div>
+          <div class="body-s mt-2" style="color:var(--ink-3)">Agencies indexed</div>
+        </div>
+        <div>
+          <div class="stat-num">10.0</div>
+          <div class="body-s mt-2" style="color:var(--ink-3)">Top trust score</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Result card · sample</div>
+      <div class="card">
+        <div class="tile" style="background:oklch(96% 0.025 30)"><span style="color:oklch(38% 0.06 30)">P</span></div>
+        <div class="min-w-0">
+          <div class="num" style="color:var(--ink-3)">01</div>
+          <h3 class="display mt-1" style="font-size:21px; letter-spacing:-0.005em; font-weight:500; color:var(--ink)">Phoenix Family Healthcare Inc.</h3>
+          <div class="flex items-center gap-2 mt-1.5">
+            <span class="stars"><i style="--p:100%">★★★★★</i></span>
+            <span class="body-s" style="font-size:11.5px; color:var(--ink)">4.7</span>
+            <span class="body-s" style="color:var(--ink-3)">· 25 reviews</span>
+          </div>
+          <p class="body-s mt-2" style="color:var(--ink-2)">Personalized in-home services, bilingual case managers, Medicare &amp; Medicaid accepted.</p>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="pill">Spanish</span>
+            <span class="pill">Skilled Nursing</span>
+            <span class="pill">Dementia</span>
+          </div>
+        </div>
+        <div class="flex flex-col justify-end gap-2">
+          <button class="btn-y">Request a quote</button>
+          <button class="btn-g">Visit website</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Message board · pull</div>
+      <blockquote class="display" style="font-size:22px; line-height:1.3; letter-spacing:-0.005em; color:var(--ink); font-weight:400">
+        <span style="color:var(--ink-4); font-style:italic">"</span>Vietnamese-speaking aide on the second visit. That alone changed how he ate, slept, <em style="font-style:italic">everything</em>.<span style="color:var(--ink-4); font-style:italic">"</span>
+      </blockquote>
+      <div class="body-s mt-3" style="color:var(--ink-2)">— Daniel &amp; Trang P. · Sugar Land, TX</div>
+    </div>
+
+    <div class="specimen-block" style="background:oklch(98.5% 0.01 80)">
+      <div class="lbl">Notes</div>
+      <ul class="body-s" style="color:var(--ink-2)">
+        <li>＋ Hairline serif feels editorial &amp; warm</li>
+        <li>＋ Italics give "honestly compared" real character</li>
+        <li>＋ Five weights (300–600) for full hierarchy</li>
+        <li>－ Slightly more "fashion" than "healthcare"</li>
+      </ul>
+    </div>
+
+    <button class="w-full text-center py-5 transition" style="background:#fff; border-top:1px solid var(--line); cursor:pointer; font-family:'Inter Tight'; font-size:13px; color:var(--ink); font-weight:500" onclick="pick('Cormorant Garamond')">
+      Use Cormorant Garamond →
+    </button>
+  </div>
+
+  <!-- ================ COLUMN C — SPECTRAL ================ -->
+  <div class="col v v-spectral">
+    <div class="col-head">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="num">C</div>
+          <div class="name mt-2">Spectral</div>
+          <div class="body-s mt-1" style="color:var(--ink-3)">Modern serif · 7 weights · screen-tuned</div>
+        </div>
+        <span class="pill" style="font-family:'Inter Tight'">Most readable</span>
+      </div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Wordmark · spaced</div>
+      <div class="word-spaced">W<span class="dot">·</span>E<span class="dot">·</span>C<span class="dot">·</span>A<span class="dot">·</span>R<span class="dot">·</span>E<span class="dot">·</span>L<span class="dot">·</span>Y</div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">H1 · Hero headline</div>
+      <h1 class="h1">Houston home care,<br/><em>honestly compared.</em></h1>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">H2 · Section</div>
+      <h2 class="h2">The message board.</h2>
+      <div class="h3 mt-3" style="color:var(--ink-3); font-style:italic">Real reviews from real families</div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Alphabet · 22px</div>
+      <div class="alpha">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z<br/>a b c d e f g h i j k l m n o p q r s t u v w x y z<br/><span class="punc">0 1 2 3 4 5 6 7 8 9 — & · / ½</span></div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Stat numerals</div>
+      <div class="flex items-baseline gap-8">
+        <div>
+          <div class="stat-num">259</div>
+          <div class="body-s mt-2" style="color:var(--ink-3)">Agencies indexed</div>
+        </div>
+        <div>
+          <div class="stat-num">10.0</div>
+          <div class="body-s mt-2" style="color:var(--ink-3)">Top trust score</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Result card · sample</div>
+      <div class="card">
+        <div class="tile" style="background:oklch(96% 0.025 30)"><span style="color:oklch(38% 0.06 30)">P</span></div>
+        <div class="min-w-0">
+          <div class="num" style="color:var(--ink-3)">01</div>
+          <h3 class="display mt-1" style="font-size:21px; letter-spacing:-0.012em; font-weight:500; color:var(--ink)">Phoenix Family Healthcare Inc.</h3>
+          <div class="flex items-center gap-2 mt-1.5">
+            <span class="stars"><i style="--p:100%">★★★★★</i></span>
+            <span class="body-s" style="font-size:11.5px; color:var(--ink)">4.7</span>
+            <span class="body-s" style="color:var(--ink-3)">· 25 reviews</span>
+          </div>
+          <p class="body-s mt-2" style="color:var(--ink-2)">Personalized in-home services, bilingual case managers, Medicare &amp; Medicaid accepted.</p>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="pill">Spanish</span>
+            <span class="pill">Skilled Nursing</span>
+            <span class="pill">Dementia</span>
+          </div>
+        </div>
+        <div class="flex flex-col justify-end gap-2">
+          <button class="btn-y">Request a quote</button>
+          <button class="btn-g">Visit website</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="specimen-block">
+      <div class="lbl">Message board · pull</div>
+      <blockquote class="display" style="font-size:21px; line-height:1.32; letter-spacing:-0.005em; color:var(--ink); font-weight:400">
+        <span style="color:var(--ink-4); font-style:italic">"</span>Vietnamese-speaking aide on the second visit. That alone changed how he ate, slept, <em style="font-style:italic">everything</em>.<span style="color:var(--ink-4); font-style:italic">"</span>
+      </blockquote>
+      <div class="body-s mt-3" style="color:var(--ink-2)">— Daniel &amp; Trang P. · Sugar Land, TX</div>
+    </div>
+
+    <div class="specimen-block" style="background:oklch(98.5% 0.01 80)">
+      <div class="lbl">Notes</div>
+      <ul class="body-s" style="color:var(--ink-2)">
+        <li>＋ Designed by Production Type for screen reading</li>
+        <li>＋ 7 weights — fullest hierarchy of the three</li>
+        <li>＋ Feels modern + trustworthy (Stripe / Notion territory)</li>
+        <li>－ Slightly more conventional than A or B</li>
+      </ul>
+    </div>
+
+    <button class="w-full text-center py-5 transition" style="background:#fff; border-top:1px solid var(--line); cursor:pointer; font-family:'Inter Tight'; font-size:13px; color:var(--ink); font-weight:500" onclick="pick('Spectral')">
+      Use Spectral →
+    </button>
+  </div>
+</div>
+
+<!-- Recommendation -->
+<section class="max-w-[1480px] mx-auto px-8 py-14">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div>
+      <div class="eyebrow">My take</div>
+      <h2 class="mt-3" style="font-family:'Spectral'; font-size:30px; line-height:1.18; letter-spacing:-0.005em; font-weight:400; color:var(--ink)">
+        I'd ship <em style="font-style:italic">Spectral</em> for the listing.
+      </h2>
+      <p class="mt-4 max-w-[58ch]" style="font-family:'Inter Tight'; font-size:14.5px; line-height:1.62; color:var(--ink-2)">
+        The Karelia reference reads luxurious because it's a hero spread for tourism. Houston home care needs the same elegance but with clinical credibility — a daughter scanning ten agencies at midnight has to <em style="font-style:italic">read</em> them, not admire them. Spectral keeps the modern serif charm and adds the weight range and on-screen sharpness Tenor Sans and Cormorant lack.
+      </p>
+    </div>
+    <div>
+      <div class="eyebrow">When to pick the others</div>
+      <ul class="mt-4 space-y-3" style="font-family:'Inter Tight'; font-size:13.5px; line-height:1.6; color:var(--ink-2)">
+        <li><b style="color:var(--ink); font-weight:500">Tenor Sans</b> — if WeCarely is going to lean editorial / brand-magazine, with photo-led marketing pages alongside the listing.</li>
+        <li><b style="color:var(--ink); font-weight:500">Cormorant Garamond</b> — if the brand wants a softer, more fashion-adjacent feel; ideal if you ever do a print zine of family stories.</li>
+        <li><b style="color:var(--ink); font-weight:500">Spectral</b> — the safe, modern, fintech-trustworthy default. Best for a directory product that lives or dies on legibility.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Pick bar -->
+<div class="pick-bar">
+  <span class="lab">Pick one and tell me — I'll apply it across the listing.</span>
+  <button onclick="pick('Tenor Sans')">A</button>
+  <button onclick="pick('Cormorant Garamond')">B</button>
+  <button onclick="pick('Spectral')">C</button>
+</div>
+
+<script>
+  function pick(name){
+    // Visual confirmation only — actual swap happens in the listing file.
+    const bar = document.querySelector('.pick-bar .lab');
+    bar.textContent = `Got it: ${name}. Tell me in chat to apply.`;
+    bar.style.color = '#F5C518';
+  }
+</script>
+
+</body>
+</html>

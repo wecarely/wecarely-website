@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Houston home care, honestly compared — WeCarely</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts: Spectral (display) + Inter Tight (body) + JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter+Tight:wght@300..700&family=JetBrains+Mono:wght@400..500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --bg-soft:   #FFFFFF;
+    --ink:       #0A0A0A;
+    --ink-2:     #525252;
+    --ink-3:     #A3A3A3;
+    --ink-4:     #D4D4D4;
+    --accent:    #F5C518;   /* yellow accent */
+    --gold:      #B58430;
+    --line:      #EAEAEA;
+    --line-strong: #D4D4D4;
+
+    --display:   "Spectral", ui-serif, Georgia, serif;
+    --display-2: "Spectral", ui-serif, Georgia, serif;
+    --body:      "Inter Tight", ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+    --mono:      "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  html, body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    font-feature-settings: "ss01" on, "cv11" on;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .font-display{ font-family: var(--display); font-weight: 400; }
+  .font-mono{ font-family: var(--mono); }
+
+  /* Editorial eyebrow */
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* Hairline divider */
+  .hair{ border-color: var(--line); }
+
+  /* Stars */
+  .stars{
+    --pct: 0%;
+    display: inline-block;
+    position: relative;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: var(--ink-4);
+    font-family: Arial, sans-serif;
+  }
+  .stars::before{ content: "★★★★★"; }
+  .stars > i{
+    position: absolute; top: 0; left: 0;
+    width: var(--pct);
+    overflow: hidden;
+    color: var(--gold);
+    font-style: normal;
+    white-space: nowrap;
+  }
+  .stars > i::before{ content: "★★★★★"; }
+
+  /* Filter checkbox */
+  .check{
+    appearance: none;
+    width: 14px; height: 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all .12s ease;
+  }
+  .check:hover{ border-color: var(--ink-2); }
+  .check:checked{
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .check:checked::after{
+    content: "";
+    position: absolute;
+    left: 3px; top: 0px;
+    width: 4px; height: 8px;
+    border: solid #0A0A0A;
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .filter-row{
+    display: flex; align-items: center; gap: 9px;
+    padding: 5px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  .filter-row > .label{
+    flex: 1 1 auto; min-width: 0;
+    font-size: 13px;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .filter-row > .count{
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .filter-row:hover .label{ color: var(--accent); }
+
+  /* Card (legacy, kept for compat) */
+  .card{
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 26px 28px 22px;
+    transition: border-color .15s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  .card:hover{
+    border-color: var(--line-strong);
+    box-shadow: 0 8px 24px -12px rgba(10,10,10,0.08);
+  }
+  .card .stretched, .result-card .stretched{
+    position: absolute; inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+  .card-inner{ position: relative; }
+  .card-inner a, .card-inner button{ position: relative; z-index: 2; }
+
+  /* Filter section (collapsible) */
+  .filter-section{
+    border-top: 1px solid var(--line);
+    padding: 14px 0 10px;
+  }
+  .filter-section:first-of-type{ border-top: 0; padding-top: 4px; }
+  .filter-section-head{
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    background: transparent; border: 0; padding: 0;
+    font-family: var(--display); font-size: 14px; font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+  }
+  .filter-section-head:hover{ color: var(--accent); }
+  .filter-chev{ color: var(--ink-3); transition: transform .15s ease; display: inline-flex; }
+  .filter-chev.open{ transform: rotate(180deg); }
+
+  /* Suggested chips */
+  .sugg-chip{
+    display: inline-flex; align-items: center;
+    height: 26px; padding: 0 10px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink-2);
+    font-size: 12px;
+    border: 1px solid var(--line);
+    cursor: pointer;
+    transition: all .12s ease;
+  }
+  .sugg-chip:hover{ border-color: var(--ink-2); color: var(--ink); }
+  .sugg-chip.active{
+    background: var(--ink); color: #fff; border-color: var(--ink);
+  }
+
+  /* Radio */
+  .radio{
+    appearance: none;
+    width: 14px; height: 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all .12s ease;
+  }
+  .radio:hover{ border-color: var(--ink-2); }
+  .radio:checked{ border-color: var(--accent); }
+  .radio:checked::after{
+    content: "";
+    position: absolute;
+    left: 3px; top: 3px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Letter tile */
+  .letter-tile{
+    width: 80px; height: 80px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .letter-tile span{
+    font-size: 36px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+
+  /* Result card — Yelp horizontal layout */
+  .result-card{
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: 28px 160px 1fr 180px;
+    gap: 22px;
+    align-items: stretch;
+    transition: border-color .15s ease, box-shadow .2s ease;
+  }
+  .result-card:hover{
+    border-color: var(--line-strong);
+    box-shadow: 0 8px 24px -12px rgba(10,10,10,0.08);
+  }
+  .result-index{
+    font-size: 13px;
+    color: var(--ink-3);
+    text-align: right;
+    padding-top: 8px;
+    font-variant-numeric: tabular-nums;
+    align-self: start;
+  }
+  .result-thumb{
+    padding-top: 2px;
+    align-self: start;
+  }
+  .result-thumb .letter-tile{
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+  }
+  .result-thumb .letter-tile span{
+    font-size: 64px;
+  }
+  .result-info{ min-width: 0; }
+  .result-info > *{ position: relative; z-index: 2; }
+  .result-info h3 .result-num{
+    color: var(--ink-3);
+    margin-right: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    vertical-align: 2px;
+  }
+  .result-cta{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    align-self: end;
+    padding-bottom: 2px;
+    position: relative;
+    z-index: 2;
+  }
+  .result-cta > *{ position: relative; z-index: 2; }
+
+  .btn-primary{
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 36px; padding: 0 14px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px; font-weight: 500;
+    border-radius: 8px;
+    border: 0;
+    cursor: pointer;
+    transition: opacity .15s ease;
+  }
+  .btn-primary:hover{ opacity: 0.88; }
+
+  /* Yellow Request-a-quote button (Yelp tone, but minimal) */
+  .btn-yellow{
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 36px; padding: 0 14px;
+    background: #F5C518;
+    color: #0A0A0A;
+    font-size: 13px; font-weight: 600;
+    border-radius: 8px;
+    border: 0;
+    cursor: pointer;
+    transition: background .15s ease, transform .1s ease;
+    width: 100%;
+  }
+  .btn-yellow:hover{ background: #EBB800; }
+  .btn-yellow:active{ transform: translateY(1px); }
+
+  /* Sponsored carousel */
+  .sp-shell{
+    margin-bottom: 40px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px 22px;
+    background: #fff;
+  }
+  .sp-head{
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 16px;
+  }
+  .sp-rail{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(260px, calc((100% - 24px) / 3));
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 2px;
+  }
+  .sp-rail::-webkit-scrollbar{ display: none; }
+  @media (max-width: 1100px){
+    .sp-rail{ grid-auto-columns: minmax(220px, calc((100% - 12px) / 2)); }
+  }
+  @media (max-width: 720px){
+    .sp-rail{ grid-auto-columns: 80%; }
+  }
+
+  /* Sponsored card */
+  .sp-card{
+    position: relative;
+    scroll-snap-align: start;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: border-color .15s ease, box-shadow .2s ease;
+    min-width: 0;
+  }
+  .sp-card:hover{
+    border-color: var(--line-strong);
+    box-shadow: 0 6px 18px -10px rgba(10,10,10,0.08);
+  }
+  .sp-card .stretched{ z-index: 1; }
+  .sp-card > *{ position: relative; z-index: 2; }
+  .sp-thumb .letter-tile{ width: 60px; height: 60px; }
+  .sp-thumb .letter-tile span{ font-size: 26px; }
+  .sp-body{ flex: 1 1 auto; min-width: 0; }
+  .sp-name{
+    font-size: 14.5px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    font-weight: 500;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+  }
+
+  /* Letter board carousel — Yelp-style reviews, one per agency */
+  .lt-rail{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(360px, calc((100% - 32px) / 3));
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 4px;
+    scrollbar-width: none;
+    padding: 2px;
+  }
+  .lt-rail::-webkit-scrollbar{ display: none; }
+  @media (max-width: 1100px){
+    .lt-rail{ grid-auto-columns: minmax(340px, calc((100% - 16px) / 2)); }
+  }
+  @media (max-width: 720px){
+    .lt-rail{ grid-auto-columns: 88%; }
+  }
+  .lt-card{
+    position: relative;
+    scroll-snap-align: start;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .15s ease, box-shadow .2s ease;
+    min-width: 0;
+  }
+  .lt-card:hover{
+    border-color: var(--line-strong);
+    box-shadow: 0 8px 22px -12px rgba(10,10,10,0.10);
+  }
+  .lt-card .stretched{
+    position: absolute; inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+  .lt-card > *{ position: relative; z-index: 2; }
+
+  /* Yelp review header — avatar + author */
+  .lt-avatar{
+    width: 44px; height: 44px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #F5F5F4 0%, #E7E5E4 100%);
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+  }
+  .lt-elite{
+    display: inline-flex; align-items: center;
+    height: 17px; padding: 0 6px;
+    background: #B91C1C;
+    color: #fff;
+    font-family: var(--body);
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .lt-react{
+    display: inline-flex; align-items: center; gap: 5px;
+    height: 26px; padding: 0 9px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s ease;
+    z-index: 3;
+  }
+  .lt-react:hover{
+    border-color: var(--line-strong);
+    color: var(--ink);
+    background: #FAFAFA;
+  }
+  .lt-react.active{
+    border-color: var(--ink);
+    color: var(--ink);
+    background: #fff;
+  }
+  .lt-react .ct{
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .lt-react.active .ct{ color: var(--ink); }
+
+  /* Carousel arrows */
+  .carousel-arrow{
+    width: 32px; height: 32px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .15s ease;
+    flex-shrink: 0;
+  }
+  .carousel-arrow:hover:not(:disabled){
+    background: var(--ink); color: #fff; border-color: var(--ink);
+  }
+  .carousel-arrow:disabled{ opacity: 0.3; cursor: not-allowed; }
+
+  .btn-ghost{
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 36px; padding: 0 14px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .15s ease;
+  }
+  .btn-ghost:hover{ border-color: var(--ink); }
+
+  /* Quote-style summary */
+  .result-quote{
+    margin-top: 14px;
+    padding-left: 14px;
+    border-left: 2px solid var(--line-strong);
+    color: var(--ink-2);
+    font-size: 13.5px;
+    line-height: 1.55;
+    max-width: 62ch;
+    position: relative;
+  }
+  .result-quote-mark{
+    font-family: var(--display);
+    font-size: 22px;
+    color: var(--ink-3);
+    margin-right: 4px;
+    line-height: 1;
+    vertical-align: -4px;
+  }
+
+  /* Tag chip */
+  .chip{
+    display: inline-flex; align-items: center;
+    height: 22px; padding: 0 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    background: #fff;
+    white-space: nowrap;
+  }
+  .chip-meta{
+    display: inline-flex; align-items: center;
+    height: 22px;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    font-family: var(--mono);
+  }
+
+  /* Sort select */
+  .sort-select{
+    appearance: none;
+    background: transparent;
+    border: 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink);
+    padding-right: 14px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%230A0A0A' stroke-width='1.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+  }
+
+  /* Pagination */
+  .pagination{
+    display: flex; align-items: center; justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .page-btn{
+    min-width: 34px; height: 34px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: 12.5px;
+    font-family: var(--mono);
+    cursor: pointer;
+    transition: all .12s ease;
+    font-variant-numeric: tabular-nums;
+  }
+  .page-btn:hover:not(:disabled):not(.active){
+    border-color: var(--ink-2); color: var(--ink);
+  }
+  .page-btn.active{
+    background: #F5C518; color: #0A0A0A; border-color: #F5C518;
+    font-weight: 600;
+  }
+  .page-btn:disabled{ opacity: 0.35; cursor: not-allowed; }
+  .page-ellipsis{
+    color: var(--ink-3);
+    padding: 0 4px;
+    font-family: var(--mono); font-size: 13px;
+  }
+
+  /* Footer link */
+  .foot-link{
+    color: var(--ink-2);
+    font-size: 13px;
+    transition: color .12s ease;
+    display: block;
+    padding: 3px 0;
+  }
+  .foot-link:hover{ color: var(--ink); }
+
+  /* ============ CREAM FOOTER ============ */
+  .footer-cream{
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(1100px 600px at 85% 0%, rgba(245,197,24,0.18), transparent 60%),
+      radial-gradient(900px 500px at 0% 100%, rgba(217,167,75,0.10), transparent 55%),
+      linear-gradient(180deg, #FBF3DD 0%, #F6EAC3 60%, #F1E0AC 100%);
+    color: #1C1608;
+    isolation: isolate;
+  }
+  .footer-cream::before{
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(28,22,8,0.18), transparent);
+    z-index: 1;
+  }
+  .footer-grain{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: radial-gradient(circle at 1px 1px, rgba(28,22,8,0.07) 1px, transparent 1px);
+    background-size: 3px 3px;
+    z-index: 0;
+  }
+  .footer-cream .relative{ z-index: 2; }
+  .footer-eyebrow{
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(28,22,8,0.6);
+    font-weight: 500;
+  }
+  .footer-num{
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: rgba(28,22,8,0.45);
+    font-variant-numeric: tabular-nums;
+  }
+  .footer-lede{ color: #1C1608; text-wrap: pretty; }
+  .footer-body{ color: rgba(28,22,8,0.82); text-wrap: pretty; }
+  .footer-sign{ height: 22px; }
+  .footer-sign-line{
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: rgba(28,22,8,0.35);
+  }
+  .footer-sign-text{
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(28,22,8,0.65);
+    letter-spacing: -0.005em;
+  }
+  .footer-rule{ border-top: 1px solid rgba(28,22,8,0.15); }
+
+  .sticky-aside{ position: sticky; top: 28px; }
+
+  ::selection{ background: var(--accent); color: #0A0A0A; }
+
+  /* Hero search bar */
+  .hero-search{
+    display: inline-flex;
+    align-items: stretch;
+    height: 56px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: #fff;
+    padding: 6px;
+    gap: 0;
+    min-width: 480px;
+    max-width: 720px;
+    flex: 1 1 auto;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .hero-search:focus-within{
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(10,10,10,0.06);
+  }
+  .hs-field{
+    display: flex; align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .hs-icon{ color: var(--ink-3); display: inline-flex; flex-shrink: 0; }
+  .hs-field input{
+    flex: 1 1 auto; min-width: 0;
+    border: 0; outline: 0;
+    background: transparent;
+    font-family: var(--body);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .hs-field input::placeholder{ color: var(--ink-3); }
+  .hs-divider{
+    width: 1px; align-self: center;
+    height: 28px;
+    background: var(--line);
+  }
+  .hs-submit{
+    flex-shrink: 0;
+    width: 44px;
+    border-radius: 8px;
+    background: #F5C518;
+    color: #0A0A0A;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .15s ease;
+  }
+  .hs-submit:hover{ background: #EBB800; }
+
+  @media (max-width: 720px){
+    .hero-search{ min-width: 0; width: 100%; height: 52px; }
+    .hs-divider{ display: none; }
+    .hero-search{ flex-wrap: wrap; }
+  }
+
+  /* Responsive: stack card columns */
+  @media (max-width: 920px){
+    .result-card{
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+    }
+    .result-thumb .letter-tile{ width: 120px; height: 120px; }
+    .result-thumb .letter-tile span{ font-size: 48px; }
+    .result-index{ display: none; }
+    .result-cta{
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-self: stretch;
+    }
+  }
+
+</style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="application/json" id="agency-data">
+    <!-- agencies.json gets fetched at runtime; this is a fallback if needed -->
+  </script>
+
+  <!-- React + Babel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Inlined dataset (so the page is self-contained) -->
+  <script>
+    window.__AGENCIES__ = [
+      {"id":"92e5019b","slug":"phoenix-family-healthcare-inc-747186","name":"Phoenix Family Healthcare Inc.","city":"HOUSTON","state":"TX","zip":"77069","phone":"(281) 525-6020","website":"https://phoenixfamilyhealthcare.us/","medicare_star":5.0,"google_rating":4.7,"google_reviews_count":25,"trust_score":10.0,"has_spanish":true,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":true,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":false,"has_companion_care":false,"has_physical_therapy":true,"has_occupational_therapy":true,"has_speech_therapy":false,"has_dementia_care":true,"has_hospice":false,"ai_summary":"Phoenix Family Healthcare provides personalized in-home services that help clients live with comfort and independence."},
+      {"id":"d173885c","slug":"all-about-home-care-inc-679454","name":"All About Home Care, Inc.","city":"HOUSTON","state":"TX","zip":"77008","phone":"(713) 802-1211","website":"http://www.aahcare.com/","medicare_star":5.0,"google_rating":4.8,"google_reviews_count":81,"trust_score":10.0,"has_spanish":true,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":false,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":true,"has_companion_care":true,"has_physical_therapy":true,"has_occupational_therapy":true,"has_speech_therapy":true,"has_dementia_care":false,"has_hospice":false,"ai_summary":"All About Home Care, Inc. provides skilled home health services in Houston, with a focus on continuity of clinical care after hospital discharge."},
+      {"id":"2b42b6e9","slug":"providian-health-care-679266","name":"Providian Health Care","city":"HOUSTON","state":"TX","zip":"77034","phone":"(713) 462-0083","website":null,"medicare_star":4.5,"google_rating":4.8,"google_reviews_count":3022,"trust_score":9.4,"has_spanish":true,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":true,"has_skilled_nursing":true,"has_home_health_aide":false,"has_personal_care":true,"has_companion_care":true,"has_physical_therapy":false,"has_occupational_therapy":false,"has_speech_therapy":false,"has_dementia_care":true,"has_hospice":false,"ai_summary":"Long-tenured Houston agency serving thousands of families across personal and skilled care, with bilingual case managers."},
+      {"id":"3e679e1b","slug":"total-home-care-inc-459406","name":"Total Home Care Inc","city":"HOUSTON","state":"TX","zip":"77008","phone":"(713) 647-7036","website":"http://www.total-homecare.com/","medicare_star":4.5,"google_rating":4.6,"google_reviews_count":21,"trust_score":9.4,"has_spanish":false,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":false,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":false,"has_companion_care":false,"has_physical_therapy":true,"has_occupational_therapy":true,"has_speech_therapy":true,"has_dementia_care":false,"has_hospice":false,"ai_summary":"Total Home Care provides physician-approved home health services to Houston seniors, focused on regaining independence at home."},
+      {"id":"c9f43078","slug":"phoenix-healthcare-services-inc-679498","name":"Phoenix Healthcare Services, Inc","city":"HOUSTON","state":"TX","zip":"77069","phone":"(281) 571-8050","website":"http://phoenixhealthcareservices.us/","medicare_star":4.5,"google_rating":4.5,"google_reviews_count":47,"trust_score":9.36,"has_spanish":false,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":false,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":false,"has_companion_care":false,"has_physical_therapy":true,"has_occupational_therapy":true,"has_speech_therapy":true,"has_dementia_care":false,"has_hospice":false,"ai_summary":"Skilled home health, including nursing and rehab therapy, with a focus on hospital-to-home transitions."},
+      {"id":"a05970f8","slug":"ipr-healthcare-systems-inc-458306","name":"Ipr Healthcare Systems, Inc","city":"HOUSTON","state":"TX","zip":"77054","phone":"(713) 592-6776","website":"https://iprhealthcare.com/","medicare_star":4.5,"google_rating":4.6,"google_reviews_count":19,"trust_score":9.08,"has_spanish":true,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":true,"has_skilled_nursing":true,"has_home_health_aide":false,"has_personal_care":false,"has_companion_care":false,"has_physical_therapy":false,"has_occupational_therapy":false,"has_speech_therapy":false,"has_dementia_care":true,"has_hospice":true,"ai_summary":"IPR Healthcare provides hospice, skilled home care, and specialized memory care with 20+ years in Houston."},
+      {"id":"8296ceb3","slug":"st-clare-home-care-inc-747170","name":"St Clare Home Care, Inc.","city":"HOUSTON","state":"TX","zip":"77082","phone":"(713) 572-4663","website":"http://treasurecarehhs.com/","medicare_star":4.5,"google_rating":4.4,"google_reviews_count":13,"trust_score":8.92,"has_spanish":false,"has_vietnamese":true,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":false,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":true,"has_companion_care":false,"has_physical_therapy":true,"has_occupational_therapy":true,"has_speech_therapy":true,"has_dementia_care":false,"has_hospice":true,"ai_summary":"St Clare Home Care offers comprehensive in-home services — skilled nursing, therapy, and medical social work — coordinated with hospital teams."},
+      {"id":"db56f594","slug":"providian-health-care-inc-457952","name":"Providian Health Care Inc","city":"HOUSTON","state":"TX","zip":"77034","phone":"(281) 997-6272","website":null,"medicare_star":4.0,"google_rating":4.8,"google_reviews_count":3022,"trust_score":8.8,"has_spanish":true,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":true,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":true,"has_companion_care":false,"has_physical_therapy":false,"has_occupational_therapy":false,"has_speech_therapy":false,"has_dementia_care":false,"has_hospice":false,"ai_summary":"Houston-based agency providing skilled and personal care across the metro, with bilingual support staff."},
+      {"id":"2b3d5662","slug":"home-health-professionals-679660","name":"Home Health Professionals","city":"HOUSTON","state":"TX","zip":"77027","phone":"(713) 942-0100","website":"http://www.hhpros.com/","medicare_star":4.0,"google_rating":4.9,"google_reviews_count":59,"trust_score":8.8,"has_spanish":false,"has_vietnamese":false,"has_chinese":true,"accepts_medicare":true,"accepts_medicaid":false,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":false,"has_companion_care":false,"has_physical_therapy":true,"has_occupational_therapy":true,"has_speech_therapy":true,"has_dementia_care":true,"has_hospice":false,"ai_summary":"Home Health Professionals delivers clinically led home services with strong therapy and nursing teams across central Houston."},
+      {"id":"51a29972","slug":"accessible-home-health-care-of-houston-747603","name":"Accessible Home Health Care of Houston","city":"HOUSTON","state":"TX","zip":"77095","phone":"(281) 859-3516","website":null,"medicare_star":4.0,"google_rating":4.8,"google_reviews_count":9,"trust_score":8.64,"has_spanish":true,"has_vietnamese":false,"has_chinese":false,"accepts_medicare":true,"accepts_medicaid":false,"has_skilled_nursing":true,"has_home_health_aide":true,"has_personal_care":true,"has_companion_care":true,"has_physical_therapy":false,"has_occupational_therapy":false,"has_speech_therapy":false,"has_dementia_care":true,"has_hospice":false,"ai_summary":"Accessible Home Health Care provides personalized in-home support including skilled nursing, post-op recovery, and dementia care across greater Houston."}
+    ];
+  </script>
+
+  <script type="text/babel" src="components.jsx"></script>
+  <script type="text/babel">
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

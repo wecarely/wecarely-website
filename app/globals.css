@@ -1,70 +1,218 @@
 @import "tailwindcss";
 
 /*
- * WeCarely v2 — "Minimal Premium"
- * Pure white surfaces. Single accent. Fraunces for hero only.
- * Reference: Apple, Stripe, One Medical, Aesop, Linear.
+ * WeCarely v3 — design-handoff aesthetic
+ * Spectral (display) + Inter Tight (body) + JetBrains Mono (eyebrow/numerals)
+ * Yellow accent #F5C518 + secondary forest #25453A + warm gold for stars
+ * Reference: Wirecutter editorial × Apple Health × IMDb yellow signature
  */
 
 :root {
   /* Surfaces */
   --bg:           #FFFFFF;
   --bg-soft:      #FAFAFA;
-  --bg-subtle:    #F5F5F4;
+  --paper-cream:  #FBF3DD;
+  --paper-honey:  #F1E0AC;
 
   /* Ink */
   --ink:          #0A0A0A;
   --ink-2:        #525252;
   --ink-3:        #A3A3A3;
   --ink-4:        #D4D4D4;
+  --ink-cream:    #1C1608; /* on cream footer */
 
-  /* Accent — single, restrained */
-  --accent:       #1A4D3A;
-  --accent-deep:  #103024;
-  --accent-soft:  #EBF1ED;
+  /* Accent */
+  --accent:       #F5C518;  /* yellow primary */
+  --accent-hover: #EBB800;
+  --accent-on:    #0A0A0A;
 
-  /* Stars only */
-  --gold:         #B58430;
+  --forest:       #25453A;  /* secondary, used sparingly */
+  --gold:         #B58430;  /* stars */
 
-  /* Lines — barely visible */
+  /* Lines */
   --line:         #EAEAEA;
-  --line-soft:    #F2F2F2;
+  --line-strong:  #D4D4D4;
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--ink);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter-tight);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-display: var(--font-spectral);
 }
 
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-inter-tight), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
+/* === Typography utilities === */
+
 .font-display {
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-variation-settings: "opsz" 96, "SOFT" 30;
-  letter-spacing: -0.02em;
+  font-family: var(--font-spectral), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
 }
 
 .eyebrow {
+  font-family: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--ink-3);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-a {
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
+.font-mono {
+  font-family: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
 }
+
+/* Selection */
+::selection { background: var(--accent); color: #0A0A0A; }
+
+/* === Stars rating ===
+ * Single inline element: 5 outline stars, foreground gold stars clipped by width.
+ * Used by <StarRating value={...} />. Pct is inlined via style attr.
+ */
+.stars {
+  position: relative;
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+.stars::before { content: "★★★★★"; }
+.stars > i {
+  position: absolute;
+  inset: 0;
+  width: var(--pct, 0%);
+  overflow: hidden;
+  color: var(--gold);
+  font-style: normal;
+}
+.stars > i::before { content: "★★★★★"; }
+
+/* === Letter tile ===
+ * Visual placeholder for an agency. Background hue is set inline via style
+ * (deterministic hash → oklch hue).
+ */
+.letter-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.letter-tile span {
+  font-family: var(--font-spectral), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+/* === Hero search bar pill ===
+ * Decorative for Day 7 — wired up properly in Day 8.
+ */
+.hero-search {
+  display: inline-flex;
+  align-items: stretch;
+  height: 56px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: #fff;
+  padding: 6px;
+  gap: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 720px;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.hero-search:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(10,10,10,0.06);
+}
+.hs-field {
+  display: flex;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 12px;
+  gap: 8px;
+}
+.hs-icon { color: var(--ink-3); display: inline-flex; flex-shrink: 0; }
+.hs-field input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--font-inter-tight), ui-sans-serif, sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+}
+.hs-field input::placeholder { color: var(--ink-3); }
+.hs-divider {
+  width: 1px;
+  align-self: center;
+  height: 28px;
+  background: var(--line);
+}
+.hs-submit {
+  flex-shrink: 0;
+  width: 44px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-on);
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s ease;
+}
+.hs-submit:hover { background: var(--accent-hover); }
+
+@media (max-width: 720px) {
+  .hero-search { min-width: 0; width: 100%; height: 52px; flex-wrap: wrap; }
+  .hs-divider { display: none; }
+}
+
+/* === Result card grid ===
+ * 4-column: [index | letter tile | info | CTA]
+ */
+.result-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 28px 160px 1fr 180px;
+  gap: 22px;
+  align-items: stretch;
+  transition: border-color .15s ease, box-shadow .2s ease;
+}
+.result-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 8px 24px -12px rgba(10,10,10,0.08);
+}
+
+@media (max-width: 920px) {
+  .result-card {
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+  }
+}
+
+a { text-underline-offset: 3px; text-decoration-thickness: 1px; }

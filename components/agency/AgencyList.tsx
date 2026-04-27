@@ -5,15 +5,20 @@ import type { Agency } from '@/lib/types/agency';
 export function AgencyList({ agencies }: { agencies: Agency[] }) {
   if (agencies.length === 0) {
     return (
-      <div className="text-center py-24 border border-dashed border-[var(--line)] rounded-[10px]">
-        <p className="text-[var(--ink-2)]">{t('listing.empty')}</p>
+      <div className="text-center py-24 border border-dashed border-[var(--line)] rounded-[12px]">
+        <p
+          className="font-display italic text-[var(--ink-2)]"
+          style={{ fontSize: 18 }}
+        >
+          {t('listing.empty')}
+        </p>
       </div>
     );
   }
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
-      {agencies.map((a) => (
-        <AgencyCard key={a.id} agency={a} />
+    <div className="space-y-4">
+      {agencies.map((a, i) => (
+        <AgencyCard key={a.id} agency={a} rank={i + 1} />
       ))}
     </div>
   );
