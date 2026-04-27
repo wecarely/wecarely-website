@@ -50,7 +50,7 @@ export function Footer() {
           className="mt-7 max-w-[58ch] text-[15.5px] leading-[1.65]"
           style={{ color: 'rgba(28,22,8,0.78)' }}
         >
-          {t('footer.pledgeBody')} {t('footer.rankingNote')}
+          {t('footer.pledgeBody')}
         </p>
 
         {/* Colophon */}
