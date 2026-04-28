@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { t } from '@/lib/i18n/t';
 
 export function Footer() {
@@ -84,7 +85,13 @@ export function Footer() {
               For agencies
             </p>
             <p style={{ color: 'rgba(28,22,8,0.78)' }} className="leading-relaxed">
-              {t('footer.forAgencies')}
+              <Link
+                href="/for-agencies"
+                className="underline-offset-3 hover:underline"
+                style={{ color: 'inherit' }}
+              >
+                {t('footer.forAgencies')} →
+              </Link>
             </p>
           </div>
         </div>

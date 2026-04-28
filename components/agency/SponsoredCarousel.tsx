@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
 
 /**
@@ -53,8 +54,8 @@ export function SponsoredCarousel() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <a
-              href="mailto:agencies@wecarely.com?subject=Sponsored%20placement%20enquiry"
+            <Link
+              href="/for-agencies"
               className="text-[12.5px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-center gap-1"
             >
               For agencies
@@ -62,7 +63,7 @@ export function SponsoredCarousel() {
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
               </svg>
-            </a>
+            </Link>
             <div className="flex items-center gap-1.5 ml-1">
               <button
                 type="button"
@@ -103,9 +104,9 @@ export function SponsoredCarousel() {
           }}
         >
           {SLOTS.map((i) => (
-            <a
+            <Link
               key={i}
-              href={`mailto:agencies@wecarely.com?subject=Sponsored%20placement%20enquiry%20-%20slot%20${i}`}
+              href={`/for-agencies?slot=${i}#pricing`}
               className="snap-start shrink-0 w-[280px] bg-white border border-dashed rounded-[10px] p-5 transition-all hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.08)] flex flex-col"
               style={{ borderColor: 'var(--ink-4)' }}
             >
@@ -174,7 +175,7 @@ export function SponsoredCarousel() {
                   <path d="m12 5 7 7-7 7" />
                 </svg>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 

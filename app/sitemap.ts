@@ -37,6 +37,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/for-agencies`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     ...FILTER_LANDINGS.map((q) => ({
       url: `${SITE_URL}/houston?${q}`,
       lastModified: now,
