@@ -12,6 +12,7 @@ interface PageProps {
     ins?: string;
     svc?: string;
     q?: string;
+    demo_sponsored?: string;
   }>;
 }
 
@@ -27,6 +28,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
   const totalActive =
     filters.lang.length + filters.ins.length + filters.svc.length;
   const hasQuery = Boolean(sp.q?.trim());
+  const demoSponsored = sp.demo_sponsored === '1';
 
   return (
     <>
@@ -111,7 +113,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <AgencyList agencies={agencies} />
+            <AgencyList agencies={agencies} demoSponsored={demoSponsored} />
           </div>
         </div>
       </section>

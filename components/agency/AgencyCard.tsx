@@ -87,7 +87,17 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
             {agency.name}
           </h3>
           {isSponsored && (
-            <span className="eyebrow shrink-0 mt-2">{t('card.sponsored')}</span>
+            <span
+              className="shrink-0 mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-[3px] border text-[10.5px] font-mono font-semibold tracking-[0.14em] uppercase"
+              style={{
+                color: 'var(--ink-2)',
+                borderColor: 'var(--line-strong)',
+                background: 'var(--bg-soft)',
+              }}
+              title="Paid placement — clearly labeled, does not affect default ranking"
+            >
+              {t('card.sponsored')}
+            </span>
           )}
         </div>
 
