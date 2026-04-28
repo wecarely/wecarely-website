@@ -2,7 +2,7 @@ import { getHoustonAgencies } from '@/lib/supabase/queries';
 import { parseFilterParams } from '@/lib/utils/filter-params';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { AgencyList } from '@/components/agency/AgencyList';
-import { SponsoredSlot } from '@/components/agency/SponsoredSlot';
+import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { HeroSearch } from '@/components/HeroSearch';
 
 export const dynamic = 'force-dynamic';
@@ -82,6 +82,9 @@ export default async function HoustonPage({ searchParams }: PageProps) {
         </div>
       </section>
 
+      {/* SPONSORED CAROUSEL — Phase 2 revenue surface, Day 7 empty-state */}
+      <SponsoredCarousel />
+
       {/* MAIN: 2-col layout — sidebar + results */}
       <section className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12">
         <div className="grid lg:grid-cols-[260px_1fr] gap-x-10 gap-y-10">
@@ -114,10 +117,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="space-y-4">
-              <SponsoredSlot />
-              <AgencyList agencies={agencies} demoSponsored={demoSponsored} />
-            </div>
+            <AgencyList agencies={agencies} demoSponsored={demoSponsored} />
           </div>
         </div>
       </section>
