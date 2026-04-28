@@ -3,6 +3,7 @@ import { createServerClient } from '@/lib/supabase/server';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { QuickFilters } from '@/components/home/QuickFilters';
 import { FeaturedRow } from '@/components/home/FeaturedRow';
+import { ExploreSearches } from '@/components/home/ExploreSearches';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,6 +53,9 @@ export default async function HomePage() {
 
       {/* FEATURED — top 4 by trust score */}
       <FeaturedRow />
+
+      {/* EXPLORE — Yelp-style "popular searches" grid (grouped by family situation) */}
+      <ExploreSearches />
 
       {/* HOW IT WORKS */}
       <section className="border-b border-[var(--line)]">
