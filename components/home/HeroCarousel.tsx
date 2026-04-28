@@ -190,7 +190,7 @@ export function HeroCarousel() {
             {slide.phrase}
           </h1>
 
-          <div className="mt-10">
+          <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
             <Link
               href={slide.ctaHref}
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--accent)] text-[var(--ink)] font-medium hover:bg-[var(--accent-hover)] transition-colors"
@@ -201,6 +201,21 @@ export function HeroCarousel() {
                 <path d="m21 21-4.3-4.3" />
               </svg>
               {slide.ctaLabel}
+            </Link>
+            <Link
+              href="/for-agencies"
+              className="inline-flex items-center gap-1.5 text-white/85 hover:text-white underline-offset-4 hover:underline"
+              style={{
+                fontSize: 14,
+                fontWeight: 500,
+                textShadow: '0 1px 8px rgba(0,0,0,0.35)',
+              }}
+            >
+              For agencies
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </Link>
           </div>
         </div>
