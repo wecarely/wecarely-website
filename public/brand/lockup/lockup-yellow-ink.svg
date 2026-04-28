@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="308" height="64" viewBox="0 0 308 64" fill="none">
+  
+  
+  <g transform="translate(4, 4) scale(0.56)">
+    <path d="M50 80 C 22 60, 18 36, 32 28 C 44 22, 50 32, 50 38 C 50 32, 56 22, 68 28 C 78 33, 80 44, 76 54" stroke="#E5B829" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+    <path d="M62 60 L72 70 L92 48" stroke="#E5B829" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+  </g>
+  <text x="70" y="46" font-family="Manrope, sans-serif" font-size="48" letter-spacing="-1.92" fill="#0A0A0A">
+    <tspan font-weight="600">We</tspan><tspan font-weight="400">Carely</tspan>
+  </text>
+</svg>
