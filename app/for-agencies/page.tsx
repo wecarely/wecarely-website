@@ -3,17 +3,17 @@ import type { Metadata } from 'next';
 
 const SITE_URL = 'https://www.wecarely.com';
 const APPLY_MAILTO =
-  'mailto:agencies@wecarely.com?subject=Sponsorship%20inquiry%20%E2%80%94%20Houston&body=Agency%20name%3A%0AContact%20name%3A%0APhone%3A%0AWebsite%3A%0ACMS%20provider%20number%20(if%20known)%3A%0A%0AWhat%20you%27d%20like%20to%20achieve%3A%0AAnything%20else%20we%20should%20know%3A%0A';
+  'mailto:agencies@wecarely.com?subject=Sponsored%20placement%20inquiry%20%E2%80%94%20Houston&body=Agency%20name%3A%0AContact%20name%3A%0APhone%3A%0AWebsite%3A%0ACMS%20provider%20number%20(if%20known)%3A%0A%0AAnything%20else%20we%20should%20know%3A%0A';
 
 export const metadata: Metadata = {
   title: 'For agencies — Sponsored placements on WeCarely',
   description:
-    'Reach Houston families searching for home care. WeCarely lists every CMS-licensed Houston agency. Sponsored placements are clearly labeled and never affect default ranking. Founding-sponsor terms available for the first agencies on board.',
+    'Reach Houston families searching for home care. WeCarely lists every CMS-licensed Houston agency, ranked by CMS clinical stars + Google reviews. Sponsored placement spots available — clearly labeled, never affecting default rankings.',
   alternates: { canonical: `${SITE_URL}/for-agencies` },
   openGraph: {
     title: 'For agencies — Sponsored placements on WeCarely',
     description:
-      'Reach Houston families searching for home care. Transparent ranking, clearly labeled sponsorships.',
+      'Reach Houston families searching for home care. Transparent ranking, clearly labeled sponsored placements.',
     url: `${SITE_URL}/for-agencies`,
     type: 'website',
     siteName: 'WeCarely',
@@ -46,8 +46,8 @@ const BENEFITS = [
 const STEPS = [
   {
     n: '01',
-    title: 'Apply',
-    body: 'Tell us your agency name and contact. We reply within 1 business day.',
+    title: 'Inquire',
+    body: 'Email us your agency name and contact. We reply within 1 business day with placement details and pricing.',
   },
   {
     n: '02',
@@ -236,9 +236,9 @@ export default function ForAgenciesPage() {
       {/* WHAT'S INCLUDED + INQUIRY */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
-          <p className="eyebrow mb-5">Founding sponsorship</p>
+          <p className="eyebrow mb-5">Sponsored placements</p>
           <h2
-            className="font-display text-[var(--ink)] max-w-[24ch] mb-10"
+            className="font-display text-[var(--ink)] max-w-[26ch] mb-10"
             style={{
               fontSize: 'clamp(28px, 3.6vw, 44px)',
               lineHeight: 1.1,
@@ -246,27 +246,30 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Four Houston slots. Founding terms while we grow.
+            Four featured spots on the Houston homepage.
           </h2>
 
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-x-12 gap-y-8 items-start max-w-[80ch]">
             <div className="text-[15px] leading-[1.6] text-[var(--ink-2)] max-w-[44ch] space-y-4">
               <p>
-                We&apos;re selecting the first four sponsors in Houston now.
-                Founding sponsors get a locked monthly rate that stays the same
-                as the directory grows — small thanks for backing us early.
+                We have 4 sponsored placement spots open on the Houston homepage
+                right now. They sit above the directory listings, are clearly
+                labeled as Sponsored, and never affect default rankings — those
+                stay sorted by CMS clinical stars + Google reviews, period.
               </p>
               <p>
-                Pricing depends on the slot and what&apos;s included. Email us
-                with a short note about your agency and we&apos;ll quote within
-                one business day.
+                Each spot links to your detail page on WeCarely, with optional
+                upgrades (logo, photo, hours) for sponsors. Email us with a
+                short note about your agency and we&apos;ll send placement
+                details, current availability, and pricing within one business
+                day.
               </p>
             </div>
 
             <ul className="space-y-2.5 text-[14px] text-[var(--ink-2)] pt-1">
               {[
-                '4 sponsored slots in Houston (limited)',
-                'Sponsored carousel on / and /houston',
+                '4 sponsored placement spots in Houston (limited)',
+                'Featured visibility on / and /houston',
                 'Detail-page upgrades (logo, photo, hours)',
                 'Month-to-month, cancel anytime',
                 'No setup fee',
@@ -341,14 +344,14 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Four founding sponsor slots in Houston.
+            Four sponsored placement spots in Houston.
           </h2>
           <a
             href={APPLY_MAILTO}
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] bg-[var(--ink)] text-white font-medium hover:bg-black/90 transition-colors"
             style={{ fontSize: 15 }}
           >
-            Apply now
+            Email us
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
