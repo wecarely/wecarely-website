@@ -1,180 +1,209 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { HeroSearch } from '@/components/HeroSearch';
 
 /**
- * Yelp-style hero carousel: full-bleed background photos that fade
- * between each other every 6s, with hero copy + search bar layered over.
+ * Yelp-style hero carousel:
+ *   - Full-bleed photo background, fades between slides every 7s
+ *   - Each slide pairs a photo with its own short phrase + pill CTA
+ *     (e.g. "Caregivers who speak your language" → Spanish-speaking)
+ *   - Vertical progress bars on the left (active bar fills with white)
+ *   - Pause / play toggle below the bars
+ *   - Photo attribution at the bottom-left
  *
- * Images live in /public/hero/. Add or change them by editing PHOTOS below.
- * Each photo should be a wide landscape (>= 1600x900) for best quality.
+ * Photos live in /public/hero/ — see SLIDES array.
  */
 
-interface Photo {
+interface Slide {
   src: string;
-  alt: string;
-  /** Optional CSS object-position to keep faces / focal points visible */
+  phrase: string;
+  ctaLabel: string;
+  ctaHref: string;
+  attribution: string;
   position?: string;
 }
 
-const PHOTOS: Photo[] = [
+const SLIDES: Slide[] = [
   {
     src: '/hero/01.jpg',
-    alt: 'A family reviews medication together at a kitchen table.',
-    position: 'center',
+    phrase: 'Family-trusted home care.',
+    ctaLabel: 'Browse Houston agencies',
+    ctaHref: '/houston',
+    attribution: 'Photo: Gustavo Fring · Pexels',
   },
   {
     src: '/hero/02.jpg',
-    alt: 'A caregiver holds the hands of a woman seated in a wheelchair.',
-    position: 'center',
+    phrase: 'Caregivers who speak your language.',
+    ctaLabel: 'Spanish-speaking',
+    ctaHref: '/houston?lang=spanish',
+    attribution: 'Photo: Ivan Samkov · Pexels',
   },
   {
     src: '/hero/03.jpg',
-    alt: 'A nurse smiles and reaches toward an elderly patient resting in bed.',
-    position: 'center',
+    phrase: 'Skilled nursing, at home.',
+    ctaLabel: 'Skilled nursing',
+    ctaHref: '/houston?svc=skilled-nursing',
+    attribution: 'Photo: Jsme MILA · Pexels',
   },
   {
     src: '/hero/04.jpg',
-    alt: 'A caregiver tidies a home while the resident sits nearby.',
-    position: 'center',
+    phrase: 'Personal care that fits your day.',
+    ctaLabel: 'Personal care',
+    ctaHref: '/houston?svc=personal-care',
+    attribution: 'Photo: Jsme MILA · Pexels',
   },
 ];
 
-const ADVANCE_MS = 6000;
+const ADVANCE_MS = 7000;
 
-interface Props {
-  houstonCount: number;
-}
-
-export function HeroCarousel({ houstonCount }: Props) {
+export function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const ticker = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Auto-advance
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % PHOTOS.length);
+    ticker.current = setInterval(() => {
+      setIndex((i) => (i + 1) % SLIDES.length);
     }, ADVANCE_MS);
-    return () => clearInterval(id);
+    return () => {
+      if (ticker.current) clearInterval(ticker.current);
+    };
   }, [paused]);
+
+  const slide = SLIDES[index];
 
   return (
     <section
-      className="relative isolate overflow-hidden border-b border-[var(--line)]"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      className="relative isolate overflow-hidden bg-[var(--ink)] border-b border-[var(--line)]"
+      style={{ height: 'clamp(560px, 85vh, 820px)' }}
     >
       {/* Photo stack */}
-      <div className="absolute inset-0 z-0 bg-[var(--ink)]">
-        {PHOTOS.map((p, i) => (
+      <div className="absolute inset-0 z-0">
+        {SLIDES.map((s, i) => (
           <img
-            key={p.src}
-            src={p.src}
-            alt={p.alt}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms] ease-out"
+            key={s.src}
+            src={s.src}
+            alt={s.phrase}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-out"
             style={{
               opacity: i === index ? 1 : 0,
-              objectPosition: p.position ?? 'center',
+              objectPosition: s.position ?? 'center',
             }}
           />
         ))}
-        {/* Dark gradient for text legibility */}
+        {/* Dark gradient — left heavier for text legibility */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(to right, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.55) 45%, rgba(10,10,10,0.18) 100%)',
+              'linear-gradient(to right, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.45) 35%, rgba(10,10,10,0.10) 70%, rgba(10,10,10,0.05) 100%)',
           }}
           aria-hidden
         />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-[1320px] px-6 lg:px-10 pt-20 pb-20 lg:pt-28 lg:pb-28 min-h-[560px] lg:min-h-[640px] flex flex-col justify-center">
-        <span
-          className="font-mono uppercase tracking-[0.16em] text-[11px] font-semibold mb-5"
-          style={{ color: 'rgba(255,255,255,0.72)' }}
-        >
-          An honest home care directory
-        </span>
-
-        <h1
-          className="font-display text-white max-w-[18ch]"
-          style={{
-            fontSize: 'clamp(40px, 6vw, 80px)',
-            lineHeight: 1.04,
-            letterSpacing: '-0.005em',
-            fontWeight: 400,
-            textShadow: '0 2px 24px rgba(0,0,0,0.35)',
-          }}
-        >
-          Home care,{' '}
-          <em className="italic" style={{ fontWeight: 400 }}>
-            honestly
-          </em>{' '}
-          compared.
-        </h1>
-
-        <p
-          className="mt-6 max-w-[58ch] text-[16.5px] leading-[1.6]"
-          style={{
-            color: 'rgba(255,255,255,0.92)',
-            textShadow: '0 1px 12px rgba(0,0,0,0.35)',
-          }}
-        >
-          Every licensed home care agency in your city, sourced from{' '}
-          <span className="text-white font-medium">
-            CMS Home Health Compare
-          </span>{' '}
-          and <span className="text-white font-medium">Google reviews</span>.
-          Free to browse — no sign-up required.
-        </p>
-
-        <div className="mt-8 max-w-[640px]">
-          <HeroSearch />
-          <p className="mt-3 font-mono text-[11.5px]" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            Try: <em className="not-italic">spanish</em> ·{' '}
-            <em className="not-italic">dementia</em> ·{' '}
-            <em className="not-italic">medicaid</em>
-          </p>
+      {/* Left rail: progress bars + pause + attribution */}
+      <div className="absolute left-5 lg:left-8 top-0 bottom-0 z-20 flex flex-col justify-between py-10 lg:py-14 pointer-events-none">
+        {/* Progress bars (clickable) */}
+        <div className="flex flex-col gap-2 pointer-events-auto" role="tablist">
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIndex(i)}
+              aria-label={`Show slide ${i + 1}`}
+              aria-current={i === index}
+              className="w-[3px] rounded-full transition-all overflow-hidden"
+              style={{
+                height: 36,
+                background: 'rgba(255,255,255,0.28)',
+              }}
+            >
+              <span
+                className="block w-full origin-top transition-transform"
+                style={{
+                  height: '100%',
+                  background: 'rgba(255,255,255,0.95)',
+                  transform: i === index ? 'scaleY(1)' : 'scaleY(0)',
+                  transitionDuration: i === index && !paused ? `${ADVANCE_MS}ms` : '300ms',
+                  transitionTimingFunction: 'linear',
+                }}
+              />
+            </button>
+          ))}
         </div>
 
-        <div className="mt-8 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-          <span className="font-mono text-[12.5px]" style={{ color: 'rgba(255,255,255,0.78)' }}>
-            <span className="font-medium text-white">{houstonCount}</span>{' '}
-            agencies indexed in Houston · updated this month
-          </span>
-          <Link
-            href="/houston"
-            className="text-[13px] underline underline-offset-3"
-            style={{ color: 'rgba(255,255,255,0.85)' }}
+        {/* Pause + attribution bottom */}
+        <div className="space-y-3 pointer-events-auto">
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            aria-label={paused ? 'Play' : 'Pause'}
+            className="w-7 h-7 rounded-full border flex items-center justify-center transition-colors"
+            style={{
+              borderColor: 'rgba(255,255,255,0.7)',
+              color: 'rgba(255,255,255,0.95)',
+            }}
           >
-            Or browse all →
-          </Link>
+            {paused ? (
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            ) : (
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <rect x="6" y="5" width="4" height="14" />
+                <rect x="14" y="5" width="4" height="14" />
+              </svg>
+            )}
+          </button>
+          <p
+            className="font-mono uppercase tracking-[0.14em] text-[10.5px]"
+            style={{ color: 'rgba(255,255,255,0.7)' }}
+          >
+            {slide.attribution}
+          </p>
         </div>
       </div>
 
-      {/* Dots */}
-      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-        {PHOTOS.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setIndex(i)}
-            aria-label={`Show photo ${i + 1}`}
-            aria-current={i === index}
-            className="h-1.5 rounded-full transition-all"
+      {/* Center-left: phrase + CTA */}
+      <div className="absolute inset-0 z-10 flex items-center">
+        <div className="mx-auto max-w-[1320px] w-full px-6 lg:px-10 pl-16 lg:pl-24">
+          {/* Eyebrow */}
+          <p
+            className="font-mono uppercase tracking-[0.16em] text-[11px] font-semibold mb-5"
+            style={{ color: 'rgba(255,255,255,0.78)' }}
+          >
+            An honest home care directory · Houston, TX
+          </p>
+
+          <h1
+            className="font-display text-white max-w-[14ch]"
             style={{
-              width: i === index ? 24 : 8,
-              background:
-                i === index
-                  ? 'rgba(255,255,255,0.95)'
-                  : 'rgba(255,255,255,0.45)',
+              fontSize: 'clamp(40px, 6.5vw, 88px)',
+              lineHeight: 1.02,
+              letterSpacing: '-0.01em',
+              fontWeight: 400,
+              textShadow: '0 2px 24px rgba(0,0,0,0.35)',
             }}
-          />
-        ))}
+          >
+            {slide.phrase}
+          </h1>
+
+          <div className="mt-10">
+            <Link
+              href={slide.ctaHref}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--accent)] text-[var(--ink)] font-medium hover:bg-[var(--accent-hover)] transition-colors"
+              style={{ fontSize: 15.5 }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              {slide.ctaLabel}
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

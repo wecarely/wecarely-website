@@ -45,7 +45,7 @@ export default async function HomePage() {
   return (
     <>
       {/* HERO — Yelp-style photo carousel */}
-      <HeroCarousel houstonCount={houstonCount} />
+      <HeroCarousel />
 
       {/* QUICK FILTERS — popular searches grid */}
       <QuickFilters />
