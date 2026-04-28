@@ -131,23 +131,6 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
         )}
       </div>
 
-      {/* Col 4 — CTA */}
-      <div className="result-cta relative z-[2] pointer-events-none">
-        <Link
-          href={`/houston/${agency.slug}`}
-          className="pointer-events-auto inline-flex items-center justify-center h-11 rounded-[10px] bg-[var(--ink)] text-white text-[13px] font-medium hover:bg-black/90 transition-colors px-4"
-        >
-          View profile →
-        </Link>
-        {agency.phone && (
-          <a
-            href={`tel:${agency.phone}`}
-            className="pointer-events-auto inline-flex items-center justify-center h-9 text-[12px] font-mono text-[var(--ink-2)] underline-offset-4 decoration-dotted hover:text-[var(--ink)] hover:underline"
-          >
-            Call now
-          </a>
-        )}
-      </div>
     </article>
   );
 }
