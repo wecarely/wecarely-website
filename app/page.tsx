@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase/server';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
-import { QuickFilters } from '@/components/home/QuickFilters';
+import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { FeaturedRow } from '@/components/home/FeaturedRow';
 import { ExploreSearches } from '@/components/home/ExploreSearches';
 
@@ -48,8 +48,8 @@ export default async function HomePage() {
       {/* HERO — Yelp-style photo carousel */}
       <HeroCarousel />
 
-      {/* QUICK FILTERS — popular searches grid */}
-      <QuickFilters />
+      {/* SPONSORED — featured agencies carousel (Day 7: placeholder slots) */}
+      <SponsoredCarousel />
 
       {/* FEATURED — top 4 by trust score */}
       <FeaturedRow />
