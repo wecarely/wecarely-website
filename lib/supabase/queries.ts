@@ -13,13 +13,19 @@ const SELECT_COLUMNS = `
   ai_summary
 `;
 
+interface QueryArgs {
+  filters: FilterState;
+  query?: string | null;
+}
+
 /**
- * Fetch Houston agencies, optionally filtered by user-selected boolean filters.
- * Sorted by trust_score DESC (nullsFirst: false → null trust_score lands at the bottom).
+ * Fetch Houston agencies, optionally filtered by user-selected booleans
+ * and/or free-text query (substring match against name + ai_summary).
+ * Sorted by trust_score DESC.
  */
-export async function getHoustonAgencies(filters: FilterState): Promise<Agency[]> {
+export async function getHoustonAgencies(args: QueryArgs): Promise<Agency[]> {
   const sb = createServerClient();
-  const columns = filterParamsToColumns(filters);
+  const columns = filterParamsToColumns(args.filters);
 
   let query = sb
     .from('agencies')
@@ -29,6 +35,14 @@ export async function getHoustonAgencies(filters: FilterState): Promise<Agency[]
 
   for (const col of columns) {
     query = query.eq(col, true);
+  }
+
+  // Free-text search: name OR ai_summary substring (case-insensitive)
+  const q = args.query?.trim();
+  if (q) {
+    // Sanitize for PostgREST .or() syntax — escape commas
+    const safe = q.replace(/[%,]/g, '');
+    query = query.or(`name.ilike.%${safe}%,ai_summary.ilike.%${safe}%`);
   }
 
   const { data, error } = await query;

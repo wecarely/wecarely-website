@@ -1,20 +1,92 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { FILTERS } from '@/lib/constants/filters';
+
+const AXIS_PARAM = {
+  language: 'lang',
+  insurance: 'ins',
+  clinical: 'svc',
+} as const;
 
 /**
- * Decorative hero search bar (Day 7).
- * Day 8: wire up to actual search (name + ai_summary substring match).
+ * Hero search bar.
+ *
+ * Smart routing on submit:
+ *   1. If query matches a known filter (label or key, case-insensitive),
+ *      redirect to that filter's URL — e.g. "Spanish" → /houston?lang=spanish
+ *   2. Otherwise, redirect to /houston?q=<query> for free-text name/summary match.
+ *
+ * Common synonyms are mapped before the strict label match.
  */
+
+const SYNONYMS: Record<string, string> = {
+  // language
+  español: 'spanish',
+  espanol: 'spanish',
+  hispanic: 'spanish',
+  vietnamese: 'vietnamese',
+  vi: 'vietnamese',
+  chinese: 'chinese',
+  mandarin: 'chinese',
+  cantonese: 'chinese',
+  // insurance
+  medicare: 'medicare',
+  medicaid: 'medicaid',
+  // clinical
+  alzheimer: 'dementia',
+  alzheimers: 'dementia',
+  memory: 'dementia',
+  hospice: 'hospice',
+  'end of life': 'hospice',
+  palliative: 'hospice',
+  pt: 'physical-therapy',
+  ot: 'occupational-therapy',
+  speech: 'speech-therapy',
+  'st ': 'speech-therapy',
+  hha: 'home-health-aide',
+  aide: 'home-health-aide',
+  rn: 'skilled-nursing',
+  nurse: 'skilled-nursing',
+  nursing: 'skilled-nursing',
+  companion: 'companion-care',
+  personal: 'personal-care',
+};
+
+function buildSearchUrl(rawQuery: string): string {
+  const q = rawQuery.trim().toLowerCase();
+  if (!q) return '/houston';
+
+  // Try synonym → filter key
+  const synonymKey = SYNONYMS[q] ?? null;
+
+  // Try exact filter label / key match
+  const matched =
+    FILTERS.find(
+      (f) => f.label.toLowerCase() === q || f.key === q || f.key === synonymKey
+    ) ?? null;
+
+  if (matched) {
+    const param = AXIS_PARAM[matched.axis];
+    return `/houston?${param}=${matched.key}`;
+  }
+
+  // Fall back to free-text query
+  return `/houston?q=${encodeURIComponent(rawQuery.trim())}`;
+}
+
 export function HeroSearch() {
+  const router = useRouter();
   const [q, setQ] = useState('');
   const [loc, setLoc] = useState('Houston, TX');
 
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push(buildSearchUrl(q));
+  };
+
   return (
-    <form
-      className="hero-search"
-      onSubmit={(e) => e.preventDefault()}
-      role="search"
-    >
+    <form className="hero-search" onSubmit={onSubmit} role="search">
       <div className="hs-field">
         <span className="hs-icon" aria-hidden>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -24,7 +96,7 @@ export function HeroSearch() {
         </span>
         <input
           type="text"
-          placeholder="Skilled nursing, dementia care…"
+          placeholder="Spanish, dementia, Medicaid…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           aria-label="Search services"

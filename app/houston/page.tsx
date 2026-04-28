@@ -7,7 +7,12 @@ import { HeroSearch } from '@/components/HeroSearch';
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  searchParams: Promise<{ lang?: string; ins?: string; svc?: string }>;
+  searchParams: Promise<{
+    lang?: string;
+    ins?: string;
+    svc?: string;
+    q?: string;
+  }>;
 }
 
 export default async function HoustonPage({ searchParams }: PageProps) {
@@ -18,9 +23,10 @@ export default async function HoustonPage({ searchParams }: PageProps) {
   if (sp.svc) urlParams.set('svc', sp.svc);
 
   const filters = parseFilterParams(urlParams);
-  const agencies = await getHoustonAgencies(filters);
+  const agencies = await getHoustonAgencies({ filters, query: sp.q });
   const totalActive =
     filters.lang.length + filters.ins.length + filters.svc.length;
+  const hasQuery = Boolean(sp.q?.trim());
 
   return (
     <>
@@ -93,10 +99,15 @@ export default async function HoustonPage({ searchParams }: PageProps) {
                 </span>
                 <span className="font-display text-[var(--ink-2)]" style={{ fontSize: 22 }}>
                   Houston {agencies.length === 1 ? 'agency' : 'agencies'}
+                  {hasQuery && (
+                    <span className="text-[var(--ink-3)]">
+                      {' '}matching &ldquo;{sp.q}&rdquo;
+                    </span>
+                  )}
                 </span>
               </p>
               <p className="eyebrow">
-                {totalActive > 0 ? 'Filtered' : 'Sorted by trust score'}
+                {hasQuery || totalActive > 0 ? 'Filtered' : 'Sorted by trust score'}
               </p>
             </div>
 
