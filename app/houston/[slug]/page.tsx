@@ -77,6 +77,7 @@ export default async function AgencyDetailPage({ params }: PageProps) {
     ...(agency.phone ? { telephone: agency.phone } : {}),
     address: {
       '@type': 'PostalAddress',
+      ...(agency.address ? { streetAddress: agency.address } : {}),
       addressLocality: 'Houston',
       addressRegion: 'TX',
       ...(agency.zip ? { postalCode: agency.zip } : {}),
@@ -134,7 +135,8 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                 {agency.name}
               </h1>
               <p className="mt-2 text-[14.5px] text-[var(--ink-2)]">
-                Houston, TX{agency.zip ? ` ${agency.zip}` : ''}
+                {agency.address ? `${agency.address} · ` : ''}Houston, TX
+                {agency.zip ? ` ${agency.zip}` : ''}
               </p>
             </div>
           </div>

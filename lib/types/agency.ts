@@ -6,6 +6,7 @@ export interface Agency {
   id: string;
   slug: string;
   name: string;
+  address: string | null;
   city: string;
   state: string;
   zip: string | null;

@@ -3,7 +3,7 @@ import type { Agency } from '@/lib/types/agency';
 import { filterParamsToColumns, type FilterState } from '@/lib/utils/filter-params';
 
 const SELECT_COLUMNS = `
-  id, slug, name, city, state, zip, phone, website,
+  id, slug, name, address, city, state, zip, phone, website,
   medicare_star, google_rating, google_reviews_count, trust_score,
   has_spanish, has_vietnamese, has_chinese,
   accepts_medicare, accepts_medicaid,
