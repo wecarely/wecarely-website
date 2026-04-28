@@ -23,24 +23,27 @@ export function FilterBar() {
   };
 
   return (
-    <nav aria-label="Filters" className="space-y-8">
-      {(['language', 'insurance', 'clinical'] as const).map((axis) => (
-        <div key={axis}>
-          <p className="eyebrow mb-3">{t(AXIS_LABEL_KEY[axis])}</p>
-          <div className="space-y-0.5">
-            {grouped[axis].map((f) => (
-              <FilterChip
-                key={f.key}
-                paramKey={AXIS_PARAM[axis]}
-                value={f.key}
-                label={f.label}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
-
+    <nav aria-label="Filters">
+      {/* Header with active count + clear all */}
       <ClearFilters />
+
+      <div className="space-y-7">
+        {(['language', 'insurance', 'clinical'] as const).map((axis) => (
+          <div key={axis}>
+            <p className="eyebrow mb-2.5">{t(AXIS_LABEL_KEY[axis])}</p>
+            <div className="space-y-0.5">
+              {grouped[axis].map((f) => (
+                <FilterChip
+                  key={f.key}
+                  paramKey={AXIS_PARAM[axis]}
+                  value={f.key}
+                  label={f.label}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </nav>
   );
 }
