@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase/server';
-import { HeroSearch } from '@/components/HeroSearch';
+import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { QuickFilters } from '@/components/home/QuickFilters';
 import { FeaturedRow } from '@/components/home/FeaturedRow';
 
@@ -44,61 +44,8 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO — Yelp-style search-first */}
-      <section className="border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 pt-16 pb-14 lg:pt-24 lg:pb-20">
-          <span className="eyebrow">An honest home care directory</span>
-
-          <h1
-            className="font-display mt-5 text-[var(--ink)] max-w-[18ch]"
-            style={{
-              fontSize: 'clamp(40px, 6vw, 80px)',
-              lineHeight: 1.04,
-              letterSpacing: '-0.005em',
-              fontWeight: 400,
-            }}
-          >
-            Home care,{' '}
-            <em className="italic" style={{ fontWeight: 400 }}>
-              honestly
-            </em>{' '}
-            compared.
-          </h1>
-
-          <p className="mt-6 max-w-[58ch] text-[16.5px] leading-[1.6] text-[var(--ink-2)]">
-            Every licensed home care agency in your city, sourced from{' '}
-            <span className="text-[var(--ink)]">CMS Home Health Compare</span>{' '}
-            and{' '}
-            <span className="text-[var(--ink)]">Google reviews</span>. Free to
-            browse — no sign-up required.
-          </p>
-
-          {/* Search-first hero */}
-          <div className="mt-9 max-w-[640px]">
-            <HeroSearch />
-            <p className="mt-3 font-mono text-[11.5px] text-[var(--ink-3)]">
-              Try: <em className="not-italic">spanish</em> ·{' '}
-              <em className="not-italic">dementia</em> ·{' '}
-              <em className="not-italic">medicaid</em>
-            </p>
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-            <span className="font-mono text-[12.5px] text-[var(--ink-3)]">
-              <span className="font-medium text-[var(--ink)]">
-                {houstonCount}
-              </span>{' '}
-              agencies indexed in Houston · updated this month
-            </span>
-            <Link
-              href="/houston"
-              className="text-[13px] text-[var(--ink-2)] hover:text-[var(--ink)] underline underline-offset-3"
-            >
-              Or browse all →
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* HERO — Yelp-style photo carousel */}
+      <HeroCarousel houstonCount={houstonCount} />
 
       {/* QUICK FILTERS — popular searches grid */}
       <QuickFilters />
