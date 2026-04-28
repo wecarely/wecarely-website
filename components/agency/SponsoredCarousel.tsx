@@ -1,49 +1,101 @@
+'use client';
+import { useRef, useState, useEffect } from 'react';
+
 /**
  * Sponsored carousel — horizontal scrolling row of Featured agency slots.
  *
  * Day 7 state: 4 placeholder cards saying "Available — reserve this slot".
- *   - Doubles as a permanent sales channel: agencies see the slots exist
- *   - Visitors see "some placements are paid" baseline transparency
- *   - Empty state is honest (no fake agencies)
- *
  * Phase 2: replace SLOTS array with real Sponsored agency cards from DB.
  *
- * Yelp-style: horizontal overflow with scroll-snap on cards, fades on edges,
- * subtle scrollbar. Touch-friendly on mobile.
+ * Yelp-style: prev/next chevron buttons on the right, scroll-snap on cards,
+ * smooth scrolling behaviour. Touch-friendly on mobile.
  */
 
 const SLOTS = [1, 2, 3, 4];
+const CARD_WIDTH = 280 + 16; // card + gap
 
 export function SponsoredCarousel() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateButtons = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  };
+
+  useEffect(() => {
+    updateButtons();
+  }, []);
+
+  const scroll = (direction: -1 | 1) => {
+    scrollRef.current?.scrollBy({
+      left: direction * CARD_WIDTH * 2,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <section className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-8">
         {/* Section header */}
-        <div className="flex items-baseline justify-between mb-5">
-          <div className="flex items-baseline gap-3">
+        <div className="flex items-baseline justify-between mb-5 gap-4">
+          <div className="flex items-baseline gap-3 min-w-0">
             <span className="eyebrow">Sponsored</span>
             <span className="text-[var(--ink-4)]" aria-hidden>·</span>
             <p
-              className="font-display text-[var(--ink)]"
+              className="font-display text-[var(--ink)] truncate"
               style={{ fontSize: 18, fontWeight: 500 }}
             >
               Featured agencies
             </p>
           </div>
-          <a
-            href="mailto:agencies@wecarely.com?subject=Sponsored%20placement%20enquiry"
-            className="text-[12.5px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-center gap-1"
-          >
-            For agencies
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </a>
+          <div className="flex items-center gap-3 shrink-0">
+            <a
+              href="mailto:agencies@wecarely.com?subject=Sponsored%20placement%20enquiry"
+              className="text-[12.5px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-center gap-1"
+            >
+              For agencies
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </a>
+            <div className="flex items-center gap-1.5 ml-1">
+              <button
+                type="button"
+                onClick={() => scroll(-1)}
+                disabled={!canScrollLeft}
+                aria-label="Previous featured agencies"
+                className="w-9 h-9 rounded-full border bg-white flex items-center justify-center transition-all hover:border-[var(--ink-2)] hover:shadow-sm disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[var(--line-strong)] disabled:hover:shadow-none"
+                style={{ borderColor: 'var(--line-strong)' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={() => scroll(1)}
+                disabled={!canScrollRight}
+                aria-label="Next featured agencies"
+                className="w-9 h-9 rounded-full border bg-white flex items-center justify-center transition-all hover:border-[var(--ink-2)] hover:shadow-sm disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:border-[var(--line-strong)] disabled:hover:shadow-none"
+                style={{ borderColor: 'var(--line-strong)' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Horizontal scroller */}
         <div
+          ref={scrollRef}
+          onScroll={updateButtons}
           className="flex gap-4 overflow-x-auto pb-3 -mx-6 px-6 lg:-mx-10 lg:px-10 snap-x snap-mandatory"
           style={{
             scrollbarWidth: 'thin',
@@ -53,7 +105,7 @@ export function SponsoredCarousel() {
           {SLOTS.map((i) => (
             <a
               key={i}
-              href="mailto:agencies@wecarely.com?subject=Sponsored%20placement%20enquiry%20-%20slot%20${i}"
+              href={`mailto:agencies@wecarely.com?subject=Sponsored%20placement%20enquiry%20-%20slot%20${i}`}
               className="snap-start shrink-0 w-[280px] bg-white border border-dashed rounded-[10px] p-5 transition-all hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.08)] flex flex-col"
               style={{ borderColor: 'var(--ink-4)' }}
             >
