@@ -17,14 +17,6 @@ const FILTER_LANDINGS = [
   'svc=physical-therapy',
   'svc=occupational-therapy',
   'svc=speech-therapy',
-  'lang=spanish&svc=skilled-nursing',
-  'lang=spanish&svc=dementia',
-  'lang=spanish&ins=medicaid',
-  'lang=vietnamese&svc=skilled-nursing',
-  'lang=chinese&svc=skilled-nursing',
-  'svc=skilled-nursing&ins=medicare',
-  'svc=hospice&ins=medicare',
-  'svc=dementia&lang=spanish',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
