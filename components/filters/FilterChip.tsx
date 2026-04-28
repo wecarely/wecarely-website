@@ -48,7 +48,7 @@ export function FilterChip({ paramKey, value, label }: Props) {
         className={
           'inline-flex items-center justify-center w-[15px] h-[15px] rounded-[3px] border shrink-0 transition-colors ' +
           (active
-            ? 'bg-[var(--ink)] border-[var(--ink)]'
+            ? 'bg-[var(--accent)] border-[var(--accent)]'
             : 'bg-white border-[var(--ink-3)] group-hover/chip:border-[var(--ink-2)]')
         }
       >
@@ -59,10 +59,10 @@ export function FilterChip({ paramKey, value, label }: Props) {
             viewBox="0 0 12 12"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2.4"
+            strokeWidth="2.6"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-white"
+            className="text-[var(--ink)]"
           >
             <path d="M2.5 6.5l2.5 2.5L9.5 3.5" />
           </svg>
