@@ -196,10 +196,10 @@ body {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 22px 24px;
+  padding: 28px 32px;
   display: grid;
-  grid-template-columns: 28px 160px 1fr;
-  gap: 22px;
+  grid-template-columns: 32px 180px 1fr;
+  gap: 28px;
   align-items: stretch;
   transition: border-color .15s ease, box-shadow .2s ease;
 }

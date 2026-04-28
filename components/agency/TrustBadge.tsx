@@ -6,43 +6,44 @@ interface Props {
   googleReviews: number | null;
 }
 
-/**
- * Inline trust strip used inside AgencyCard.
- *   ★★★★★ 5.0 CMS  ·  ★★★★★ 4.7 GOOGLE · 25
- * All values are tabular; the eyebrow source label uses mono caps.
- */
+function TrustCell({
+  label,
+  value,
+  reviews,
+}: {
+  label: string;
+  value: number;
+  reviews?: number | null;
+}) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span className="font-display text-[18px] tabular-nums text-[var(--ink)] font-medium">
+        {value.toFixed(1)}
+      </span>
+      <StarRating value={value} size={13} />
+      {reviews != null && reviews > 0 ? (
+        <span className="text-[12.5px] text-[var(--ink-2)]">
+          from{' '}
+          <span className="font-mono tabular-nums text-[var(--ink)] font-medium">
+            {reviews}
+          </span>{' '}
+          {label} {reviews === 1 ? 'review' : 'reviews'}
+        </span>
+      ) : (
+        <span className="eyebrow ml-1">{label}</span>
+      )}
+    </div>
+  );
+}
+
 export function TrustBadge({ cmsStar, googleRating, googleReviews }: Props) {
   if (cmsStar == null && googleRating == null) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px]">
-      {cmsStar != null && (
-        <span className="inline-flex items-center gap-1.5">
-          <StarRating value={cmsStar} size={12} />
-          <span className="font-display tabular-nums text-[var(--ink)]" style={{ fontSize: 14 }}>
-            {cmsStar.toFixed(1)}
-          </span>
-          <span className="eyebrow">CMS</span>
-        </span>
-      )}
+    <div className="space-y-1.5">
+      {cmsStar != null && <TrustCell label="CMS" value={cmsStar} />}
       {googleRating != null && (
-        <>
-          {cmsStar != null && (
-            <span className="text-[var(--ink-4)] select-none" aria-hidden>·</span>
-          )}
-          <span className="inline-flex items-center gap-1.5">
-            <StarRating value={googleRating} size={12} />
-            <span className="font-display tabular-nums text-[var(--ink)]" style={{ fontSize: 14 }}>
-              {googleRating.toFixed(1)}
-            </span>
-            <span className="eyebrow">Google</span>
-            {googleReviews != null && googleReviews > 0 && (
-              <span className="font-mono text-[12px] text-[var(--ink-3)]">
-                · {googleReviews}
-              </span>
-            )}
-          </span>
-        </>
+        <TrustCell label="Google" value={googleRating} reviews={googleReviews} />
       )}
     </div>
   );
