@@ -2,6 +2,7 @@ import { getHoustonAgencies } from '@/lib/supabase/queries';
 import { parseFilterParams } from '@/lib/utils/filter-params';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { AgencyList } from '@/components/agency/AgencyList';
+import { SponsoredSlot } from '@/components/agency/SponsoredSlot';
 import { HeroSearch } from '@/components/HeroSearch';
 
 export const dynamic = 'force-dynamic';
@@ -113,7 +114,10 @@ export default async function HoustonPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <AgencyList agencies={agencies} demoSponsored={demoSponsored} />
+            <div className="space-y-4">
+              <SponsoredSlot />
+              <AgencyList agencies={agencies} demoSponsored={demoSponsored} />
+            </div>
           </div>
         </div>
       </section>
