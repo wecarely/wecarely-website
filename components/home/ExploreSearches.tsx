@@ -1,13 +1,13 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 /**
- * Yelp-style "Explore searches" grid — adapted for WeCarely's single-city
- * structure. Instead of "popular cities", we group by family situation
- * (language, insurance, life-stage) and surface the most useful filter
- * combinations under each.
- *
- * Every link is a deep-link to a pre-filtered listing — every URL is
- * a potential SEO landing page.
+ * Yelp-style "Explore searches in popular cities" — city pill tabs at top,
+ * grouped search shortcuts below. Houston is live; other cities are placeholders
+ * until launched. To add a new city: append to CITIES with status: 'live' and a
+ * groups array (use buildGroups(slug) for the standard template).
  */
 
 interface SearchLink {
@@ -22,82 +22,105 @@ interface Group {
   seeAllHref: string;
 }
 
-const GROUPS: Group[] = [
-  {
-    title: 'For Spanish-speaking families',
-    subtitle: 'Cuidado en español',
-    searches: [
-      { label: 'Skilled nursing',  href: '/houston?lang=spanish&svc=skilled-nursing' },
-      { label: 'Personal care',    href: '/houston?lang=spanish&svc=personal-care' },
-      { label: 'Companion care',   href: '/houston?lang=spanish&svc=companion-care' },
-      { label: 'Dementia care',    href: '/houston?lang=spanish&svc=dementia' },
-      { label: 'Hospice',          href: '/houston?lang=spanish&svc=hospice' },
-    ],
-    seeAllHref: '/houston?lang=spanish',
-  },
-  {
-    title: 'For Vietnamese families',
-    subtitle: 'Chăm sóc bằng tiếng Việt',
-    searches: [
-      { label: 'Skilled nursing',     href: '/houston?lang=vietnamese&svc=skilled-nursing' },
-      { label: 'Home health aide',    href: '/houston?lang=vietnamese&svc=home-health-aide' },
-      { label: 'Personal care',       href: '/houston?lang=vietnamese&svc=personal-care' },
-      { label: 'Dementia care',       href: '/houston?lang=vietnamese&svc=dementia' },
-    ],
-    seeAllHref: '/houston?lang=vietnamese',
-  },
-  {
-    title: 'For Chinese families',
-    subtitle: '中文照護',
-    searches: [
-      { label: 'Skilled nursing',  href: '/houston?lang=chinese&svc=skilled-nursing' },
-      { label: 'Personal care',    href: '/houston?lang=chinese&svc=personal-care' },
-      { label: 'Home health aide', href: '/houston?lang=chinese&svc=home-health-aide' },
-      { label: 'Dementia care',    href: '/houston?lang=chinese&svc=dementia' },
-    ],
-    seeAllHref: '/houston?lang=chinese',
-  },
-  {
-    title: 'After hospital discharge',
-    subtitle: 'Skilled care, fast',
-    searches: [
-      { label: 'Skilled nursing',          href: '/houston?svc=skilled-nursing' },
-      { label: 'Physical therapy',         href: '/houston?svc=physical-therapy' },
-      { label: 'Occupational therapy',     href: '/houston?svc=occupational-therapy' },
-      { label: 'Speech therapy',           href: '/houston?svc=speech-therapy' },
-      { label: 'Skilled + Medicare',       href: '/houston?svc=skilled-nursing&ins=medicare' },
-    ],
-    seeAllHref: '/houston?svc=skilled-nursing',
-  },
-  {
-    title: 'For families on Medicaid',
-    subtitle: 'Coverage that fits',
-    searches: [
-      { label: 'Personal care',           href: '/houston?ins=medicaid&svc=personal-care' },
-      { label: 'Home health aide',        href: '/houston?ins=medicaid&svc=home-health-aide' },
-      { label: 'Companion care',          href: '/houston?ins=medicaid&svc=companion-care' },
-      { label: 'Spanish + Medicaid',      href: '/houston?ins=medicaid&lang=spanish' },
-    ],
-    seeAllHref: '/houston?ins=medicaid',
-  },
-  {
-    title: 'For dementia and end-of-life care',
-    subtitle: 'Specialized support',
-    searches: [
-      { label: 'Dementia care',         href: '/houston?svc=dementia' },
-      { label: 'Hospice',               href: '/houston?svc=hospice' },
-      { label: 'Dementia + Spanish',    href: '/houston?svc=dementia&lang=spanish' },
-      { label: 'Hospice + Medicare',    href: '/houston?svc=hospice&ins=medicare' },
-    ],
-    seeAllHref: '/houston?svc=dementia',
-  },
+interface City {
+  slug: string;
+  name: string;
+  status: 'live' | 'coming-soon';
+  groups?: Group[];
+}
+
+function buildGroups(citySlug: string): Group[] {
+  const base = `/${citySlug}`;
+  return [
+    {
+      title: 'For Spanish-speaking families',
+      subtitle: 'Cuidado en español',
+      searches: [
+        { label: 'Skilled nursing',  href: `${base}?lang=spanish&svc=skilled-nursing` },
+        { label: 'Personal care',    href: `${base}?lang=spanish&svc=personal-care` },
+        { label: 'Companion care',   href: `${base}?lang=spanish&svc=companion-care` },
+        { label: 'Dementia care',    href: `${base}?lang=spanish&svc=dementia` },
+        { label: 'Hospice',          href: `${base}?lang=spanish&svc=hospice` },
+      ],
+      seeAllHref: `${base}?lang=spanish`,
+    },
+    {
+      title: 'For Vietnamese families',
+      subtitle: 'Chăm sóc bằng tiếng Việt',
+      searches: [
+        { label: 'Skilled nursing',     href: `${base}?lang=vietnamese&svc=skilled-nursing` },
+        { label: 'Home health aide',    href: `${base}?lang=vietnamese&svc=home-health-aide` },
+        { label: 'Personal care',       href: `${base}?lang=vietnamese&svc=personal-care` },
+        { label: 'Dementia care',       href: `${base}?lang=vietnamese&svc=dementia` },
+      ],
+      seeAllHref: `${base}?lang=vietnamese`,
+    },
+    {
+      title: 'For Chinese families',
+      subtitle: '中文照護',
+      searches: [
+        { label: 'Skilled nursing',  href: `${base}?lang=chinese&svc=skilled-nursing` },
+        { label: 'Personal care',    href: `${base}?lang=chinese&svc=personal-care` },
+        { label: 'Home health aide', href: `${base}?lang=chinese&svc=home-health-aide` },
+        { label: 'Dementia care',    href: `${base}?lang=chinese&svc=dementia` },
+      ],
+      seeAllHref: `${base}?lang=chinese`,
+    },
+    {
+      title: 'After hospital discharge',
+      subtitle: 'Skilled care, fast',
+      searches: [
+        { label: 'Skilled nursing',          href: `${base}?svc=skilled-nursing` },
+        { label: 'Physical therapy',         href: `${base}?svc=physical-therapy` },
+        { label: 'Occupational therapy',     href: `${base}?svc=occupational-therapy` },
+        { label: 'Speech therapy',           href: `${base}?svc=speech-therapy` },
+        { label: 'Skilled + Medicare',       href: `${base}?svc=skilled-nursing&ins=medicare` },
+      ],
+      seeAllHref: `${base}?svc=skilled-nursing`,
+    },
+    {
+      title: 'For families on Medicaid',
+      subtitle: 'Coverage that fits',
+      searches: [
+        { label: 'Personal care',           href: `${base}?ins=medicaid&svc=personal-care` },
+        { label: 'Home health aide',        href: `${base}?ins=medicaid&svc=home-health-aide` },
+        { label: 'Companion care',          href: `${base}?ins=medicaid&svc=companion-care` },
+        { label: 'Spanish + Medicaid',      href: `${base}?ins=medicaid&lang=spanish` },
+      ],
+      seeAllHref: `${base}?ins=medicaid`,
+    },
+    {
+      title: 'For dementia and end-of-life care',
+      subtitle: 'Specialized support',
+      searches: [
+        { label: 'Dementia care',         href: `${base}?svc=dementia` },
+        { label: 'Hospice',               href: `${base}?svc=hospice` },
+        { label: 'Dementia + Spanish',    href: `${base}?svc=dementia&lang=spanish` },
+        { label: 'Hospice + Medicare',    href: `${base}?svc=hospice&ins=medicare` },
+      ],
+      seeAllHref: `${base}?svc=dementia`,
+    },
+  ];
+}
+
+const CITIES: City[] = [
+  { slug: 'houston',     name: 'Houston',     status: 'live',         groups: buildGroups('houston') },
+  { slug: 'dallas',      name: 'Dallas',      status: 'coming-soon' },
+  { slug: 'austin',      name: 'Austin',      status: 'coming-soon' },
+  { slug: 'san-antonio', name: 'San Antonio', status: 'coming-soon' },
+  { slug: 'fort-worth',  name: 'Fort Worth',  status: 'coming-soon' },
+  { slug: 'el-paso',     name: 'El Paso',     status: 'coming-soon' },
+  { slug: 'arlington',   name: 'Arlington',   status: 'coming-soon' },
 ];
 
 export function ExploreSearches() {
+  const [activeSlug, setActiveSlug] = useState<string>('houston');
+  const active = CITIES.find((c) => c.slug === activeSlug) ?? CITIES[0];
+
   return (
     <section className="border-b border-[var(--line)]">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
-        <div className="mb-10 max-w-2xl">
+        <div className="mb-8 max-w-2xl">
           <p className="eyebrow mb-3">Explore</p>
           <h2
             className="font-display text-[var(--ink)]"
@@ -108,59 +131,110 @@ export function ExploreSearches() {
               fontWeight: 400,
             }}
           >
-            What Houston families search for.
+            Explore searches in popular cities.
           </h2>
           <p className="mt-3 text-[15px] text-[var(--ink-2)]">
-            Common combinations of language, insurance, and clinical need —
-            each one a direct path into the directory.
+            Discover what families are searching for in each city.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
-          {GROUPS.map((g) => (
-            <div key={g.title}>
-              <Link
-                href={g.seeAllHref}
-                className="group inline-block mb-1"
+        {/* CITY PILLS */}
+        <div className="mb-12 flex flex-wrap gap-2">
+          {CITIES.map((c) => {
+            const isActive = c.slug === activeSlug;
+            const isLive = c.status === 'live';
+            return (
+              <button
+                key={c.slug}
+                type="button"
+                onClick={() => isLive && setActiveSlug(c.slug)}
+                disabled={!isLive}
+                aria-pressed={isActive}
+                className={[
+                  'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border text-[13.5px] transition-colors',
+                  isActive
+                    ? 'border-[var(--ink)] bg-[var(--ink)] text-white'
+                    : isLive
+                    ? 'border-[var(--line)] text-[var(--ink)] hover:border-[var(--ink)] hover:bg-[var(--bg-soft)]'
+                    : 'border-[var(--line)] text-[var(--ink-3)] cursor-not-allowed',
+                ].join(' ')}
               >
-                <h3
-                  className="font-display text-[var(--ink)] group-hover:text-[var(--accent-on)] transition-colors leading-tight"
-                  style={{ fontSize: 19, fontWeight: 500 }}
-                >
-                  {g.title}
-                </h3>
-              </Link>
-              <p className="text-[12.5px] text-[var(--ink-3)] mb-4 italic font-display">
-                {g.subtitle}
-              </p>
+                {c.name}
+                {!isLive && (
+                  <span className="text-[10.5px] uppercase tracking-wider text-[var(--ink-3)]">
+                    soon
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-              <ul className="space-y-1.5">
-                {g.searches.map((s) => (
-                  <li key={s.href}>
+        {/* ACTIVE CITY CONTENT */}
+        {active.status === 'live' && active.groups ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+            {active.groups.map((g) => (
+              <div key={g.title}>
+                <Link href={g.seeAllHref} className="group inline-block mb-1">
+                  <h3
+                    className="font-display text-[var(--ink)] group-hover:text-[var(--accent-on)] transition-colors leading-tight"
+                    style={{ fontSize: 19, fontWeight: 500 }}
+                  >
+                    {g.title}
+                  </h3>
+                </Link>
+                <p className="text-[12.5px] text-[var(--ink-3)] mb-4 italic font-display">
+                  {g.subtitle}
+                </p>
+
+                <ul className="space-y-1.5">
+                  {g.searches.map((s) => (
+                    <li key={s.href}>
+                      <Link
+                        href={s.href}
+                        className="text-[14px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-baseline gap-1.5"
+                      >
+                        {s.label}
+                      </Link>
+                    </li>
+                  ))}
+                  <li className="pt-1">
                     <Link
-                      href={s.href}
-                      className="text-[14px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-baseline gap-1.5"
+                      href={g.seeAllHref}
+                      className="text-[12.5px] font-medium text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-center gap-1"
                     >
-                      {s.label}
+                      See all
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                      </svg>
                     </Link>
                   </li>
-                ))}
-                <li className="pt-1">
-                  <Link
-                    href={g.seeAllHref}
-                    className="text-[12.5px] font-medium text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-center gap-1"
-                  >
-                    See all
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          ))}
-        </div>
+                </ul>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="border-t border-[var(--line)] pt-10">
+            <p
+              className="font-display text-[var(--ink)] mb-2"
+              style={{ fontSize: 22, fontWeight: 500 }}
+            >
+              {active.name} is coming soon.
+            </p>
+            <p className="text-[14.5px] text-[var(--ink-2)] max-w-md">
+              We&apos;re building the {active.name} directory next. Want yours
+              prioritized?{' '}
+              <a
+                href={`mailto:hello@wecarely.com?subject=City%20request%3A%20${encodeURIComponent(active.name)}`}
+                className="text-[var(--ink)] underline underline-offset-3"
+              >
+                Tell us
+              </a>
+              .
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
