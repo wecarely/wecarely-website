@@ -52,3 +52,41 @@ export async function getHoustonAgencies(args: QueryArgs): Promise<Agency[]> {
   }
   return (data ?? []) as unknown as Agency[];
 }
+
+/**
+ * Fetch a single Houston agency by slug. Returns null if not found.
+ * Used by /houston/[slug] detail pages.
+ */
+export async function getAgencyBySlug(slug: string): Promise<Agency | null> {
+  const sb = createServerClient();
+  const { data, error } = await sb
+    .from('agencies')
+    .select(SELECT_COLUMNS)
+    .ilike('city', 'houston')
+    .eq('slug', slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error('[getAgencyBySlug]', error);
+    return null;
+  }
+  return (data ?? null) as unknown as Agency | null;
+}
+
+/**
+ * Fetch slugs of all Houston agencies. Used by sitemap.ts to generate
+ * /houston/[slug] URLs for every indexed agency.
+ */
+export async function getAllHoustonSlugs(): Promise<string[]> {
+  const sb = createServerClient();
+  const { data, error } = await sb
+    .from('agencies')
+    .select('slug')
+    .ilike('city', 'houston');
+
+  if (error) {
+    console.error('[getAllHoustonSlugs]', error);
+    return [];
+  }
+  return (data ?? []).map((r) => r.slug as string).filter(Boolean);
+}

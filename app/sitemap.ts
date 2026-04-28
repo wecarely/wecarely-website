@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { getAllHoustonSlugs } from '@/lib/supabase/queries';
 
 const SITE_URL = 'https://www.wecarely.com';
 
@@ -19,8 +20,9 @@ const FILTER_LANDINGS = [
   'svc=speech-therapy',
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const slugs = await getAllHoustonSlugs();
 
   return [
     {
@@ -40,6 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.6,
+    })),
+    ...slugs.map((slug) => ({
+      url: `${SITE_URL}/houston/${slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
   ];
 }
