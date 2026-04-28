@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { Spectral, Inter_Tight, JetBrains_Mono } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const spectral = Spectral({
   variable: '--font-spectral',
@@ -46,6 +49,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
+      {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
     </html>
   );
 }
