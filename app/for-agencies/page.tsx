@@ -3,15 +3,12 @@ import type { Metadata } from 'next';
 
 const SITE_URL = 'https://www.wecarely.com';
 const APPLY_MAILTO =
-  'mailto:agencies@wecarely.com?subject=Founding%20Sponsor%20application%20%E2%80%94%20Houston&body=Agency%20name%3A%0AContact%20name%3A%0APhone%3A%0AWebsite%3A%0ACMS%20provider%20number%20(if%20known)%3A%0A%0AWhich%20slot(s)%20you%27re%20interested%20in%3A%0AAnything%20else%20we%20should%20know%3A%0A';
-
-const FOUNDING_PRICE = 99;
-const LIST_PRICE = 199;
+  'mailto:agencies@wecarely.com?subject=Sponsorship%20inquiry%20%E2%80%94%20Houston&body=Agency%20name%3A%0AContact%20name%3A%0APhone%3A%0AWebsite%3A%0ACMS%20provider%20number%20(if%20known)%3A%0A%0AWhat%20you%27d%20like%20to%20achieve%3A%0AAnything%20else%20we%20should%20know%3A%0A';
 
 export const metadata: Metadata = {
   title: 'For agencies — Sponsored placements on WeCarely',
   description:
-    'Reach Houston families searching for home care. WeCarely lists every CMS-licensed Houston agency. Sponsored placements are clearly labeled and never affect default ranking. Founding-sponsor rate available now.',
+    'Reach Houston families searching for home care. WeCarely lists every CMS-licensed Houston agency. Sponsored placements are clearly labeled and never affect default ranking. Founding-sponsor terms available for the first agencies on board.',
   alternates: { canonical: `${SITE_URL}/for-agencies` },
   openGraph: {
     title: 'For agencies — Sponsored placements on WeCarely',
@@ -125,18 +122,18 @@ export default function ForAgenciesPage() {
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] bg-[var(--ink)] text-white font-medium hover:bg-black/90 transition-colors"
               style={{ fontSize: 15 }}
             >
-              Apply for Founding Sponsor
+              Talk to us
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </a>
             <Link
-              href="#pricing"
+              href="#how-it-works"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] border border-[var(--line-strong)] text-[var(--ink)] font-medium hover:border-[var(--ink)] transition-colors"
               style={{ fontSize: 15 }}
             >
-              See pricing
+              How it works
             </Link>
           </div>
         </div>
@@ -212,7 +209,7 @@ export default function ForAgenciesPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
+      <section id="how-it-works" className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
           <p className="eyebrow mb-5">How it works</p>
           <div className="grid md:grid-cols-3 gap-x-10 gap-y-8 mt-10">
@@ -236,12 +233,12 @@ export default function ForAgenciesPage() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="border-b border-[var(--line)]">
+      {/* WHAT'S INCLUDED + INQUIRY */}
+      <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
-          <p className="eyebrow mb-5">Pricing</p>
+          <p className="eyebrow mb-5">Founding sponsorship</p>
           <h2
-            className="font-display text-[var(--ink)] max-w-[24ch] mb-12"
+            className="font-display text-[var(--ink)] max-w-[24ch] mb-10"
             style={{
               fontSize: 'clamp(28px, 3.6vw, 44px)',
               lineHeight: 1.1,
@@ -249,31 +246,20 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Founding-sponsor rate, locked while we grow.
+            Four Houston slots. Founding terms while we grow.
           </h2>
 
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-x-12 gap-y-8 items-start max-w-[80ch]">
-            <div className="border-t border-[var(--ink)] pt-6">
-              <div className="flex items-baseline gap-2 mb-1">
-                <span
-                  className="font-display tabular-nums text-[var(--ink)]"
-                  style={{ fontSize: 56, fontWeight: 500, letterSpacing: '-0.01em' }}
-                >
-                  ${FOUNDING_PRICE}
-                </span>
-                <span className="font-mono text-[14px] text-[var(--ink-3)]">
-                  / month
-                </span>
-              </div>
-              <p
-                className="font-mono text-[12.5px] tabular-nums text-[var(--ink-3)] line-through mb-4"
-              >
-                List ${LIST_PRICE} / month
+            <div className="text-[15px] leading-[1.6] text-[var(--ink-2)] max-w-[44ch] space-y-4">
+              <p>
+                We&apos;re selecting the first four sponsors in Houston now.
+                Founding sponsors get a locked monthly rate that stays the same
+                as the directory grows — small thanks for backing us early.
               </p>
-              <p className="text-[14px] text-[var(--ink-2)] leading-[1.55] max-w-[34ch]">
-                Founding-sponsor rate locked for the lifetime of your
-                subscription, as long as it&apos;s continuous. Available while we
-                build out organic traffic in Houston.
+              <p>
+                Pricing depends on the slot and what&apos;s included. Email us
+                with a short note about your agency and we&apos;ll quote within
+                one business day.
               </p>
             </div>
 
@@ -306,15 +292,15 @@ export default function ForAgenciesPage() {
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] bg-[var(--ink)] text-white font-medium hover:bg-black/90 transition-colors"
               style={{ fontSize: 15 }}
             >
-              Apply for Founding Sponsor
+              Talk to us
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
               </svg>
             </a>
             <p className="mt-3 text-[12.5px] text-[var(--ink-3)]">
-              Pricing subject to change after Houston organic traffic exceeds
-              5k monthly. Founding sponsors keep their rate.
+              Reply within 1 business day. Verified Houston-licensed agencies
+              only.
             </p>
           </div>
         </div>
