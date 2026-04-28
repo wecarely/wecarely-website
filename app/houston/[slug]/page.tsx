@@ -82,8 +82,12 @@ export default async function AgencyDetailPage({ params }: PageProps) {
   ]
     .filter(Boolean)
     .join(', ');
-  const mapsQuery = encodeURIComponent(`${agency.name}, ${fullAddress}`);
-  const mapsEmbedSrc = `https://maps.google.com/maps?q=${mapsQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  // Geocode by address only (not name + address). Many home-care agencies
+  // operate as DBA / different brand on Google Maps, so name-based queries
+  // miss the pin. Address-only always resolves to the building.
+  const hasMappableAddress = Boolean(agency.address);
+  const mapsQuery = encodeURIComponent(fullAddress);
+  const mapsEmbedSrc = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
   const mapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery}`;
 
   const schemaJson = {
@@ -261,27 +265,37 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Map */}
-            <div className="pt-10 border-t border-[var(--line)]">
-              <p className="eyebrow mb-4">Location</p>
-              <div
-                className="rounded-[10px] overflow-hidden border border-[var(--line)]"
-                style={{ aspectRatio: '16 / 9' }}
-              >
-                <iframe
-                  src={mapsEmbedSrc}
-                  width="100%"
-                  height="100%"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`Map showing location of ${agency.name}`}
-                  style={{ border: 0 }}
-                />
+            {/* Map — only render when we have a street address */}
+            {hasMappableAddress && (
+              <div className="pt-10 border-t border-[var(--line)]">
+                <p className="eyebrow mb-4">Location</p>
+                <p
+                  className="text-[14px] text-[var(--ink-2)] mb-4 tabular-nums"
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
+                >
+                  {fullAddress}
+                </p>
+                <div
+                  className="rounded-[10px] overflow-hidden border border-[var(--line)]"
+                  style={{ aspectRatio: '16 / 9' }}
+                >
+                  <iframe
+                    src={mapsEmbedSrc}
+                    width="100%"
+                    height="100%"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`Map showing ${fullAddress}`}
+                    style={{ border: 0 }}
+                  />
+                </div>
+                <p className="mt-3 text-[12.5px] text-[var(--ink-3)]">
+                  Map provided by Google. Pin shows the street address on file —
+                  confirm with the agency before visiting (some operate from
+                  shared business suites).
+                </p>
               </div>
-              <p className="mt-3 text-[12.5px] text-[var(--ink-3)]">
-                Map provided by Google. Confirm address with the agency before visiting.
-              </p>
-            </div>
+            )}
 
             {/* Sources disclaimer */}
             <p className="mt-12 text-[12px] text-[var(--ink-3)] max-w-[60ch] leading-relaxed">
