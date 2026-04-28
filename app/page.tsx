@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase/server';
+import { HeroSearch } from '@/components/HeroSearch';
+import { QuickFilters } from '@/components/home/QuickFilters';
+import { FeaturedRow } from '@/components/home/FeaturedRow';
 
 export const dynamic = 'force-dynamic';
-
-const COMING_SOON = ['Dallas', 'Austin', 'San Antonio', 'Fort Worth'];
 
 const HOW_IT_WORKS = [
   {
@@ -23,6 +24,8 @@ const HOW_IT_WORKS = [
   },
 ];
 
+const COMING_SOON = ['Dallas', 'Austin', 'San Antonio', 'Fort Worth'];
+
 async function getHoustonCount(): Promise<number> {
   try {
     const sb = createServerClient();
@@ -41,9 +44,9 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO */}
+      {/* HERO — Yelp-style search-first */}
       <section className="border-b border-[var(--line)]">
-        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 pt-20 pb-16 lg:pt-28 lg:pb-20">
+        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 pt-16 pb-14 lg:pt-24 lg:pb-20">
           <span className="eyebrow">An honest home care directory</span>
 
           <h1
@@ -62,109 +65,46 @@ export default async function HomePage() {
             compared.
           </h1>
 
-          <p className="mt-7 max-w-[58ch] text-[16.5px] leading-[1.6] text-[var(--ink-2)]">
+          <p className="mt-6 max-w-[58ch] text-[16.5px] leading-[1.6] text-[var(--ink-2)]">
             Every licensed home care agency in your city, sourced from{' '}
             <span className="text-[var(--ink)]">CMS Home Health Compare</span>{' '}
             and{' '}
-            <span className="text-[var(--ink)]">Google reviews</span>. Filter by
-            language, insurance, and the kind of care you need. Free to browse —
-            no sign-up required.
+            <span className="text-[var(--ink)]">Google reviews</span>. Free to
+            browse — no sign-up required.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          {/* Search-first hero */}
+          <div className="mt-9 max-w-[640px]">
+            <HeroSearch />
+            <p className="mt-3 font-mono text-[11.5px] text-[var(--ink-3)]">
+              Try: <em className="not-italic">spanish</em> ·{' '}
+              <em className="not-italic">dementia</em> ·{' '}
+              <em className="not-italic">medicaid</em>
+            </p>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+            <span className="font-mono text-[12.5px] text-[var(--ink-3)]">
+              <span className="font-medium text-[var(--ink)]">
+                {houstonCount}
+              </span>{' '}
+              agencies indexed in Houston · updated this month
+            </span>
             <Link
               href="/houston"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-[10px] bg-[var(--accent)] text-[var(--ink)] font-medium hover:bg-[var(--accent-hover)] transition-colors"
-              style={{ fontSize: 15 }}
+              className="text-[13px] text-[var(--ink-2)] hover:text-[var(--ink)] underline underline-offset-3"
             >
-              Browse Houston agencies
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
+              Or browse all →
             </Link>
-            <span className="font-mono text-[12.5px] text-[var(--ink-3)]">
-              {houstonCount} agencies indexed · updated this month
-            </span>
           </div>
         </div>
       </section>
 
-      {/* COVERAGE */}
-      <section className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
-        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14">
-          <p className="eyebrow mb-5">Coverage</p>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
-            <div>
-              <p
-                className="font-display text-[var(--ink)] mb-2"
-                style={{ fontSize: 26, fontWeight: 500 }}
-              >
-                Now serving
-              </p>
-              <Link
-                href="/houston"
-                className="block group max-w-md p-5 -mx-5 rounded-[10px] hover:bg-white transition-colors"
-              >
-                <p
-                  className="font-display group-hover:text-[var(--accent)] transition-colors"
-                  style={{ fontSize: 22, fontWeight: 500 }}
-                >
-                  Houston, TX{' '}
-                  <span className="text-[var(--ink-3)] font-mono text-[14px] tabular-nums">
-                    {houstonCount}
-                  </span>
-                </p>
-                <p className="mt-1 text-[14px] text-[var(--ink-2)]">
-                  All licensed home care agencies in Harris County.
-                </p>
-                <p className="mt-3 text-[12.5px] text-[var(--ink-2)] underline-offset-3 group-hover:underline inline-flex items-center gap-1">
-                  Browse the directory
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
-                  </svg>
-                </p>
-              </Link>
-            </div>
+      {/* QUICK FILTERS — popular searches grid */}
+      <QuickFilters />
 
-            <div>
-              <p
-                className="font-display text-[var(--ink)] mb-2"
-                style={{ fontSize: 26, fontWeight: 500 }}
-              >
-                Coming soon
-              </p>
-              <p className="text-[14px] text-[var(--ink-2)] mb-4">
-                Texas first, then nationwide. Want yours next?{' '}
-                <a
-                  href="mailto:hello@wecarely.com?subject=City%20request"
-                  className="text-[var(--ink)] underline underline-offset-3"
-                >
-                  Tell us where
-                </a>
-                .
-              </p>
-              <ul className="space-y-2">
-                {COMING_SOON.map((city) => (
-                  <li
-                    key={city}
-                    className="font-display text-[var(--ink-2)] flex items-baseline gap-3"
-                    style={{ fontSize: 18, fontWeight: 400 }}
-                  >
-                    <span
-                      className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--ink-3)]"
-                    >
-                      Q3 2026
-                    </span>
-                    {city}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* FEATURED — top 4 by trust score */}
+      <FeaturedRow />
 
       {/* HOW IT WORKS */}
       <section className="border-b border-[var(--line)]">
@@ -205,8 +145,67 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* PLEDGE */}
+      {/* COVERAGE */}
       <section className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
+        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14">
+          <p className="eyebrow mb-6">Coverage</p>
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 items-baseline">
+            <div>
+              <p
+                className="font-display text-[var(--ink-3)] mb-1"
+                style={{ fontSize: 14, fontWeight: 500 }}
+              >
+                Now serving
+              </p>
+              <p
+                className="font-display text-[var(--ink)]"
+                style={{ fontSize: 28, fontWeight: 500 }}
+              >
+                Houston, TX{' '}
+                <span className="text-[var(--ink-3)] font-mono text-[16px] tabular-nums">
+                  {houstonCount}
+                </span>
+              </p>
+              <p className="mt-1 text-[14px] text-[var(--ink-2)] max-w-md">
+                All licensed home care agencies in Harris County.{' '}
+                <Link
+                  href="/houston"
+                  className="text-[var(--ink)] underline underline-offset-3"
+                >
+                  Browse →
+                </Link>
+              </p>
+            </div>
+            <div>
+              <p
+                className="font-display text-[var(--ink-3)] mb-1"
+                style={{ fontSize: 14, fontWeight: 500 }}
+              >
+                Coming soon · Q3 2026
+              </p>
+              <p
+                className="font-display text-[var(--ink)]"
+                style={{ fontSize: 22, fontWeight: 400, lineHeight: 1.3 }}
+              >
+                {COMING_SOON.join(' · ')}
+              </p>
+              <p className="mt-2 text-[13px] text-[var(--ink-2)]">
+                Want yours next?{' '}
+                <a
+                  href="mailto:hello@wecarely.com?subject=City%20request"
+                  className="text-[var(--ink)] underline underline-offset-3"
+                >
+                  Tell us where
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PLEDGE */}
+      <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
           <p className="eyebrow mb-7">Our pledge</p>
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-x-16 gap-y-8 items-baseline">
