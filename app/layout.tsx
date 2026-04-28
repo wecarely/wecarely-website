@@ -26,9 +26,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'WeCarely — Houston Home Care, Honestly Compared',
+  title: 'WeCarely — Home Care, Honestly Compared',
   description:
-    "Every home care agency licensed in Houston, in one place. Filter by language, insurance, and the kind of care you need. Free to browse — no sign-up required.",
+    'An honest home care directory ranked by CMS clinical stars and Google reviews — no lead-gen, no advisor calls. Currently covering Houston, expanding nationally.',
 };
 
 export default function RootLayout({
