@@ -75,6 +75,31 @@ export async function getAgencyBySlug(slug: string): Promise<Agency | null> {
 }
 
 /**
+ * Fetch Houston agencies whose ZIP falls within a given list. Used by
+ * neighborhood landing pages (`/houston/area/{slug}`) to render an
+ * area-filtered listing without query params (clean URL for SEO).
+ *
+ * Sorted by trust_score DESC. ZIP set is small (typically 2-4 ZIPs),
+ * so PostgREST `in.()` operator is efficient.
+ */
+export async function getAgenciesByZips(zips: string[]): Promise<Agency[]> {
+  if (zips.length === 0) return [];
+  const sb = createServerClient();
+  const { data, error } = await sb
+    .from('agencies')
+    .select(SELECT_COLUMNS)
+    .ilike('city', 'houston')
+    .in('zip', zips)
+    .order('trust_score', { ascending: false, nullsFirst: false });
+
+  if (error) {
+    console.error('[getAgenciesByZips]', error);
+    return [];
+  }
+  return (data ?? []) as unknown as Agency[];
+}
+
+/**
  * Fetch active sponsored agencies in Houston, ordered by sponsor_priority
  * (1 = top slot, 2 = second, etc.). Used by SponsoredCarousel on / and
  * /houston to render real sponsors mixed with placeholder slots.

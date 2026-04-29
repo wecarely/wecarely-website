@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllHoustonSlugs } from '@/lib/supabase/queries';
+import { HOUSTON_NEIGHBORHOODS } from '@/lib/houston/neighborhoods';
 
 const SITE_URL = 'https://www.wecarely.com';
 
@@ -54,6 +55,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.7,
+    })),
+    // Programmatic neighborhood landing pages — high SEO value for
+    // long-tail geographic queries ("home care in Sharpstown" etc.)
+    ...HOUSTON_NEIGHBORHOODS.map((n) => ({
+      url: `${SITE_URL}/houston/area/${n.slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.75,
     })),
   ];
 }

@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { getAgencyBySlug } from '@/lib/supabase/queries';
 import { LetterTile } from '@/components/agency/LetterTile';
 import { StarRating } from '@/components/agency/StarRating';
+import { neighborhoodForZip } from '@/lib/houston/neighborhoods';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,6 +40,10 @@ export default async function AgencyDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const agency = await getAgencyBySlug(slug);
   if (!agency) notFound();
+
+  // Look up the agency's neighborhood (if its ZIP maps to one of our
+  // curated Houston areas). Used for breadcrumb-like internal link.
+  const area = neighborhoodForZip(agency.zip);
 
   const languages = [
     agency.has_spanish && 'Spanish',
@@ -486,6 +491,31 @@ export default async function AgencyDetailPage({ params }: PageProps) {
           </aside>
         </div>
       </div>
+
+      {/* RELATED AREA — internal link strengthens neighborhood SEO + helps
+          family see other agencies near this one */}
+      {area && (
+        <section className="border-t border-[var(--line)]">
+          <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-8">
+            <Link
+              href={`/houston/area/${area.slug}`}
+              className="inline-flex items-baseline gap-2 text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline"
+            >
+              <span className="eyebrow">More in</span>
+              <span
+                className="font-display text-[var(--ink)]"
+                style={{ fontSize: 18, fontWeight: 500 }}
+              >
+                {area.name}
+              </span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* CLAIM LISTING (only for non-sponsors — sponsors already have full control) */}
       {!agency.is_sponsored && (
