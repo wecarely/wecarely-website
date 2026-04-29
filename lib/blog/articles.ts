@@ -5,6 +5,15 @@ export interface ArticleAuthor {
   role: string;
 }
 
+export interface ArticleImage {
+  /** Public path under /public, e.g. "/blog/.../hero.jpg" */
+  src: string;
+  /** Descriptive alt text — neutral, no implied endorsement. */
+  alt: string;
+  /** "Photo by Name on Pexels" or similar. Required for editorial transparency. */
+  credit: string;
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -15,6 +24,8 @@ export interface Article {
   author: ArticleAuthor;
   /** One-line topic label shown in eyebrow + index card. */
   topic: string;
+  /** Optional hero image rendered between byline and body. */
+  heroImage?: ArticleImage;
   /** Article body — rendered inside <article className="prose-wecarely">. */
   body: () => ReactNode;
 }

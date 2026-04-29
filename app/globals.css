@@ -276,3 +276,21 @@ a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
   border-radius: 0 8px 8px 0;
 }
 .prose-wecarely .callout strong { color: var(--ink); }
+.prose-wecarely figure {
+  margin-top: 2.4em;
+  margin-bottom: 2.4em;
+}
+.prose-wecarely figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+.prose-wecarely figure figcaption {
+  margin-top: 10px;
+  font-family: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  text-align: right;
+}

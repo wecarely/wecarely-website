@@ -13,6 +13,11 @@ export const howToChooseHoustonHomeCare: Article = {
     role: 'Independent home care directory',
   },
   topic: 'Decision guide',
+  heroImage: {
+    src: '/blog/how-to-choose-houston-home-care/hero-conversation.jpg',
+    alt: 'A senior and a caregiver sitting in a kitchen, talking',
+    credit: 'Photo by JSME Mila on Pexels',
+  },
   body: () => (
     <>
       <p>
@@ -76,6 +81,16 @@ export const howToChooseHoustonHomeCare: Article = {
         these up is the most common mistake families make in the first
         24 hours.
       </p>
+
+      <figure>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/blog/how-to-choose-houston-home-care/paperwork.jpg"
+          alt="Hands taking notes at a desk with a laptop and coffee"
+          loading="lazy"
+        />
+        <figcaption>Photo by Mikhail Nilov on Pexels</figcaption>
+      </figure>
 
       <h2>2. Understand what insurance actually pays for</h2>
 
@@ -233,6 +248,16 @@ export const howToChooseHoustonHomeCare: Article = {
           significantly outside that range deserves a question.
         </li>
       </ol>
+
+      <figure>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/blog/how-to-choose-houston-home-care/houston-skyline.jpg"
+          alt="Downtown Houston skyline against a clear blue sky"
+          loading="lazy"
+        />
+        <figcaption>Photo by Tejanotechie on Pexels</figcaption>
+      </figure>
 
       <h2>6. Houston-specific factors</h2>
 

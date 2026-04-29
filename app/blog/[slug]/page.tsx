@@ -144,8 +144,24 @@ export default async function ArticlePage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* HERO IMAGE */}
+      {article.heroImage && (
+        <figure className="mx-auto max-w-[1100px] px-6 lg:px-10 pt-10 lg:pt-14">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={article.heroImage.src}
+            alt={article.heroImage.alt}
+            className="w-full h-auto rounded-[12px]"
+            style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
+          />
+          <figcaption className="mt-3 text-[12px] text-[var(--ink-3)] text-right font-mono tracking-wide">
+            {article.heroImage.credit}
+          </figcaption>
+        </figure>
+      )}
+
       {/* BODY */}
-      <article className="mx-auto max-w-[760px] px-6 lg:px-10 py-14 lg:py-20 prose-wecarely">
+      <article className="mx-auto max-w-[760px] px-6 lg:px-10 py-10 lg:py-14 prose-wecarely">
         {article.body()}
       </article>
 
