@@ -38,6 +38,12 @@ export interface Agency {
   // Card display
   ai_summary: string | null;
 
+  // Hours of operation, sourced from Google Business
+  // Pipe-delimited: "Monday: 9:00 AM – 5:00 PM | Tuesday: ... | Sunday: Closed"
+  // ~74% populated. Frontend parses into 7-day list. Falls back to
+  // sponsor_hours when set (sponsor-supplied is more authoritative).
+  google_opening_hours: string | null;
+
   // Sponsor state (Phase 2 — added 2026-04-29)
   // When is_sponsored=true, the agency appears in SponsoredCarousel
   // and detail page renders premium content (logo / hours / tagline).

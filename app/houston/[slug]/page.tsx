@@ -425,18 +425,56 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                 </a>
               )}
 
-              {/* Hours — only for sponsors who provided them */}
-              {agency.is_sponsored && agency.sponsor_hours && (
-                <div className="pt-4 border-t border-[var(--line)]">
-                  <p className="eyebrow mb-1.5">Hours</p>
-                  <p
-                    className="text-[var(--ink-2)] whitespace-pre-line"
-                    style={{ fontSize: 13.5, lineHeight: 1.55 }}
-                  >
-                    {agency.sponsor_hours}
-                  </p>
-                </div>
-              )}
+              {/* Hours — sponsor-supplied takes priority over Google;
+                  fall back to Google Business hours (74% of agencies have them) */}
+              {(() => {
+                const hoursSource =
+                  agency.is_sponsored && agency.sponsor_hours
+                    ? { text: agency.sponsor_hours, source: 'agency' as const }
+                    : agency.google_opening_hours
+                    ? { text: agency.google_opening_hours, source: 'google' as const }
+                    : null;
+                if (!hoursSource) return null;
+                const lines = parseHours(hoursSource.text);
+                return (
+                  <div className="pt-4 border-t border-[var(--line)]">
+                    <p className="eyebrow mb-2">Hours</p>
+                    <ul className="space-y-1">
+                      {lines.map((line, i) => (
+                        <li
+                          key={i}
+                          className="flex items-baseline gap-2 text-[13px]"
+                          style={{ lineHeight: 1.45 }}
+                        >
+                          <span
+                            className="font-mono text-[var(--ink-3)] w-9 shrink-0 tabular-nums"
+                            style={{ fontSize: 11 }}
+                          >
+                            {line.day}
+                          </span>
+                          <span
+                            className={
+                              line.closed
+                                ? 'text-[var(--ink-3)] italic'
+                                : 'text-[var(--ink)]'
+                            }
+                          >
+                            {line.hours}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {hoursSource.source === 'google' && (
+                      <p
+                        className="mt-2 text-[var(--ink-3)] font-mono"
+                        style={{ fontSize: 10.5, letterSpacing: '0.04em' }}
+                      >
+                        Source: Google Business · confirm with agency
+                      </p>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Source attribution mini-card */}
@@ -503,6 +541,47 @@ export default async function AgencyDetailPage({ params }: PageProps) {
       </section>
     </>
   );
+}
+
+/**
+ * Parse a pipe-delimited weekly schedule from Google Business OR a free-text
+ * sponsor-supplied schedule into a 7-row list. Examples of input:
+ *
+ *   Google:  "Monday: 9:00 AM – 5:00 PM | Tuesday: 9:00 AM – 5:00 PM | ... | Sunday: Closed"
+ *   Sponsor: "Mon-Fri 8am-6pm, 24/7 on-call"
+ *
+ * For sponsor free-text we just return the input as a single row.
+ */
+function parseHours(raw: string): { day: string; hours: string; closed: boolean }[] {
+  // Google-style pipe-delimited
+  if (raw.includes('|') && raw.includes(':')) {
+    const dayMap: Record<string, string> = {
+      Monday: 'Mon',
+      Tuesday: 'Tue',
+      Wednesday: 'Wed',
+      Thursday: 'Thu',
+      Friday: 'Fri',
+      Saturday: 'Sat',
+      Sunday: 'Sun',
+    };
+    return raw
+      .split('|')
+      .map((seg) => seg.trim())
+      .filter(Boolean)
+      .map((seg) => {
+        const m = seg.match(/^(\w+):\s*(.+)$/);
+        if (!m) return { day: '', hours: seg, closed: false };
+        const fullDay = m[1];
+        const hours = m[2].trim();
+        return {
+          day: dayMap[fullDay] ?? fullDay.slice(0, 3),
+          hours,
+          closed: /closed/i.test(hours),
+        };
+      });
+  }
+  // Sponsor free-text — return as a single line
+  return [{ day: '', hours: raw, closed: false }];
 }
 
 function FactBlock({

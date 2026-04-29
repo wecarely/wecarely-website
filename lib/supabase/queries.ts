@@ -10,7 +10,7 @@ const SELECT_COLUMNS = `
   has_skilled_nursing, has_home_health_aide, has_personal_care,
   has_companion_care, has_physical_therapy, has_occupational_therapy,
   has_speech_therapy, has_dementia_care, has_hospice,
-  ai_summary,
+  ai_summary, google_opening_hours,
   is_sponsored, sponsor_logo_url, sponsor_hours, sponsor_tagline, sponsor_priority
 `;
 
