@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createServerClient } from '@/lib/supabase/server';
+import { getSponsoredAgencies } from '@/lib/supabase/queries';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { FeaturedRow } from '@/components/home/FeaturedRow';
@@ -41,15 +42,18 @@ async function getHoustonCount(): Promise<number> {
 }
 
 export default async function HomePage() {
-  const houstonCount = await getHoustonCount();
+  const [houstonCount, sponsors] = await Promise.all([
+    getHoustonCount(),
+    getSponsoredAgencies(),
+  ]);
 
   return (
     <>
       {/* HERO — Yelp-style photo carousel */}
       <HeroCarousel />
 
-      {/* SPONSORED — featured agencies carousel (Day 7: placeholder slots) */}
-      <SponsoredCarousel />
+      {/* SPONSORED — featured agencies carousel (real sponsors + placeholder fillers) */}
+      <SponsoredCarousel sponsors={sponsors} />
 
       {/* FEATURED — top 4 by trust score */}
       <FeaturedRow />

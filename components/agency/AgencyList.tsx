@@ -32,7 +32,10 @@ export function AgencyList({ agencies, demoSponsored = false }: Props) {
           key={a.id}
           agency={a}
           rank={i + 1}
-          isSponsored={demoSponsored && i === 0}
+          // Real sponsor state from DB OR demo mode flag for first card.
+          // Either path renders the Sponsored disclosure badge — required
+          // for brand integrity (transparent paid-placement labeling).
+          isSponsored={a.is_sponsored || (demoSponsored && i === 0)}
         />
       ))}
     </div>

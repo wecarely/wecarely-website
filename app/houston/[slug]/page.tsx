@@ -151,25 +151,72 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         <div className="grid lg:grid-cols-[1fr_340px] gap-x-12 gap-y-10 items-start">
           {/* MAIN COLUMN */}
           <div className="min-w-0">
-            {/* Header: tile + name + verified badge */}
+            {/* Header: tile/logo + name + verified badge */}
             <div className="flex items-start gap-5 mb-7">
-              <LetterTile name={agency.name} size={72} fontSize={28} />
-              <div className="flex-1 min-w-0">
-                <p className="eyebrow mb-2">Houston · TX home care</p>
-                <h1
-                  className="font-display text-[var(--ink)] leading-tight"
+              {agency.is_sponsored && agency.sponsor_logo_url ? (
+                <div
+                  className="rounded-[10px] overflow-hidden bg-white border flex items-center justify-center shrink-0"
                   style={{
-                    fontSize: 'clamp(28px, 4vw, 44px)',
-                    letterSpacing: '-0.005em',
-                    fontWeight: 500,
+                    width: 72,
+                    height: 72,
+                    borderColor: 'var(--line)',
                   }}
                 >
-                  {agency.name}
-                </h1>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={agency.sponsor_logo_url}
+                    alt={`${agency.name} logo`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                    }}
+                  />
+                </div>
+              ) : (
+                <LetterTile name={agency.name} size={72} fontSize={28} />
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="eyebrow mb-2">Houston · TX home care</p>
+                <div className="flex items-start flex-wrap gap-x-3 gap-y-2">
+                  <h1
+                    className="font-display text-[var(--ink)] leading-tight"
+                    style={{
+                      fontSize: 'clamp(28px, 4vw, 44px)',
+                      letterSpacing: '-0.005em',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {agency.name}
+                  </h1>
+                  {agency.is_sponsored && (
+                    <span
+                      className="mt-2 inline-flex items-center px-2 py-0.5 rounded-[3px] border text-[10.5px] font-mono font-semibold tracking-[0.14em] uppercase shrink-0"
+                      style={{
+                        color: 'var(--ink-2)',
+                        borderColor: 'var(--line-strong)',
+                        background: 'var(--bg-soft)',
+                      }}
+                      title="Paid placement — clearly labeled, does not affect default ranking"
+                    >
+                      Sponsored
+                    </span>
+                  )}
+                </div>
                 <p className="mt-2 text-[14.5px] text-[var(--ink-2)]">
                   {agency.address ? `${agency.address} · ` : ''}Houston, TX
                   {agency.zip ? ` ${agency.zip}` : ''}
                 </p>
+
+                {/* Sponsor tagline (premium-tier prominence) */}
+                {agency.is_sponsored && agency.sponsor_tagline && (
+                  <p
+                    className="mt-3 text-[var(--ink)] max-w-[60ch]"
+                    style={{ fontSize: 16, lineHeight: 1.55, fontStyle: 'italic' }}
+                  >
+                    {agency.sponsor_tagline}
+                  </p>
+                )}
 
                 {/* CMS Verified License badge */}
                 {ccn && (
@@ -376,6 +423,19 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                     </svg>
                   </p>
                 </a>
+              )}
+
+              {/* Hours — only for sponsors who provided them */}
+              {agency.is_sponsored && agency.sponsor_hours && (
+                <div className="pt-4 border-t border-[var(--line)]">
+                  <p className="eyebrow mb-1.5">Hours</p>
+                  <p
+                    className="text-[var(--ink-2)] whitespace-pre-line"
+                    style={{ fontSize: 13.5, lineHeight: 1.55 }}
+                  >
+                    {agency.sponsor_hours}
+                  </p>
+                </div>
               )}
             </div>
 

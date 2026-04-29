@@ -10,7 +10,8 @@ const SELECT_COLUMNS = `
   has_skilled_nursing, has_home_health_aide, has_personal_care,
   has_companion_care, has_physical_therapy, has_occupational_therapy,
   has_speech_therapy, has_dementia_care, has_hospice,
-  ai_summary
+  ai_summary,
+  is_sponsored, sponsor_logo_url, sponsor_hours, sponsor_tagline, sponsor_priority
 `;
 
 interface QueryArgs {
@@ -71,6 +72,30 @@ export async function getAgencyBySlug(slug: string): Promise<Agency | null> {
     return null;
   }
   return (data ?? null) as unknown as Agency | null;
+}
+
+/**
+ * Fetch active sponsored agencies in Houston, ordered by sponsor_priority
+ * (1 = top slot, 2 = second, etc.). Used by SponsoredCarousel on / and
+ * /houston to render real sponsors mixed with placeholder slots.
+ *
+ * Returns 0 to 4 sponsors. Caller pads with placeholder slots up to 4 total.
+ */
+export async function getSponsoredAgencies(): Promise<Agency[]> {
+  const sb = createServerClient();
+  const { data, error } = await sb
+    .from('agencies')
+    .select(SELECT_COLUMNS)
+    .ilike('city', 'houston')
+    .eq('is_sponsored', true)
+    .order('sponsor_priority', { ascending: true, nullsFirst: false })
+    .limit(4);
+
+  if (error) {
+    console.error('[getSponsoredAgencies]', error);
+    return [];
+  }
+  return (data ?? []) as unknown as Agency[];
 }
 
 /**

@@ -37,6 +37,17 @@ export interface Agency {
 
   // Card display
   ai_summary: string | null;
+
+  // Sponsor state (Phase 2 — added 2026-04-29)
+  // When is_sponsored=true, the agency appears in SponsoredCarousel
+  // and detail page renders premium content (logo / hours / tagline).
+  // Default rankings on /houston are NOT affected — sponsorship buys
+  // visibility, not algorithmic boost.
+  is_sponsored: boolean;
+  sponsor_logo_url: string | null;
+  sponsor_hours: string | null;
+  sponsor_tagline: string | null;
+  sponsor_priority: number | null;  // 1 = top slot, 2 = second, etc.
 }
 
 /**

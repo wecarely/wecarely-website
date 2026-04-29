@@ -1,4 +1,4 @@
-import { getHoustonAgencies } from '@/lib/supabase/queries';
+import { getHoustonAgencies, getSponsoredAgencies } from '@/lib/supabase/queries';
 import { parseFilterParams } from '@/lib/utils/filter-params';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { AgencyList } from '@/components/agency/AgencyList';
@@ -25,7 +25,10 @@ export default async function HoustonPage({ searchParams }: PageProps) {
   if (sp.svc) urlParams.set('svc', sp.svc);
 
   const filters = parseFilterParams(urlParams);
-  const agencies = await getHoustonAgencies({ filters, query: sp.q });
+  const [agencies, sponsors] = await Promise.all([
+    getHoustonAgencies({ filters, query: sp.q }),
+    getSponsoredAgencies(),
+  ]);
   const totalActive =
     filters.lang.length + filters.ins.length + filters.svc.length;
   const hasQuery = Boolean(sp.q?.trim());
@@ -82,8 +85,8 @@ export default async function HoustonPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* SPONSORED CAROUSEL — Phase 2 revenue surface, Day 7 empty-state */}
-      <SponsoredCarousel />
+      {/* SPONSORED CAROUSEL — real sponsors + placeholder fillers up to 4 */}
+      <SponsoredCarousel sponsors={sponsors} />
 
       {/* MAIN: 2-col layout — sidebar + results */}
       <section className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12">
