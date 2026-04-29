@@ -246,29 +246,29 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Four featured spots on the Houston homepage.
+            Featured placements on the Houston homepage.
           </h2>
 
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-x-12 gap-y-8 items-start max-w-[80ch]">
             <div className="text-[15px] leading-[1.6] text-[var(--ink-2)] max-w-[44ch] space-y-4">
               <p>
-                We have 4 sponsored placement spots open on the Houston homepage
-                right now. They sit above the directory listings, are clearly
-                labeled as Sponsored, and never affect default rankings — those
-                stay sorted by CMS clinical stars + Google reviews, period.
+                Sponsored placements sit above the directory listings, are
+                clearly labeled as Sponsored, and never affect default
+                rankings — those stay sorted by CMS clinical stars + Google
+                reviews, period.
               </p>
               <p>
-                Each spot links to your detail page on WeCarely, with optional
-                upgrades (logo, photo, hours) for sponsors. Email us with a
-                short note about your agency and we&apos;ll send placement
-                details, current availability, and pricing within one business
-                day.
+                Each placement links to your detail page on WeCarely, with
+                optional upgrades (logo, photo, hours) for sponsors. Email
+                us with a short note about your agency and we&apos;ll send
+                placement details, current availability, and pricing within
+                one business day.
               </p>
             </div>
 
             <ul className="space-y-2.5 text-[14px] text-[var(--ink-2)] pt-1">
               {[
-                '4 sponsored placement spots in Houston (limited)',
+                'Sponsored placement on the Houston homepage',
                 'Featured visibility on / and /houston',
                 'Detail-page upgrades (logo, photo, hours)',
                 'Month-to-month, cancel anytime',
