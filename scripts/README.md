@@ -95,3 +95,45 @@ python scripts/hot_lead_watcher.py
 
 GitHub Actions on a public repo: **free**, unlimited minutes.
 This workflow uses ~5-10 minutes per business day = trivial.
+
+---
+
+## daily_standup.py
+
+Sends Bruce a one-email morning briefing every day at 08:00
+Asia/Taipei (= 00:00 UTC) via `.github/workflows/daily-standup.yml`.
+
+### What it shows
+
+- **🎯 Action items today** — HOT replies pending, WARM replies pending
+- **📥 Inbox (last 24h)** — message classification counts
+- **💰 Sponsor status** — active sponsor count + estimated MRR (count × default fee)
+- **🔗 Quick links** — Gmail, GA4, Search Console, Supabase, live site
+- **🔧 Ops health** — W-8BEN, PayPal, Wise, Hot Lead Watcher status
+
+The detection logic (HOT / WARM / IGNORE) is the same as the watcher.
+
+### Additional setup (beyond the watcher)
+
+Two extra GitHub Secrets required, on top of the three the watcher already uses:
+
+| Secret name | Value |
+|---|---|
+| `SUPABASE_URL` | `https://oyiscanwalgstffskcvt.supabase.co` |
+| `SUPABASE_SERVICE_KEY` | Service role key from Supabase Settings → API |
+
+Get the service role key:
+1. <https://supabase.com/dashboard/project/oyiscanwalgstffskcvt/settings/api>
+2. Find "service_role" key (NOT "anon" key — service has read access to all tables)
+3. Copy and paste into the GitHub Secret
+
+### Tuning
+
+If MRR estimate is wrong (different sponsors paying different rates),
+edit `DEFAULT_SPONSOR_FEE` at the top of the script. For per-row
+pricing, store fee in a Supabase column and aggregate.
+
+### Skipping a day
+
+Standup is read-only. If you want to skip sending one day, just
+disable the workflow temporarily in the Actions tab.

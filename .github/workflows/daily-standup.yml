@@ -1,0 +1,34 @@
+name: Daily Standup Email
+
+# Sends a morning briefing to Bruce's personal Gmail every day at
+# 08:00 Asia/Taipei (= 00:00 UTC). One email, plain text, with the
+# action items / inbox / sponsor / ops health snapshot.
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # 00:00 UTC daily = 08:00 Asia/Taipei
+  workflow_dispatch:
+
+concurrency:
+  group: daily-standup
+  cancel-in-progress: false
+
+jobs:
+  standup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run daily standup
+        run: python scripts/daily_standup.py
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_TO_EMAIL: ${{ secrets.NOTIFY_TO_EMAIL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
