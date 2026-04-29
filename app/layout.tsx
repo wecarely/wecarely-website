@@ -28,10 +28,36 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
+const SITE_URL = 'https://www.wecarely.com';
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'WeCarely — Home Care, Honestly Compared',
   description:
     'An honest home care directory ranked by CMS clinical stars and Google reviews — no lead-gen, no advisor calls. Currently covering Houston, expanding nationally.',
+  openGraph: {
+    type: 'website',
+    siteName: 'WeCarely',
+    title: 'WeCarely — Home Care, Honestly Compared',
+    description:
+      'An honest home care directory ranked by CMS clinical stars and Google reviews. Currently covering Houston, expanding nationally.',
+    url: SITE_URL,
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'WeCarely — Home care, honestly compared. An honest home care directory.',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'WeCarely — Home Care, Honestly Compared',
+    description:
+      'An honest home care directory ranked by CMS clinical stars and Google reviews.',
+    images: ['/og.png'],
+  },
 };
 
 export default function RootLayout({
