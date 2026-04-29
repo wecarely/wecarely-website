@@ -82,9 +82,17 @@ export function Footer() {
           </div>
           <div>
             <p className="eyebrow mb-2" style={{ color: 'rgba(28,22,8,0.55)' }}>
-              For agencies
+              Read &amp; learn
             </p>
             <p style={{ color: 'rgba(28,22,8,0.78)' }} className="leading-relaxed">
+              <Link
+                href="/blog"
+                className="underline-offset-3 hover:underline"
+                style={{ color: 'inherit' }}
+              >
+                Articles &amp; guides →
+              </Link>
+              <br />
               <Link
                 href="/for-agencies"
                 className="underline-offset-3 hover:underline"

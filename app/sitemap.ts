@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getAllHoustonSlugs } from '@/lib/supabase/queries';
 import { HOUSTON_NEIGHBORHOODS } from '@/lib/houston/neighborhoods';
+import { listArticles } from '@/lib/blog/articles';
 
 const SITE_URL = 'https://www.wecarely.com';
 
@@ -63,6 +64,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: 'weekly' as const,
       priority: 0.75,
+    })),
+    {
+      url: `${SITE_URL}/blog`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    ...listArticles().map((a) => ({
+      url: `${SITE_URL}/blog/${a.slug}`,
+      lastModified: new Date(a.updatedAt),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
   ];
 }
