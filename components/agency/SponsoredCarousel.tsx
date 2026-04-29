@@ -52,6 +52,17 @@ export function SponsoredCarousel({ sponsors }: Props) {
     updateButtons();
   }, []);
 
+  // Brand-integrity decision: hide the entire carousel until at least one
+  // real sponsor exists. Empty placeholder slots ("Slot 1 · Available")
+  // signal "we couldn't sell any" instead of "scarce limited inventory".
+  // Once a real sponsor signs up, the section appears with their card +
+  // remaining "Available" slots — at which point "Available" reads as
+  // genuine scarcity (someone IS already paying for this).
+  // (Early return AFTER hooks to satisfy React rules-of-hooks.)
+  if (sponsors.length === 0) {
+    return null;
+  }
+
   const scroll = (direction: -1 | 1) => {
     scrollRef.current?.scrollBy({
       left: direction * CARD_WIDTH * 2,

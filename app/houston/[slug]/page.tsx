@@ -449,6 +449,43 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         </div>
       </div>
 
+      {/* CLAIM LISTING (only for non-sponsors — sponsors already have full control) */}
+      {!agency.is_sponsored && (
+        <section className="border-t border-[var(--line)] bg-[var(--bg-soft)]">
+          <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-10">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 max-w-[80ch]">
+              <div>
+                <p className="eyebrow mb-1.5">For agencies</p>
+                <p
+                  className="font-display text-[var(--ink)]"
+                  style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.3 }}
+                >
+                  Are you the owner of {agency.name}?
+                </p>
+                <p className="mt-1 text-[13.5px] text-[var(--ink-2)] max-w-[60ch]">
+                  Claim this listing to correct details, add languages /
+                  insurance / services we couldn&apos;t verify, or update
+                  your contact info. Free.
+                </p>
+              </div>
+              <a
+                href={`mailto:hello@wecarely.com?subject=${encodeURIComponent(`Claim listing — ${agency.name}`)}&body=${encodeURIComponent(
+                  `I'd like to claim this listing on WeCarely:\n\nAgency: ${agency.name}\nListing URL: ${SITE_URL}/houston/${agency.slug}\nCMS provider number: ${ccn ?? '(unknown)'}\n\nMy role at the agency: \nMy work email at the agency's domain: \n\nUpdates I'd like to make: \n\n`
+                )}`}
+                className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] border border-[var(--ink)] text-[var(--ink)] font-medium hover:bg-[var(--ink)] hover:text-white transition-colors"
+                style={{ fontSize: 14 }}
+              >
+                Claim this listing
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* FOOTER CTA */}
       <section className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14 text-center">

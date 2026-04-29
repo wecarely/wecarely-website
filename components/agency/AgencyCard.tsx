@@ -101,6 +101,15 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
           )}
         </div>
 
+        {/* Address line — disambiguates same-name listings (e.g. chain agencies
+            with multiple Houston locations) and gives families a quick sense
+            of distance before clicking. */}
+        {agency.address && (
+          <p className="text-[12.5px] text-[var(--ink-3)] -mt-1 mb-3 truncate">
+            {agency.address}
+          </p>
+        )}
+
         <TrustBadge
           cmsStar={agency.medicare_star}
           googleRating={agency.google_rating}
