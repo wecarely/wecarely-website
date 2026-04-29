@@ -1,0 +1,47 @@
+name: Hot Lead Gmail Watcher
+
+# Polls wecarely.ops@gmail.com via IMAP for outreach replies, classifies
+# as HOT / WARM / IGNORE, and forwards alerts to NOTIFY_TO_EMAIL.
+#
+# Schedule covers Houston business hours in both DST and standard time
+# (Texas observes daylight saving). All cron times below are UTC:
+#
+#   Houston CST (winter, UTC-6): 9am-9pm = 15:00-03:00 UTC (next day)
+#   Houston CDT (summer, UTC-5): 9am-9pm = 14:00-02:00 UTC (next day)
+#
+# Combined coverage: 14:00 UTC through 03:00 UTC next day, Mon-Fri Houston.
+# That's two cron expressions:
+#   1. */30 14-23 * * 1-5  — afternoons / evenings UTC, Mon-Fri (= Houston same day)
+#   2. */30 0-2 * * 2-6    — early UTC, Tue-Sat (= Houston Mon-Fri evening crossover)
+#
+# Roughly 26 runs per business day = ~130/week. Each run ~30 sec. Stays
+# well within GitHub Actions' free public-repo allotment.
+
+on:
+  schedule:
+    - cron: "*/30 14-23 * * 1-5"
+    - cron: "*/30 0-2 * * 2-6"
+  workflow_dispatch:  # allow manual run from GitHub UI
+
+# Avoid concurrent runs (which can race on the IMAP connection)
+concurrency:
+  group: hot-lead-watcher
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run watcher
+        run: python scripts/hot_lead_watcher.py
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          NOTIFY_TO_EMAIL: ${{ secrets.NOTIFY_TO_EMAIL }}
