@@ -12,7 +12,6 @@ export const howToChooseHoustonHomeCare: Article = {
     name: 'WeCarely Editorial',
     role: 'Independent home care directory',
   },
-  readingMinutes: 9,
   topic: 'Decision guide',
   body: () => (
     <>

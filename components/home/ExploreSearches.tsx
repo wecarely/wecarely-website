@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { CITIES as CITY_REGISTRY } from '@/lib/cities';
 
 /**
  * Yelp-style "Explore searches in popular cities" — city pill tabs at top,
- * grouped search shortcuts below. Houston is live; other cities are placeholders
- * until launched. To add a new city: append to CITIES with status: 'live' and a
- * groups array (use buildGroups(slug) for the standard template).
+ * grouped search shortcuts below. Live/coming-soon status comes from the
+ * shared CITIES registry (lib/cities.ts) so the Header dropdown stays in sync.
+ * The popular-search groups are local: they only apply to live cities.
  */
 
 interface SearchLink {
@@ -103,15 +104,11 @@ function buildGroups(citySlug: string): Group[] {
   ];
 }
 
-const CITIES: City[] = [
-  { slug: 'houston',     name: 'Houston',     status: 'live',         groups: buildGroups('houston') },
-  { slug: 'dallas',      name: 'Dallas',      status: 'coming-soon' },
-  { slug: 'austin',      name: 'Austin',      status: 'coming-soon' },
-  { slug: 'san-antonio', name: 'San Antonio', status: 'coming-soon' },
-  { slug: 'fort-worth',  name: 'Fort Worth',  status: 'coming-soon' },
-  { slug: 'el-paso',     name: 'El Paso',     status: 'coming-soon' },
-  { slug: 'arlington',   name: 'Arlington',   status: 'coming-soon' },
-];
+const CITIES: City[] = CITY_REGISTRY.map((c) =>
+  c.status === 'live'
+    ? { ...c, groups: buildGroups(c.slug) }
+    : { ...c }
+);
 
 export function ExploreSearches() {
   const [activeSlug, setActiveSlug] = useState<string>('houston');

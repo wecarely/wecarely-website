@@ -73,8 +73,6 @@ export default function BlogIndexPage() {
                         month: 'short',
                         day: 'numeric',
                       })}
-                      <span className="mx-1.5 text-[var(--ink-4)]" aria-hidden>·</span>
-                      {a.readingMinutes} min
                     </time>
                   </div>
                   <div>

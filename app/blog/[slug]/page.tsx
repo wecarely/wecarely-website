@@ -140,8 +140,6 @@ export default async function ArticlePage({ params }: PageProps) {
             </span>
             <span className="text-[var(--ink-4)]" aria-hidden>·</span>
             <time dateTime={article.publishedAt}>{publishedDisplay}</time>
-            <span className="text-[var(--ink-4)]" aria-hidden>·</span>
-            <span>{article.readingMinutes} min read</span>
           </div>
         </div>
       </section>

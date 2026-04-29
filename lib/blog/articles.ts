@@ -13,8 +13,6 @@ export interface Article {
   publishedAt: string;
   updatedAt: string;
   author: ArticleAuthor;
-  /** Reading-time minutes, rounded. */
-  readingMinutes: number;
   /** One-line topic label shown in eyebrow + index card. */
   topic: string;
   /** Article body — rendered inside <article className="prose-wecarely">. */
