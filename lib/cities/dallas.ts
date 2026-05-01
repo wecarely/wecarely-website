@@ -11,8 +11,8 @@ export const DALLAS_CONFIG: CityConfig = {
   slug: 'dallas',
   name: 'Dallas',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
-    "We're building Dallas next. Same approach as Houston — every Medicare-licensed home care agency, ranked by CMS clinical stars and Google reviews, no lead-gen.",
+    'Every Medicare-certified home care agency in Dallas — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.',
   neighborhoods: [],
 };
