@@ -28,7 +28,7 @@ export function Footer() {
             Our pledge
           </span>
           <span className="eyebrow" style={{ color: 'inherit' }}>
-            § 01 — Houston, TX
+            § 01 — Houston &amp; Dallas, TX
           </span>
         </div>
 
@@ -113,7 +113,7 @@ export function Footer() {
             letterSpacing: '0.05em',
           }}
         >
-          <span>WeCarely · Indexed in Houston · © 2026</span>
+          <span>WeCarely · Houston &amp; Dallas, TX · © 2026</span>
           <span>Not a medical service · Data: CMS &amp; Google</span>
         </div>
       </div>
