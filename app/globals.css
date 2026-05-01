@@ -212,6 +212,30 @@ body {
   .result-card {
     grid-template-columns: 120px 1fr;
     gap: 16px;
+    padding: 22px 22px;
+  }
+}
+
+/* Phones: shrink tile + tighten layout so the agency name doesn't get
+ * compressed into a one-word-per-line column. LetterTile hardcodes
+ * size={180}; we override visually here for narrow viewports. */
+@media (max-width: 560px) {
+  .result-card {
+    grid-template-columns: 72px 1fr;
+    gap: 14px;
+    padding: 18px 18px;
+  }
+  .result-card .letter-tile {
+    width: 72px !important;
+    height: 72px !important;
+    align-self: start;
+  }
+  .result-card .letter-tile span {
+    font-size: 30px !important;
+  }
+  .result-card .result-info h3 {
+    font-size: 18px !important;
+    line-height: 1.2 !important;
   }
 }
 
