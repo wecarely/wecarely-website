@@ -174,7 +174,7 @@ export function HeroCarousel() {
             className="font-mono uppercase tracking-[0.16em] text-[11px] font-semibold mb-5"
             style={{ color: 'rgba(255,255,255,0.78)' }}
           >
-            An honest home care directory · Houston, TX
+            An honest home care directory · Houston &amp; Dallas, TX
           </p>
 
           <h1

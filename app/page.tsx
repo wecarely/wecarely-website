@@ -240,7 +240,7 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-20 text-center">
           <p className="eyebrow mb-5">Start here</p>
           <h2
-            className="font-display text-[var(--ink)] mb-7 max-w-[20ch] mx-auto"
+            className="font-display text-[var(--ink)] mb-10 max-w-[22ch] mx-auto"
             style={{
               fontSize: 'clamp(28px, 3.6vw, 40px)',
               lineHeight: 1.1,
@@ -248,19 +248,55 @@ export default async function HomePage() {
               fontWeight: 400,
             }}
           >
-            Find a home care agency in Houston that fits your family.
+            Find a home care agency that fits your family.
           </h2>
-          <Link
-            href="/houston"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] bg-[var(--ink)] text-white font-medium hover:bg-black/90 transition-colors"
-            style={{ fontSize: 15 }}
-          >
-            Browse {houstonCount} Houston agencies
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </Link>
+          <div className="grid sm:grid-cols-2 gap-4 max-w-[560px] mx-auto">
+            {/* Houston card */}
+            <Link
+              href="/houston"
+              className="group flex flex-col items-start text-left border border-[var(--line)] rounded-[12px] p-6 hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.10)] transition-all bg-white"
+            >
+              <p className="font-mono text-[11px] text-[var(--ink-3)] mb-2 tracking-[0.08em] uppercase">TX</p>
+              <p
+                className="font-display text-[var(--ink)] mb-1 group-hover:text-[var(--accent-on)] transition-colors"
+                style={{ fontSize: 22, fontWeight: 500 }}
+              >
+                Houston
+              </p>
+              <p className="font-mono text-[13px] text-[var(--ink-3)] tabular-nums mb-4">
+                {houstonCount} agencies
+              </p>
+              <span className="mt-auto inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--ink)]">
+                Browse
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+
+            {/* Dallas card */}
+            <Link
+              href="/dallas"
+              className="group flex flex-col items-start text-left border border-[var(--line)] rounded-[12px] p-6 hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.10)] transition-all bg-white"
+            >
+              <p className="font-mono text-[11px] text-[var(--ink-3)] mb-2 tracking-[0.08em] uppercase">TX</p>
+              <p
+                className="font-display text-[var(--ink)] mb-1 group-hover:text-[var(--accent-on)] transition-colors"
+                style={{ fontSize: 22, fontWeight: 500 }}
+              >
+                Dallas
+              </p>
+              <p className="font-mono text-[13px] text-[var(--ink-3)] tabular-nums mb-4">
+                {dallasCount} agencies
+              </p>
+              <span className="mt-auto inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--ink)]">
+                Browse
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
     </>
