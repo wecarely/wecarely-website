@@ -26,7 +26,7 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const COMING_SOON = ['Dallas', 'Austin', 'San Antonio', 'Fort Worth'];
+const COMING_SOON = ['Austin', 'San Antonio', 'Fort Worth'];
 
 async function getHoustonCount(): Promise<number> {
   try {
@@ -41,9 +41,23 @@ async function getHoustonCount(): Promise<number> {
   }
 }
 
+async function getDallasCount(): Promise<number> {
+  try {
+    const sb = createServerClient();
+    const { count } = await sb
+      .from('agencies')
+      .select('id', { count: 'exact', head: true })
+      .ilike('city', 'dallas');
+    return count ?? 0;
+  } catch {
+    return 137;
+  }
+}
+
 export default async function HomePage() {
-  const [houstonCount, sponsors] = await Promise.all([
+  const [houstonCount, dallasCount, sponsors] = await Promise.all([
     getHoustonCount(),
+    getDallasCount(),
     getSponsoredAgencies('houston'),
   ]);
 
@@ -104,32 +118,56 @@ export default async function HomePage() {
       <section className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14">
           <p className="eyebrow mb-6">Coverage</p>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 items-baseline">
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 items-start">
             <div>
               <p
-                className="font-display text-[var(--ink-3)] mb-1"
+                className="font-display text-[var(--ink-3)] mb-3"
                 style={{ fontSize: 14, fontWeight: 500 }}
               >
                 Now serving
               </p>
-              <p
-                className="font-display text-[var(--ink)]"
-                style={{ fontSize: 28, fontWeight: 500 }}
-              >
-                Houston, TX{' '}
-                <span className="text-[var(--ink-3)] font-mono text-[16px] tabular-nums">
-                  {houstonCount}
-                </span>
-              </p>
-              <p className="mt-1 text-[14px] text-[var(--ink-2)] max-w-md">
-                All licensed home care agencies in Harris County.{' '}
-                <Link
-                  href="/houston"
-                  className="text-[var(--ink)] underline underline-offset-3"
-                >
-                  Browse →
-                </Link>
-              </p>
+              <div className="space-y-4">
+                <div>
+                  <p
+                    className="font-display text-[var(--ink)]"
+                    style={{ fontSize: 26, fontWeight: 500 }}
+                  >
+                    Houston, TX{' '}
+                    <span className="text-[var(--ink-3)] font-mono text-[15px] tabular-nums">
+                      {houstonCount}
+                    </span>
+                  </p>
+                  <p className="mt-0.5 text-[13.5px] text-[var(--ink-2)]">
+                    All licensed agencies in Harris County.{' '}
+                    <Link
+                      href="/houston"
+                      className="text-[var(--ink)] underline underline-offset-3"
+                    >
+                      Browse →
+                    </Link>
+                  </p>
+                </div>
+                <div>
+                  <p
+                    className="font-display text-[var(--ink)]"
+                    style={{ fontSize: 26, fontWeight: 500 }}
+                  >
+                    Dallas, TX{' '}
+                    <span className="text-[var(--ink-3)] font-mono text-[15px] tabular-nums">
+                      {dallasCount}
+                    </span>
+                  </p>
+                  <p className="mt-0.5 text-[13.5px] text-[var(--ink-2)]">
+                    All licensed agencies in Dallas County.{' '}
+                    <Link
+                      href="/dallas"
+                      className="text-[var(--ink)] underline underline-offset-3"
+                    >
+                      Browse →
+                    </Link>
+                  </p>
+                </div>
+              </div>
             </div>
             <div>
               <p
