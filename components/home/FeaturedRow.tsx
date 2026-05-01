@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getHoustonAgencies } from '@/lib/supabase/queries';
+import { getAgenciesByCity } from '@/lib/supabase/queries';
 import { LetterTile } from '@/components/agency/LetterTile';
 import { StarRating } from '@/components/agency/StarRating';
 
@@ -7,11 +7,16 @@ import { StarRating } from '@/components/agency/StarRating';
  * Yelp-style "Best of" featured row — top 4 agencies by trust score.
  * Server component, fetches at request time.
  *
- * Reuses LetterTile + StarRating but renders a more compact
- * card variant suitable for a 4-column row.
+ * Currently rendered on the home page anchored to Houston (our flagship
+ * city). When other cities mature we can either rotate cities here or
+ * make this a per-city component.
  */
 export async function FeaturedRow() {
-  const agencies = await getHoustonAgencies({ filters: { lang: [], ins: [], svc: [] } });
+  const FEATURED_CITY = 'houston';
+  const agencies = await getAgenciesByCity({
+    citySlug: FEATURED_CITY,
+    filters: { lang: [], ins: [], svc: [] },
+  });
   const top = agencies.slice(0, 4);
   if (top.length === 0) return null;
 
@@ -42,7 +47,7 @@ export async function FeaturedRow() {
           {top.map((a, i) => (
             <Link
               key={a.id}
-              href={`/houston/${a.slug}`}
+              href={`/${(a.city ?? FEATURED_CITY).toLowerCase()}/${a.slug}`}
               className="group block bg-white border border-[var(--line)] rounded-[10px] p-5 hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.08)] transition-all"
             >
               <div className="flex items-start gap-3 mb-3">

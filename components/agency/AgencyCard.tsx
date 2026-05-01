@@ -54,12 +54,15 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
   // We don't have place_id stored, so we approximate via name + city.
   const googleQuery = encodeURIComponent(`${agency.name} ${agency.city ?? 'Houston'} TX`);
   const googleUrl = `https://www.google.com/search?q=${googleQuery}`;
+  // Derive the city slug from the agency record (DB stores city as
+  // e.g. "HOUSTON" — lowercase for URL). Fallback covers older rows.
+  const citySlug = (agency.city ?? 'houston').toLowerCase();
 
   return (
     <article className="result-card group">
       {/* Stretched link — entire card target */}
       <Link
-        href={`/houston/${agency.slug}`}
+        href={`/${citySlug}/${agency.slug}`}
         aria-label={agency.name}
         className="absolute inset-0 rounded-[12px] z-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ink)] focus-visible:ring-offset-2"
       />

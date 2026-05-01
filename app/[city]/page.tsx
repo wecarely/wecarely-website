@@ -1,39 +1,23 @@
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getHoustonAgencies, getSponsoredAgencies } from '@/lib/supabase/queries';
+import {
+  getAgenciesByCity,
+  getSponsoredAgencies,
+  getCityAgencyCount,
+} from '@/lib/supabase/queries';
 import { parseFilterParams } from '@/lib/utils/filter-params';
 import { FilterBar } from '@/components/filters/FilterBar';
 import { AgencyList } from '@/components/agency/AgencyList';
 import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { HeroSearch } from '@/components/HeroSearch';
+import { getCityConfig, LIVE_CITIES } from '@/lib/cities';
 
 export const dynamic = 'force-dynamic';
 
 const SITE_URL = 'https://www.wecarely.com';
 
-export const metadata: Metadata = {
-  title: 'Home Care Agencies in Houston, TX | WeCarely',
-  description:
-    'Every Medicare-licensed home care agency in Houston, ranked by CMS clinical stars and Google reviews. No lead-gen, no advisor calls — just an honest directory.',
-  alternates: { canonical: `${SITE_URL}/houston` },
-  openGraph: {
-    title: 'Home Care Agencies in Houston, TX | WeCarely',
-    description:
-      'Every Medicare-licensed home care agency in Houston, ranked by CMS clinical stars and Google reviews.',
-    url: `${SITE_URL}/houston`,
-    type: 'website',
-    siteName: 'WeCarely',
-    images: [{ url: '/og.png', width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Home Care Agencies in Houston, TX | WeCarely',
-    description:
-      'Every Medicare-licensed home care agency in Houston, ranked by CMS clinical stars and Google reviews.',
-    images: ['/og.png'],
-  },
-};
-
 interface PageProps {
+  params: Promise<{ city: string }>;
   searchParams: Promise<{
     lang?: string;
     ins?: string;
@@ -43,7 +27,47 @@ interface PageProps {
   }>;
 }
 
-export default async function HoustonPage({ searchParams }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { city: citySlug } = await params;
+  const city = getCityConfig(citySlug);
+  if (!city || city.status !== 'live') {
+    return { title: 'City not found — WeCarely' };
+  }
+
+  const title = `Home Care Agencies in ${city.name}, ${city.state} | WeCarely`;
+  const description = city.intro;
+  const url = `${SITE_URL}/${city.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'website',
+      siteName: 'WeCarely',
+      images: [{ url: '/og.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/og.png'],
+    },
+  };
+}
+
+export function generateStaticParams() {
+  return LIVE_CITIES.map((c) => ({ city: c.slug }));
+}
+
+export default async function CityPage({ params, searchParams }: PageProps) {
+  const { city: citySlug } = await params;
+  const city = getCityConfig(citySlug);
+  if (!city || city.status !== 'live') notFound();
+
   const sp = await searchParams;
   const urlParams = new URLSearchParams();
   if (sp.lang) urlParams.set('lang', sp.lang);
@@ -51,9 +75,10 @@ export default async function HoustonPage({ searchParams }: PageProps) {
   if (sp.svc) urlParams.set('svc', sp.svc);
 
   const filters = parseFilterParams(urlParams);
-  const [agencies, sponsors] = await Promise.all([
-    getHoustonAgencies({ filters, query: sp.q }),
-    getSponsoredAgencies(),
+  const [agencies, sponsors, totalCount] = await Promise.all([
+    getAgenciesByCity({ citySlug, filters, query: sp.q }),
+    getSponsoredAgencies(citySlug),
+    getCityAgencyCount(citySlug),
   ]);
   const totalActive =
     filters.lang.length + filters.ins.length + filters.svc.length;
@@ -65,7 +90,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
       {/* HERO */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 pt-20 pb-16 lg:pt-28 lg:pb-20">
-          <span className="eyebrow">Houston home care directory</span>
+          <span className="eyebrow">{city.name} home care directory</span>
 
           <h1
             className="font-display mt-5 text-[var(--ink)] max-w-[20ch]"
@@ -76,7 +101,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
               fontWeight: 400,
             }}
           >
-            Houston home care,{' '}
+            {city.name} home care,{' '}
             <em className="italic" style={{ fontWeight: 400 }}>
               honestly
             </em>{' '}
@@ -84,9 +109,9 @@ export default async function HoustonPage({ searchParams }: PageProps) {
           </h1>
 
           <p className="mt-7 max-w-[58ch] text-[16px] leading-[1.6] text-[var(--ink-2)]">
-            Every home care agency licensed in Houston, in one place. Filter by
-            language, insurance, and the kind of care you need. Free to browse —
-            no sign-up required.
+            Every home care agency licensed in {city.name}, in one place. Filter
+            by language, insurance, and the kind of care you need. Free to
+            browse — no sign-up required.
           </p>
 
           {/* Stat anchor + search bar */}
@@ -101,7 +126,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
                   lineHeight: 1,
                 }}
               >
-                259
+                {totalCount}
               </div>
               <div className="eyebrow mt-1.5">Agencies indexed</div>
             </div>
@@ -111,18 +136,16 @@ export default async function HoustonPage({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* SPONSORED CAROUSEL — real sponsors + placeholder fillers up to 4 */}
+      {/* SPONSORED CAROUSEL */}
       <SponsoredCarousel sponsors={sponsors} />
 
       {/* MAIN: 2-col layout — sidebar + results */}
       <section className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12">
         <div className="grid lg:grid-cols-[260px_1fr] gap-x-10 gap-y-10">
-          {/* Sidebar */}
           <aside className="lg:sticky lg:top-7 lg:self-start lg:max-h-[calc(100vh-3.5rem)] lg:overflow-y-auto pr-2">
             <FilterBar />
           </aside>
 
-          {/* Results */}
           <div>
             <div className="flex items-baseline justify-between mb-7 pb-5 border-b border-[var(--line)]">
               <p className="text-[var(--ink-2)] flex items-baseline gap-2.5">
@@ -133,7 +156,7 @@ export default async function HoustonPage({ searchParams }: PageProps) {
                   {agencies.length}
                 </span>
                 <span className="font-display text-[var(--ink-2)]" style={{ fontSize: 22 }}>
-                  Houston {agencies.length === 1 ? 'agency' : 'agencies'}
+                  {city.name} {agencies.length === 1 ? 'agency' : 'agencies'}
                   {hasQuery && (
                     <span className="text-[var(--ink-3)]">
                       {' '}matching &ldquo;{sp.q}&rdquo;

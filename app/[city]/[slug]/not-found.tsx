@@ -14,20 +14,20 @@ export default function AgencyNotFound() {
             fontWeight: 400,
           }}
         >
-          That agency isn&apos;t in our Houston directory.
+          That agency isn&apos;t in our directory.
         </h1>
         <p className="text-[15px] text-[var(--ink-2)] mb-10 leading-relaxed">
-          It may have changed names, closed, or never been licensed in Harris
-          County. We list every Medicare-certified home care agency from CMS —
+          It may have changed names, closed, or never been licensed in this
+          area. We list every Medicare-certified home care agency from CMS —
           if you think one is missing, let us know.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link
-            href="/houston"
+            href="/"
             className="inline-flex items-center gap-2 px-5 py-3 rounded-[10px] bg-[var(--ink)] text-white font-medium hover:bg-black/90 transition-colors"
             style={{ fontSize: 14.5 }}
           >
-            Browse Houston directory
+            Back to WeCarely home
           </Link>
           <a
             href="mailto:hello@wecarely.com?subject=Missing%20agency"

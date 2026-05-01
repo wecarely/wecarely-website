@@ -15,23 +15,27 @@ const SELECT_COLUMNS = `
 `;
 
 interface QueryArgs {
+  citySlug: string;
   filters: FilterState;
   query?: string | null;
 }
 
 /**
- * Fetch Houston agencies, optionally filtered by user-selected booleans
+ * Fetch agencies in a city, optionally filtered by user-selected booleans
  * and/or free-text query (substring match against name + ai_summary).
  * Sorted by trust_score DESC.
+ *
+ * citySlug is matched case-insensitively against the agencies.city column
+ * (DB stores 'HOUSTON', 'DALLAS', etc.; we pass slugs like 'houston').
  */
-export async function getHoustonAgencies(args: QueryArgs): Promise<Agency[]> {
+export async function getAgenciesByCity(args: QueryArgs): Promise<Agency[]> {
   const sb = createServerClient();
   const columns = filterParamsToColumns(args.filters);
 
   let query = sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', 'houston')
+    .ilike('city', args.citySlug)
     .order('trust_score', { ascending: false, nullsFirst: false });
 
   for (const col of columns) {
@@ -48,22 +52,22 @@ export async function getHoustonAgencies(args: QueryArgs): Promise<Agency[]> {
 
   const { data, error } = await query;
   if (error) {
-    console.error('[getHoustonAgencies]', error);
+    console.error('[getAgenciesByCity]', error);
     return [];
   }
   return (data ?? []) as unknown as Agency[];
 }
 
 /**
- * Fetch a single Houston agency by slug. Returns null if not found.
- * Used by /houston/[slug] detail pages.
+ * Fetch a single agency by slug within a city. Returns null if not found.
+ * Scoping by city avoids cross-city slug collisions.
  */
-export async function getAgencyBySlug(slug: string): Promise<Agency | null> {
+export async function getAgencyBySlug(citySlug: string, slug: string): Promise<Agency | null> {
   const sb = createServerClient();
   const { data, error } = await sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', 'houston')
+    .ilike('city', citySlug)
     .eq('slug', slug)
     .maybeSingle();
 
@@ -75,20 +79,17 @@ export async function getAgencyBySlug(slug: string): Promise<Agency | null> {
 }
 
 /**
- * Fetch Houston agencies whose ZIP falls within a given list. Used by
- * neighborhood landing pages (`/houston/area/{slug}`) to render an
+ * Fetch agencies in a city whose ZIP is in the given list. Used by
+ * neighborhood landing pages (`/{city}/area/{slug}`) to render an
  * area-filtered listing without query params (clean URL for SEO).
- *
- * Sorted by trust_score DESC. ZIP set is small (typically 2-4 ZIPs),
- * so PostgREST `in.()` operator is efficient.
  */
-export async function getAgenciesByZips(zips: string[]): Promise<Agency[]> {
+export async function getAgenciesByZips(citySlug: string, zips: string[]): Promise<Agency[]> {
   if (zips.length === 0) return [];
   const sb = createServerClient();
   const { data, error } = await sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', 'houston')
+    .ilike('city', citySlug)
     .in('zip', zips)
     .order('trust_score', { ascending: false, nullsFirst: false });
 
@@ -100,18 +101,17 @@ export async function getAgenciesByZips(zips: string[]): Promise<Agency[]> {
 }
 
 /**
- * Fetch active sponsored agencies in Houston, ordered by sponsor_priority
- * (1 = top slot, 2 = second, etc.). Used by SponsoredCarousel on / and
- * /houston to render real sponsors mixed with placeholder slots.
+ * Fetch active sponsored agencies in a city, ordered by sponsor_priority
+ * (1 = top slot, 2 = second, etc.). Used by SponsoredCarousel.
  *
  * Returns 0 to 4 sponsors. Caller pads with placeholder slots up to 4 total.
  */
-export async function getSponsoredAgencies(): Promise<Agency[]> {
+export async function getSponsoredAgencies(citySlug: string): Promise<Agency[]> {
   const sb = createServerClient();
   const { data, error } = await sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', 'houston')
+    .ilike('city', citySlug)
     .eq('is_sponsored', true)
     .order('sponsor_priority', { ascending: true, nullsFirst: false })
     .limit(4);
@@ -124,18 +124,37 @@ export async function getSponsoredAgencies(): Promise<Agency[]> {
 }
 
 /**
- * Fetch slugs of all Houston agencies. Used by sitemap.ts to generate
- * /houston/[slug] URLs for every indexed agency.
+ * Total agency count for a city (unfiltered). Used by city landing page
+ * hero stat ("259 agencies indexed") so the number stays correct as
+ * data grows or new cities go live.
  */
-export async function getAllHoustonSlugs(): Promise<string[]> {
+export async function getCityAgencyCount(citySlug: string): Promise<number> {
+  const sb = createServerClient();
+  const { count, error } = await sb
+    .from('agencies')
+    .select('*', { count: 'exact', head: true })
+    .ilike('city', citySlug);
+
+  if (error) {
+    console.error('[getCityAgencyCount]', error);
+    return 0;
+  }
+  return count ?? 0;
+}
+
+/**
+ * Fetch slugs of all agencies in a city. Used by sitemap.ts to generate
+ * /{city}/{slug} URLs for every indexed agency.
+ */
+export async function getAllSlugsByCity(citySlug: string): Promise<string[]> {
   const sb = createServerClient();
   const { data, error } = await sb
     .from('agencies')
     .select('slug')
-    .ilike('city', 'houston');
+    .ilike('city', citySlug);
 
   if (error) {
-    console.error('[getAllHoustonSlugs]', error);
+    console.error('[getAllSlugsByCity]', error);
     return [];
   }
   return (data ?? []).map((r) => r.slug as string).filter(Boolean);

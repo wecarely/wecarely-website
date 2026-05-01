@@ -253,9 +253,11 @@ function SponsoredCard({
     agency.ai_summary ??
     'Featured Houston home care agency.';
 
+  const citySlug = (agency.city ?? 'houston').toLowerCase();
+
   return (
     <Link
-      href={`/houston/${agency.slug}`}
+      href={`/${citySlug}/${agency.slug}`}
       onClick={() => trackSponsoredClick(agency.slug, position)}
       className="snap-start shrink-0 w-[280px] bg-white border rounded-[10px] p-5 transition-all hover:border-[var(--ink)] hover:shadow-[0_8px_24px_-10px_rgba(10,10,10,0.12)] flex flex-col"
       style={{ borderColor: 'var(--line-strong)' }}

@@ -4,28 +4,32 @@ import type { Metadata } from 'next';
 import { getAgencyBySlug } from '@/lib/supabase/queries';
 import { LetterTile } from '@/components/agency/LetterTile';
 import { StarRating } from '@/components/agency/StarRating';
-import { neighborhoodForZip } from '@/lib/houston/neighborhoods';
+import { getCityConfig, neighborhoodForZip } from '@/lib/cities';
 
 export const dynamic = 'force-dynamic';
 
 const SITE_URL = 'https://www.wecarely.com';
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ city: string; slug: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const agency = await getAgencyBySlug(slug);
+  const { city: citySlug, slug } = await params;
+  const city = getCityConfig(citySlug);
+  if (!city || city.status !== 'live') {
+    return { title: 'Agency not found — WeCarely' };
+  }
+  const agency = await getAgencyBySlug(citySlug, slug);
   if (!agency) {
     return { title: 'Agency not found — WeCarely' };
   }
 
-  const title = `${agency.name} — Home Care in Houston, TX | WeCarely`;
+  const title = `${agency.name} — Home Care in ${city.name}, ${city.state} | WeCarely`;
   const description = agency.ai_summary
     ? agency.ai_summary.slice(0, 160)
-    : `${agency.name} is a home care agency in Houston, TX. View CMS clinical ratings, Google reviews, services, and contact info on WeCarely.`;
-  const url = `${SITE_URL}/houston/${agency.slug}`;
+    : `${agency.name} is a home care agency in ${city.name}, ${city.state}. View CMS clinical ratings, Google reviews, services, and contact info on WeCarely.`;
+  const url = `${SITE_URL}/${city.slug}/${agency.slug}`;
 
   return {
     title,
@@ -44,13 +48,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function AgencyDetailPage({ params }: PageProps) {
-  const { slug } = await params;
-  const agency = await getAgencyBySlug(slug);
+  const { city: citySlug, slug } = await params;
+  const city = getCityConfig(citySlug);
+  if (!city || city.status !== 'live') notFound();
+  const agency = await getAgencyBySlug(citySlug, slug);
   if (!agency) notFound();
 
-  // Look up the agency's neighborhood (if its ZIP maps to one of our
-  // curated Houston areas). Used for breadcrumb-like internal link.
-  const area = neighborhoodForZip(agency.zip);
+  const area = neighborhoodForZip(citySlug, agency.zip);
 
   const languages = [
     agency.has_spanish && 'Spanish',
@@ -80,9 +84,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
     agency.google_reviews_count != null &&
     agency.google_reviews_count > 0;
 
-  // CMS provider number is encoded as the trailing digits in the slug
-  // (e.g. "total-home-care-inc-459406" → "459406"). Use it to deep-link
-  // into CMS Care Compare for the verified-license badge.
   const ccn = agency.slug.match(/-(\d+)$/)?.[1] ?? null;
   const cmsCompareUrl = ccn
     ? `https://www.medicare.gov/care-compare/details/home-health/${ccn}`
@@ -90,13 +91,10 @@ export default async function AgencyDetailPage({ params }: PageProps) {
 
   const fullAddress = [
     agency.address,
-    `Houston, TX${agency.zip ? ` ${agency.zip}` : ''}`,
+    `${city.name}, ${city.state}${agency.zip ? ` ${agency.zip}` : ''}`,
   ]
     .filter(Boolean)
     .join(', ');
-  // Geocode by address only (not name + address). Many home-care agencies
-  // operate as DBA / different brand on Google Maps, so name-based queries
-  // miss the pin. Address-only always resolves to the building.
   const hasMappableAddress = Boolean(agency.address);
   const mapsQuery = encodeURIComponent(fullAddress);
   const mapsEmbedSrc = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
@@ -105,15 +103,15 @@ export default async function AgencyDetailPage({ params }: PageProps) {
   const schemaJson = {
     '@context': 'https://schema.org',
     '@type': 'MedicalBusiness',
-    '@id': `${SITE_URL}/houston/${agency.slug}#org`,
+    '@id': `${SITE_URL}/${city.slug}/${agency.slug}#org`,
     name: agency.name,
-    url: agency.website || `${SITE_URL}/houston/${agency.slug}`,
+    url: agency.website || `${SITE_URL}/${city.slug}/${agency.slug}`,
     ...(agency.phone ? { telephone: agency.phone } : {}),
     address: {
       '@type': 'PostalAddress',
       ...(agency.address ? { streetAddress: agency.address } : {}),
-      addressLocality: 'Houston',
-      addressRegion: 'TX',
+      addressLocality: city.name,
+      addressRegion: city.state,
       ...(agency.zip ? { postalCode: agency.zip } : {}),
       addressCountry: 'US',
     },
@@ -147,13 +145,13 @@ export default async function AgencyDetailPage({ params }: PageProps) {
       <div className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-4">
           <Link
-            href="/houston"
+            href={`/${city.slug}`}
             className="inline-flex items-center gap-1.5 text-[12.5px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline"
           >
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <path d="m15 18-6-6 6-6" />
             </svg>
-            All Houston agencies
+            All {city.name} agencies
           </Link>
         </div>
       </div>
@@ -161,35 +159,25 @@ export default async function AgencyDetailPage({ params }: PageProps) {
       {/* TWO-COLUMN BODY */}
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-10 lg:py-14">
         <div className="grid lg:grid-cols-[1fr_340px] gap-x-12 gap-y-10 items-start">
-          {/* MAIN COLUMN */}
           <div className="min-w-0">
-            {/* Header: tile/logo + name + verified badge */}
             <div className="flex items-start gap-5 mb-7">
               {agency.is_sponsored && agency.sponsor_logo_url ? (
                 <div
                   className="rounded-[10px] overflow-hidden bg-white border flex items-center justify-center shrink-0"
-                  style={{
-                    width: 72,
-                    height: 72,
-                    borderColor: 'var(--line)',
-                  }}
+                  style={{ width: 72, height: 72, borderColor: 'var(--line)' }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={agency.sponsor_logo_url}
                     alt={`${agency.name} logo`}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                    }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                   />
                 </div>
               ) : (
                 <LetterTile name={agency.name} size={72} fontSize={28} />
               )}
               <div className="flex-1 min-w-0">
-                <p className="eyebrow mb-2">Houston · TX home care</p>
+                <p className="eyebrow mb-2">{city.name} · {city.state} home care</p>
                 <div className="flex items-start flex-wrap gap-x-3 gap-y-2">
                   <h1
                     className="font-display text-[var(--ink)] leading-tight"
@@ -216,11 +204,10 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                   )}
                 </div>
                 <p className="mt-2 text-[14.5px] text-[var(--ink-2)]">
-                  {agency.address ? `${agency.address} · ` : ''}Houston, TX
+                  {agency.address ? `${agency.address} · ` : ''}{city.name}, {city.state}
                   {agency.zip ? ` ${agency.zip}` : ''}
                 </p>
 
-                {/* Sponsor tagline (premium-tier prominence) */}
                 {agency.is_sponsored && agency.sponsor_tagline && (
                   <p
                     className="mt-3 text-[var(--ink)] max-w-[60ch]"
@@ -230,17 +217,13 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                   </p>
                 )}
 
-                {/* CMS Verified License badge */}
                 {ccn && (
                   <a
                     href={cmsCompareUrl ?? '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[6px] border text-[12px] hover:border-[var(--ink)] transition-colors"
-                    style={{
-                      borderColor: 'var(--line-strong)',
-                      color: 'var(--ink-2)',
-                    }}
+                    style={{ borderColor: 'var(--line-strong)', color: 'var(--ink-2)' }}
                     title="View on Medicare Care Compare"
                   >
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -253,7 +236,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Trust ratings */}
             {(agency.medicare_star != null || hasGoogleReviews) && (
               <div className="flex flex-wrap gap-x-10 gap-y-4 mb-10 pb-10 border-b border-[var(--line)]">
                 {agency.medicare_star != null && (
@@ -291,7 +273,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* AI Summary */}
             {agency.ai_summary && (
               <div className="mb-10">
                 <p className="eyebrow mb-4">Overview</p>
@@ -304,7 +285,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Quick facts */}
             <div className="mb-10 pt-10 border-t border-[var(--line)]">
               <div className="grid sm:grid-cols-3 gap-x-8 gap-y-8">
                 <FactBlock
@@ -324,7 +304,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Map — only render when we have a street address */}
             {hasMappableAddress && (
               <div className="pt-10 border-t border-[var(--line)]">
                 <p className="eyebrow mb-4">Location</p>
@@ -356,7 +335,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Sources disclaimer */}
             <p className="mt-12 text-[12px] text-[var(--ink-3)] max-w-[60ch] leading-relaxed">
               Information is sourced from CMS Home Health Compare and Google
               Business — published exactly as it appears in the source data.
@@ -365,15 +343,10 @@ export default async function AgencyDetailPage({ params }: PageProps) {
             </p>
           </div>
 
-          {/* STICKY SIDEBAR */}
           <aside className="lg:sticky lg:top-6">
             <div className="rounded-[12px] border border-[var(--line-strong)] bg-white p-5 lg:p-6 space-y-4">
-              {/* Phone — primary CTA */}
               {agency.phone && (
-                <a
-                  href={`tel:${phoneTel}`}
-                  className="block group"
-                >
+                <a href={`tel:${phoneTel}`} className="block group">
                   <p className="eyebrow mb-1.5">Phone</p>
                   <p
                     className="font-display text-[var(--ink)] tabular-nums group-hover:text-[var(--accent-on)] transition-colors"
@@ -390,7 +363,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                 </a>
               )}
 
-              {/* Website */}
               {agency.website && (
                 <a
                   href={agency.website}
@@ -415,7 +387,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                 </a>
               )}
 
-              {/* Directions */}
               {(agency.address || agency.zip) && (
                 <a
                   href={mapsDirectionsUrl}
@@ -437,8 +408,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
                 </a>
               )}
 
-              {/* Hours — sponsor-supplied takes priority over Google;
-                  fall back to Google Business hours (74% of agencies have them) */}
               {(() => {
                 const hoursSource =
                   agency.is_sponsored && agency.sponsor_hours
@@ -489,7 +458,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               })()}
             </div>
 
-            {/* Source attribution mini-card */}
             <div className="mt-4 px-1 text-[11.5px] text-[var(--ink-3)] leading-relaxed">
               Data: CMS Home Health Compare · Google Business
               <br />
@@ -499,13 +467,11 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* RELATED AREA — internal link strengthens neighborhood SEO + helps
-          family see other agencies near this one */}
       {area && (
         <section className="border-t border-[var(--line)]">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-8">
             <Link
-              href={`/houston/area/${area.slug}`}
+              href={`/${city.slug}/area/${area.slug}`}
               className="inline-flex items-baseline gap-2 text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline"
             >
               <span className="eyebrow">More in</span>
@@ -524,7 +490,6 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      {/* CLAIM LISTING (only for non-sponsors — sponsors already have full control) */}
       {!agency.is_sponsored && (
         <section className="border-t border-[var(--line)] bg-[var(--bg-soft)]">
           <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-10">
@@ -545,7 +510,7 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
               <a
                 href={`mailto:hello@wecarely.com?subject=${encodeURIComponent(`Claim listing — ${agency.name}`)}&body=${encodeURIComponent(
-                  `I'd like to claim this listing on WeCarely:\n\nAgency: ${agency.name}\nListing URL: ${SITE_URL}/houston/${agency.slug}\nCMS provider number: ${ccn ?? '(unknown)'}\n\nMy role at the agency: \nMy work email at the agency's domain: \n\nUpdates I'd like to make: \n\n`
+                  `I'd like to claim this listing on WeCarely:\n\nAgency: ${agency.name}\nListing URL: ${SITE_URL}/${city.slug}/${agency.slug}\nCMS provider number: ${ccn ?? '(unknown)'}\n\nMy role at the agency: \nMy work email at the agency's domain: \n\nUpdates I'd like to make: \n\n`
                 )}`}
                 className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] border border-[var(--ink)] text-[var(--ink)] font-medium hover:bg-[var(--ink)] hover:text-white transition-colors"
                 style={{ fontSize: 14 }}
@@ -561,18 +526,17 @@ export default async function AgencyDetailPage({ params }: PageProps) {
         </section>
       )}
 
-      {/* FOOTER CTA */}
       <section className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14 text-center">
           <Link
-            href="/houston"
+            href={`/${city.slug}`}
             className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] border border-[var(--ink)] text-[var(--ink)] font-medium hover:bg-[var(--ink)] hover:text-white transition-colors"
             style={{ fontSize: 15 }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
               <path d="m15 18-6-6 6-6" />
             </svg>
-            Browse all Houston agencies
+            Browse all {city.name} agencies
           </Link>
         </div>
       </section>
@@ -580,17 +544,7 @@ export default async function AgencyDetailPage({ params }: PageProps) {
   );
 }
 
-/**
- * Parse a pipe-delimited weekly schedule from Google Business OR a free-text
- * sponsor-supplied schedule into a 7-row list. Examples of input:
- *
- *   Google:  "Monday: 9:00 AM – 5:00 PM | Tuesday: 9:00 AM – 5:00 PM | ... | Sunday: Closed"
- *   Sponsor: "Mon-Fri 8am-6pm, 24/7 on-call"
- *
- * For sponsor free-text we just return the input as a single row.
- */
 function parseHours(raw: string): { day: string; hours: string; closed: boolean }[] {
-  // Google-style pipe-delimited
   if (raw.includes('|') && raw.includes(':')) {
     const dayMap: Record<string, string> = {
       Monday: 'Mon',
@@ -617,7 +571,6 @@ function parseHours(raw: string): { day: string; hours: string; closed: boolean 
         };
       });
   }
-  // Sponsor free-text — return as a single line
   return [{ day: '', hours: raw, closed: false }];
 }
 

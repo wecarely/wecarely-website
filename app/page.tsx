@@ -44,7 +44,7 @@ async function getHoustonCount(): Promise<number> {
 export default async function HomePage() {
   const [houstonCount, sponsors] = await Promise.all([
     getHoustonCount(),
-    getSponsoredAgencies(),
+    getSponsoredAgencies('houston'),
   ]);
 
   return (
