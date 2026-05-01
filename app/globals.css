@@ -294,3 +294,50 @@ a { text-underline-offset: 3px; text-decoration-thickness: 1px; }
   color: var(--ink-3);
   text-align: right;
 }
+/* Comparison table — used inside articles for side-by-side breakdowns */
+.prose-wecarely .comparison-table-wrap {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.prose-wecarely .comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.prose-wecarely .comparison-table thead th {
+  background: var(--bg-soft);
+  text-align: left;
+  font-family: var(--font-spectral), ui-serif, Georgia, serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.prose-wecarely .comparison-table tbody th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--ink);
+  padding: 12px 18px;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--line);
+  width: 28%;
+  vertical-align: top;
+}
+.prose-wecarely .comparison-table tbody td {
+  padding: 12px 18px;
+  color: var(--ink-2);
+  vertical-align: top;
+  border-right: 1px solid var(--line);
+}
+.prose-wecarely .comparison-table tbody td:last-child {
+  border-right: 0;
+}
+.prose-wecarely .comparison-table tbody tr + tr th,
+.prose-wecarely .comparison-table tbody tr + tr td {
+  border-top: 1px solid var(--line);
+}

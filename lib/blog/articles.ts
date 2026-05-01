@@ -31,8 +31,12 @@ export interface Article {
 }
 
 import { howToChooseHoustonHomeCare } from './articles/how-to-choose-houston-home-care';
+import { medicareHomeHealthVsPrivateHomeCare } from './articles/medicare-home-health-vs-private-home-care';
 
-export const ARTICLES: Article[] = [howToChooseHoustonHomeCare];
+export const ARTICLES: Article[] = [
+  howToChooseHoustonHomeCare,
+  medicareHomeHealthVsPrivateHomeCare,
+];
 
 export function findArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
