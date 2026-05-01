@@ -15,6 +15,13 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/blog`,
     type: 'website',
     siteName: 'WeCarely',
+    images: [{ url: '/og.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Articles — WeCarely',
+    description: 'Honest, source-cited guides for families navigating home care decisions.',
+    images: ['/og.png'],
   },
 };
 

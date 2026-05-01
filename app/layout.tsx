@@ -35,6 +35,7 @@ export const metadata: Metadata = {
   title: 'WeCarely — Home Care, Honestly Compared',
   description:
     'An honest home care directory ranked by CMS clinical stars and Google reviews — no lead-gen, no advisor calls. Currently covering Houston, expanding nationally.',
+  alternates: { canonical: SITE_URL },
   openGraph: {
     type: 'website',
     siteName: 'WeCarely',

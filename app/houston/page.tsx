@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getHoustonAgencies, getSponsoredAgencies } from '@/lib/supabase/queries';
 import { parseFilterParams } from '@/lib/utils/filter-params';
 import { FilterBar } from '@/components/filters/FilterBar';
@@ -6,6 +7,31 @@ import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { HeroSearch } from '@/components/HeroSearch';
 
 export const dynamic = 'force-dynamic';
+
+const SITE_URL = 'https://www.wecarely.com';
+
+export const metadata: Metadata = {
+  title: 'Home Care Agencies in Houston, TX | WeCarely',
+  description:
+    'Every Medicare-licensed home care agency in Houston, ranked by CMS clinical stars and Google reviews. No lead-gen, no advisor calls — just an honest directory.',
+  alternates: { canonical: `${SITE_URL}/houston` },
+  openGraph: {
+    title: 'Home Care Agencies in Houston, TX | WeCarely',
+    description:
+      'Every Medicare-licensed home care agency in Houston, ranked by CMS clinical stars and Google reviews.',
+    url: `${SITE_URL}/houston`,
+    type: 'website',
+    siteName: 'WeCarely',
+    images: [{ url: '/og.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Home Care Agencies in Houston, TX | WeCarely',
+    description:
+      'Every Medicare-licensed home care agency in Houston, ranked by CMS clinical stars and Google reviews.',
+    images: ['/og.png'],
+  },
+};
 
 interface PageProps {
   searchParams: Promise<{
