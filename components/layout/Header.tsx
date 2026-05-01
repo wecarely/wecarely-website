@@ -47,7 +47,7 @@ export function Header() {
           : 'border-b border-[var(--line)] bg-[var(--bg)] relative z-40'
       }
     >
-      <div className="mx-auto max-w-[1320px] px-6 lg:px-10 h-16 flex items-center gap-x-8">
+      <div className="mx-auto max-w-[1320px] px-6 lg:px-10 h-16 flex items-center gap-x-3 sm:gap-x-8">
         <Link
           href="/"
           aria-label="WeCarely — Home"
@@ -167,8 +167,9 @@ export function Header() {
           </Link>
         </nav>
 
-        {/* For agencies CTA — pushed to right */}
-        <div className="ml-auto">
+        {/* For agencies CTA — pushed to right; hidden on mobile (still
+            reachable via Hero CTA, Footer, and agency detail pages). */}
+        <div className="ml-auto hidden sm:block">
           <Link
             href="/for-agencies"
             className={
