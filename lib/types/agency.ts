@@ -19,10 +19,13 @@ export interface Agency {
   google_reviews_count: number | null;
   trust_score: number | null;         // pre-computed in DB
 
-  // Filter booleans — all 14
+  // Filter booleans — all 17
   has_spanish: boolean;
   has_vietnamese: boolean;
   has_chinese: boolean;
+  has_arabic: boolean;
+  has_korean: boolean;
+  has_tagalog: boolean;
   accepts_medicare: boolean;
   accepts_medicaid: boolean;
   has_skilled_nursing: boolean;
@@ -35,8 +38,9 @@ export interface Agency {
   has_dementia_care: boolean;
   has_hospice: boolean;
 
-  // Card display
+  // Card / detail display
   ai_summary: string | null;
+  overview: string | null;    // Claude-generated 2-3 sentence agency summary
 
   // Hours of operation, sourced from Google Business
   // Pipe-delimited: "Monday: 9:00 AM – 5:00 PM | Tuesday: ... | Sunday: Closed"

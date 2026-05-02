@@ -26,8 +26,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const title = `${agency.name} — Home Care in ${city.name}, ${city.state} | WeCarely`;
-  const description = agency.ai_summary
-    ? agency.ai_summary.slice(0, 160)
+  const summaryText = agency.overview || agency.ai_summary;
+  const description = summaryText
+    ? summaryText.slice(0, 160)
     : `${agency.name} is a home care agency in ${city.name}, ${city.state}. View CMS clinical ratings, Google reviews, services, and contact info on WeCarely.`;
   const url = `${SITE_URL}/${city.slug}/${agency.slug}`;
 
@@ -60,6 +61,9 @@ export default async function AgencyDetailPage({ params }: PageProps) {
     agency.has_spanish && 'Spanish',
     agency.has_vietnamese && 'Vietnamese',
     agency.has_chinese && 'Chinese',
+    agency.has_arabic && 'Arabic',
+    agency.has_korean && 'Korean',
+    agency.has_tagalog && 'Tagalog',
   ].filter(Boolean) as string[];
 
   const insurance = [
@@ -100,6 +104,8 @@ export default async function AgencyDetailPage({ params }: PageProps) {
   const mapsEmbedSrc = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
   const mapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapsQuery}`;
 
+  const overviewText = agency.overview || agency.ai_summary;
+
   const schemaJson = {
     '@context': 'https://schema.org',
     '@type': 'MedicalBusiness',
@@ -116,9 +122,8 @@ export default async function AgencyDetailPage({ params }: PageProps) {
       addressCountry: 'US',
     },
     ...(services.length > 0 ? { medicalSpecialty: services } : {}),
-    ...(languages.length > 0
-      ? { knowsLanguage: ['English', ...languages] }
-      : {}),
+    ...(languages.length > 0 ? { knowsLanguage: ['English', ...languages] } : {}),
+    ...(overviewText ? { description: overviewText.slice(0, 300) } : {}),
     ...(hasGoogleReviews
       ? {
           aggregateRating: {
@@ -273,14 +278,14 @@ export default async function AgencyDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {agency.ai_summary && (
+            {overviewText && (
               <div className="mb-10">
                 <p className="eyebrow mb-4">Overview</p>
                 <p
                   className="text-[var(--ink)] max-w-[68ch]"
                   style={{ fontSize: 17, lineHeight: 1.6 }}
                 >
-                  {agency.ai_summary}
+                  {overviewText}
                 </p>
               </div>
             )}

@@ -12,10 +12,13 @@ export interface FilterOption {
  * Order within each axis = display order in sidebar.
  */
 export const FILTERS: FilterOption[] = [
-  // Language (3)
+  // Language (6)
   { key: 'spanish',    label: 'Spanish',    column: 'has_spanish',    axis: 'language' },
   { key: 'vietnamese', label: 'Vietnamese', column: 'has_vietnamese', axis: 'language' },
   { key: 'chinese',    label: 'Chinese',    column: 'has_chinese',    axis: 'language' },
+  { key: 'arabic',     label: 'Arabic',     column: 'has_arabic',     axis: 'language' },
+  { key: 'korean',     label: 'Korean',     column: 'has_korean',     axis: 'language' },
+  { key: 'tagalog',    label: 'Tagalog',    column: 'has_tagalog',    axis: 'language' },
 
   // Insurance (2)
   { key: 'medicare', label: 'Medicare', column: 'accepts_medicare', axis: 'insurance' },

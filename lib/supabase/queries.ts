@@ -5,12 +5,12 @@ import { filterParamsToColumns, type FilterState } from '@/lib/utils/filter-para
 const SELECT_COLUMNS = `
   id, slug, name, address, city, state, zip, phone, website,
   medicare_star, google_rating, google_reviews_count, trust_score,
-  has_spanish, has_vietnamese, has_chinese,
+  has_spanish, has_vietnamese, has_chinese, has_arabic, has_korean, has_tagalog,
   accepts_medicare, accepts_medicaid,
   has_skilled_nursing, has_home_health_aide, has_personal_care,
   has_companion_care, has_physical_therapy, has_occupational_therapy,
   has_speech_therapy, has_dementia_care, has_hospice,
-  ai_summary, google_opening_hours,
+  ai_summary, overview, google_opening_hours,
   is_sponsored, sponsor_logo_url, sponsor_hours, sponsor_tagline, sponsor_priority
 `;
 
