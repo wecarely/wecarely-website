@@ -32,8 +32,10 @@ export interface Article {
 
 import { howToChooseHoustonHomeCare } from './articles/how-to-choose-houston-home-care';
 import { medicareHomeHealthVsPrivateHomeCare } from './articles/medicare-home-health-vs-private-home-care';
+import { houstonSeniorsLanguageHomeCare2024 } from './articles/houston-seniors-language-home-care-2024';
 
 export const ARTICLES: Article[] = [
+  houstonSeniorsLanguageHomeCare2024,
   howToChooseHoustonHomeCare,
   medicareHomeHealthVsPrivateHomeCare,
 ];
