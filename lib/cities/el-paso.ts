@@ -4,7 +4,7 @@ export const EL_PASO_CONFIG: CityConfig = {
   slug: 'el-paso',
   name: 'El Paso',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     "Every Medicare-certified home care agency in El Paso — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type. El Paso's senior population is predominantly Spanish-speaking, making language match a key factor in home care selection.",
   neighborhoods: [

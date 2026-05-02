@@ -4,7 +4,7 @@ export const RICHARDSON_CONFIG: CityConfig = {
   slug: 'richardson',
   name: 'Richardson',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     "Every Medicare-certified home care agency in Richardson — ranked by CMS clinical stars and Google reviews. Richardson's Chinatown district and the Telecom Corridor are home to a significant Chinese and Korean senior population, making language-matched home care a key consideration.",
   neighborhoods: [

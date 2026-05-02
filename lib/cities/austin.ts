@@ -4,7 +4,7 @@ export const AUSTIN_CONFIG: CityConfig = {
   slug: 'austin',
   name: 'Austin',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     'Every Medicare-certified home care agency in Austin — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.',
   neighborhoods: [

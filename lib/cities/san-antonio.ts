@@ -4,7 +4,7 @@ export const SAN_ANTONIO_CONFIG: CityConfig = {
   slug: 'san-antonio',
   name: 'San Antonio',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     'Every Medicare-certified home care agency in San Antonio — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.',
   neighborhoods: [

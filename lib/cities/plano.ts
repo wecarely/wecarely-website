@@ -4,7 +4,7 @@ export const PLANO_CONFIG: CityConfig = {
   slug: 'plano',
   name: 'Plano',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     'Every Medicare-certified home care agency in Plano — ranked by CMS clinical stars and Google reviews. Plano has one of the largest Chinese and Korean senior communities in the DFW metro, concentrated along the US-75 and Legacy Drive corridors.',
   neighborhoods: [

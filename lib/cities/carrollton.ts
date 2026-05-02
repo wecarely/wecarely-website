@@ -4,7 +4,7 @@ export const CARROLLTON_CONFIG: CityConfig = {
   slug: 'carrollton',
   name: 'Carrollton',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     "Every Medicare-certified home care agency in Carrollton — ranked by CMS clinical stars and Google reviews. Carrollton's Old Town and the IH-35E corridor are home to one of the largest Vietnamese-American communities in the DFW metro.",
   neighborhoods: [

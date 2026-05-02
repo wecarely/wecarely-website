@@ -4,7 +4,7 @@ export const GARLAND_CONFIG: CityConfig = {
   slug: 'garland',
   name: 'Garland',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     'Every Medicare-certified home care agency in Garland — ranked by CMS clinical stars and Google reviews. Garland has one of the largest Vietnamese-American communities in the Dallas–Fort Worth metro, making Vietnamese-speaking home care agencies especially important here.',
   neighborhoods: [

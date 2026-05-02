@@ -4,7 +4,7 @@ export const FORT_WORTH_CONFIG: CityConfig = {
   slug: 'fort-worth',
   name: 'Fort Worth',
   state: 'TX',
-  status: 'coming-soon',
+  status: 'live',
   intro:
     'Every Medicare-certified home care agency in Fort Worth — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.',
   neighborhoods: [
