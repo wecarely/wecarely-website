@@ -3,22 +3,15 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 /**
- * Yelp-style hero carousel:
- *   - Full-bleed photo background, fades between slides every 7s
- *   - Each slide pairs a photo with its own short phrase + pill CTA
- *     (e.g. "Caregivers who speak your language" → Spanish-speaking)
- *   - Vertical progress bars on the left (active bar fills with white)
- *   - Pause / play toggle below the bars
- *   - Photo attribution at the bottom-left
- *
- * Photos live in /public/hero/ — see SLIDES array.
+ * Yelp-style hero carousel — city-aware.
+ * A Houston | Dallas toggle updates all CTA links so users land in their city.
  */
 
 interface Slide {
   src: string;
   phrase: string;
   ctaLabel: string;
-  ctaHref: string;
+  filterSuffix: string; // appended to /{city}, e.g. '' | '?lang=spanish'
   attribution: string;
   position?: string;
 }
@@ -27,31 +20,36 @@ const SLIDES: Slide[] = [
   {
     src: '/hero/01.jpg',
     phrase: 'Family-trusted home care.',
-    ctaLabel: 'Browse Houston agencies',
-    ctaHref: '/houston',
+    ctaLabel: 'Browse agencies',
+    filterSuffix: '',
     attribution: 'Photo: Gustavo Fring · Pexels',
   },
   {
     src: '/hero/02.jpg',
     phrase: 'Caregivers who speak your language.',
     ctaLabel: 'Spanish-speaking',
-    ctaHref: '/houston?lang=spanish',
+    filterSuffix: '?lang=spanish',
     attribution: 'Photo: Ivan Samkov · Pexels',
   },
   {
     src: '/hero/03.jpg',
     phrase: 'Skilled nursing, at home.',
     ctaLabel: 'Skilled nursing',
-    ctaHref: '/houston?svc=skilled-nursing',
+    filterSuffix: '?svc=skilled-nursing',
     attribution: 'Photo: Jsme MILA · Pexels',
   },
   {
     src: '/hero/04.jpg',
     phrase: 'Personal care that fits your day.',
     ctaLabel: 'Personal care',
-    ctaHref: '/houston?svc=personal-care',
+    filterSuffix: '?svc=personal-care',
     attribution: 'Photo: Jsme MILA · Pexels',
   },
+];
+
+const CITIES = [
+  { slug: 'houston', label: 'Houston' },
+  { slug: 'dallas',  label: 'Dallas'  },
 ];
 
 const ADVANCE_MS = 7000;
@@ -59,6 +57,7 @@ const ADVANCE_MS = 7000;
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [city, setCity] = useState('houston');
   const ticker = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -72,6 +71,7 @@ export function HeroCarousel() {
   }, [paused]);
 
   const slide = SLIDES[index];
+  const ctaHref = `/${city}${slide.filterSuffix}`;
 
   return (
     <section
@@ -166,7 +166,7 @@ export function HeroCarousel() {
         </div>
       </div>
 
-      {/* Center-left: phrase + CTA */}
+      {/* Center-left: phrase + city toggle + CTA */}
       <div className="absolute inset-0 z-10 flex items-center">
         <div className="mx-auto max-w-[1320px] w-full px-6 lg:px-10 pl-16 lg:pl-24">
           {/* Eyebrow */}
@@ -190,33 +190,64 @@ export function HeroCarousel() {
             {slide.phrase}
           </h1>
 
-          <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
-            <Link
-              href={slide.ctaHref}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--accent)] text-[var(--ink)] font-medium hover:bg-[var(--accent-hover)] transition-colors"
-              style={{ fontSize: 15.5 }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <circle cx="11" cy="11" r="7" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-              {slide.ctaLabel}
-            </Link>
-            <Link
-              href="/for-agencies"
-              className="inline-flex items-center gap-1.5 text-white/85 hover:text-white underline-offset-4 hover:underline"
-              style={{
-                fontSize: 14,
-                fontWeight: 500,
-                textShadow: '0 1px 8px rgba(0,0,0,0.35)',
-              }}
-            >
-              For agencies
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </svg>
-            </Link>
+          {/* City toggle + CTA */}
+          <div className="mt-8 flex flex-col gap-4">
+            {/* City pills */}
+            <div className="flex items-center gap-2" role="group" aria-label="Select city">
+              {CITIES.map((c) => (
+                <button
+                  key={c.slug}
+                  type="button"
+                  onClick={() => setCity(c.slug)}
+                  aria-pressed={city === c.slug}
+                  className="px-3.5 py-1 rounded-full text-[12.5px] font-medium transition-all"
+                  style={
+                    city === c.slug
+                      ? {
+                          background: 'rgba(255,255,255,0.95)',
+                          color: 'var(--ink)',
+                        }
+                      : {
+                          background: 'rgba(255,255,255,0.15)',
+                          color: 'rgba(255,255,255,0.85)',
+                          border: '1px solid rgba(255,255,255,0.3)',
+                        }
+                  }
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Main CTA row */}
+            <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+              <Link
+                href={ctaHref}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--accent)] text-[var(--ink)] font-medium hover:bg-[var(--accent-hover)] transition-colors"
+                style={{ fontSize: 15.5 }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                {slide.ctaLabel}
+              </Link>
+              <Link
+                href="/for-agencies"
+                className="inline-flex items-center gap-1.5 text-white/85 hover:text-white underline-offset-4 hover:underline"
+                style={{
+                  fontSize: 14,
+                  fontWeight: 500,
+                  textShadow: '0 1px 8px rgba(0,0,0,0.35)',
+                }}
+              >
+                For agencies
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

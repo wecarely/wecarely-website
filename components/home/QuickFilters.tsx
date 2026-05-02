@@ -1,32 +1,85 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 /**
- * Yelp-style "Categories" tile row — but for WeCarely's filter axes.
- * 6 most common entry points (popular searches).
- * Each tile is a deep link to a pre-filtered listing.
+ * Yelp-style "Categories" tile row — 6 most common filter entry points.
+ * City-aware: a Houston | Dallas toggle keeps every tile href in sync.
  */
 
-const TILES = [
-  { href: '/houston?lang=spanish',     label: 'Spanish-speaking',  glyph: 'Es' },
-  { href: '/houston?lang=vietnamese',  label: 'Vietnamese',        glyph: 'Vi' },
-  { href: '/houston?lang=chinese',     label: 'Chinese',           glyph: '中' },
-  { href: '/houston?ins=medicaid',     label: 'Accepts Medicaid',  glyph: '$' },
-  { href: '/houston?svc=dementia',     label: 'Dementia care',     glyph: '⌬' },
-  { href: '/houston?svc=hospice',      label: 'Hospice',           glyph: '✜' },
+const CITIES = [
+  { slug: 'houston', label: 'Houston' },
+  { slug: 'dallas',  label: 'Dallas'  },
+];
+
+const TILE_DEFS = [
+  { suffix: '?lang=spanish',    label: 'Spanish-speaking', glyph: 'Es' },
+  { suffix: '?lang=vietnamese', label: 'Vietnamese',       glyph: 'Vi' },
+  { suffix: '?lang=chinese',    label: 'Chinese',          glyph: '中' },
+  { suffix: '?ins=medicaid',    label: 'Accepts Medicaid', glyph: '$'  },
+  { suffix: '?svc=dementia',    label: 'Dementia care',    glyph: '⌬'  },
+  { suffix: '?svc=hospice',     label: 'Hospice',          glyph: '✜'  },
 ];
 
 export function QuickFilters() {
+  const [city, setCity] = useState('houston');
+
   return (
     <section className="border-b border-[var(--line)]">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12 lg:py-16">
-        <div className="flex items-baseline justify-between mb-6">
-          <p className="eyebrow">Popular searches</p>
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+          {/* Left: eyebrow + city pills */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <p className="eyebrow">Popular searches</p>
+            <span className="text-[var(--ink-4)]" aria-hidden>
+              ·
+            </span>
+            <div
+              className="flex items-center gap-1.5"
+              role="group"
+              aria-label="Select city"
+            >
+              {CITIES.map((c) => (
+                <button
+                  key={c.slug}
+                  type="button"
+                  onClick={() => setCity(c.slug)}
+                  aria-pressed={city === c.slug}
+                  className="px-2.5 py-0.5 rounded-full text-[11.5px] font-medium transition-all"
+                  style={
+                    city === c.slug
+                      ? { background: 'var(--ink)', color: 'white' }
+                      : {
+                          background: 'transparent',
+                          color: 'var(--ink-3)',
+                          border: '1px solid var(--line)',
+                        }
+                  }
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: see-all link (city-aware) */}
           <Link
-            href="/houston"
+            href={`/${city}`}
             className="text-[12.5px] text-[var(--ink-2)] hover:text-[var(--ink)] underline-offset-3 hover:underline inline-flex items-center gap-1"
           >
             See all filters
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <svg
+              width="11"
+              height="11"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
@@ -34,10 +87,10 @@ export function QuickFilters() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {TILES.map((t) => (
+          {TILE_DEFS.map((t) => (
             <Link
-              key={t.href}
-              href={t.href}
+              key={t.suffix}
+              href={`/${city}${t.suffix}`}
               className="group flex flex-col items-start gap-3 p-5 rounded-[10px] border border-[var(--line)] bg-white hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.08)] transition-all"
             >
               <span

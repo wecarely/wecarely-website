@@ -111,7 +111,9 @@ const CITIES: City[] = CITY_REGISTRY.map((c) =>
 );
 
 export function ExploreSearches() {
-  const [activeSlug, setActiveSlug] = useState<string>('houston');
+  const [activeSlug, setActiveSlug] = useState<string>(
+    CITIES.find((c) => c.status === 'live')?.slug ?? 'houston'
+  );
   const active = CITIES.find((c) => c.slug === activeSlug) ?? CITIES[0];
 
   return (
