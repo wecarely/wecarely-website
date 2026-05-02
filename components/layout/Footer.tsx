@@ -102,7 +102,7 @@ export function Footer() {
               </Link>
               <br />
               <a
-                href="https://paypal.me/brucenote"
+                href="https://ko-fi.com/brucenote"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline-offset-3 hover:underline"
