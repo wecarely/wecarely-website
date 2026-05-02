@@ -27,6 +27,9 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
     agency.has_spanish && 'Spanish',
     agency.has_vietnamese && 'Vietnamese',
     agency.has_chinese && 'Chinese',
+    agency.has_arabic && 'Arabic',
+    agency.has_korean && 'Korean',
+    agency.has_tagalog && 'Tagalog',
   ].filter(Boolean) as string[];
 
   const insurance = [
@@ -137,11 +140,11 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
           </div>
         )}
 
-        {agency.ai_summary && (
+        {(agency.overview || agency.ai_summary) && (
           <div className="mt-5">
             <p className="eyebrow mb-1.5">Description</p>
             <p className="text-[14.5px] leading-[1.6] text-[var(--ink-2)] line-clamp-2">
-              {agency.ai_summary}
+              {agency.overview || agency.ai_summary}
             </p>
           </div>
         )}
@@ -150,7 +153,7 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
         <div className="mt-5 pt-4 border-t border-[var(--line-soft)] flex flex-wrap items-baseline gap-x-4 gap-y-1.5 text-[12.5px]">
           {agency.phone && (
             <a
-              href={`tel:${agency.phone}`}
+              href={`tel:${agency.phone.replace(/[^0-9+]/g, '')}`}
               className="relative z-10 pointer-events-auto font-mono text-[var(--ink-2)] hover:text-[var(--ink)]"
             >
               {agency.phone}

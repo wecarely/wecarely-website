@@ -18,6 +18,13 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/for-agencies`,
     type: 'website',
     siteName: 'WeCarely',
+    images: [{ url: '/og.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'For agencies — Sponsored placements on WeCarely',
+    description: 'Reach home care families in your market. Transparent ranking, clearly labeled sponsored placements.',
+    images: ['/og.png'],
   },
 };
 

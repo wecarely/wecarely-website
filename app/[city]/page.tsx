@@ -131,13 +131,13 @@ export default async function CityPage({ params, searchParams }: PageProps) {
               <div className="eyebrow mt-1.5">Agencies indexed</div>
             </div>
 
-            <HeroSearch />
+            <HeroSearch citySlug={citySlug} />
           </div>
         </div>
       </section>
 
       {/* SPONSORED CAROUSEL */}
-      <SponsoredCarousel sponsors={sponsors} />
+      <SponsoredCarousel sponsors={sponsors} cityName={city.name} />
 
       {/* MAIN: 2-col layout — sidebar + results */}
       <section className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12">

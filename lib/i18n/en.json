@@ -1,8 +1,8 @@
 {
   "header.title": "WeCarely",
-  "header.tagline": "Houston · TX",
-  "listing.heading": "Home Care Agencies in Houston",
-  "listing.subheading": "Every home care agency licensed in Houston, in one place. Filter by language, insurance, and the kind of care you need. Free to browse — no sign-up required.",
+  "header.tagline": "Houston · Dallas, TX",
+  "listing.heading": "Home Care Agencies",
+  "listing.subheading": "Every licensed home care agency, in one place. Filter by language, insurance, and the kind of care you need. Free to browse — no sign-up required.",
   "listing.empty": "No agencies match these filters. Try removing one.",
   "listing.count": "{count} agencies",
   "filter.language": "Language",

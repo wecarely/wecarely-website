@@ -8,7 +8,7 @@ export interface FilterOption {
 }
 
 /**
- * 14 boolean filters across 3 axes — matches DB schema.
+ * 17 boolean filters across 3 axes — matches DB schema.
  * Order within each axis = display order in sidebar.
  */
 export const FILTERS: FilterOption[] = [

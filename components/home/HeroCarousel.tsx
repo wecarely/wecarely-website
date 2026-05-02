@@ -90,6 +90,8 @@ export function HeroCarousel() {
               opacity: i === index ? 1 : 0,
               objectPosition: s.position ?? 'center',
             }}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'low'}
           />
         ))}
         {/* Dark gradient — left heavier for text legibility */}

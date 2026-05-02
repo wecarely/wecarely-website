@@ -42,9 +42,9 @@ const SYNONYMS: Record<string, string> = {
   personal: 'personal-care',
 };
 
-function buildSearchUrl(rawQuery: string): string {
+function buildSearchUrl(rawQuery: string, citySlug: string): string {
   const q = rawQuery.trim().toLowerCase();
-  if (!q) return '/houston';
+  if (!q) return `/${citySlug}`;
 
   const synonymKey = SYNONYMS[q] ?? null;
 
@@ -55,26 +55,23 @@ function buildSearchUrl(rawQuery: string): string {
 
   if (matched) {
     const param = AXIS_PARAM[matched.axis];
-    return `/houston?${param}=${matched.key}`;
+    return `/${citySlug}?${param}=${matched.key}`;
   }
 
-  return `/houston?q=${encodeURIComponent(rawQuery.trim())}`;
+  return `/${citySlug}?q=${encodeURIComponent(rawQuery.trim())}`;
 }
 
 /**
- * Hero search bar — single input. Day 7 is Houston-only,
- * so the location field is implied and not shown.
- *
- * Smart routing: synonym/exact filter match → /houston?<axis>=<key>;
- * otherwise free-text → /houston?q=<query>.
+ * Hero search bar — single input, city-aware.
+ * Pass the current citySlug so search routes to the correct city listing.
  */
-export function HeroSearch() {
+export function HeroSearch({ citySlug = 'houston' }: { citySlug?: string }) {
   const router = useRouter();
   const [q, setQ] = useState('');
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(buildSearchUrl(q));
+    router.push(buildSearchUrl(q, citySlug));
   };
 
   return (

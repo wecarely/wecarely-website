@@ -132,7 +132,7 @@ export async function getCityAgencyCount(citySlug: string): Promise<number> {
   const sb = createServerClient();
   const { count, error } = await sb
     .from('agencies')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .ilike('city', citySlug);
 
   if (error) {

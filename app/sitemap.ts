@@ -5,28 +5,13 @@ import { listArticles } from '@/lib/blog/articles';
 
 const SITE_URL = 'https://www.wecarely.com';
 
-const FILTER_LANDINGS = [
-  'lang=spanish',
-  'lang=vietnamese',
-  'lang=chinese',
-  'ins=medicare',
-  'ins=medicaid',
-  'svc=skilled-nursing',
-  'svc=personal-care',
-  'svc=home-health-aide',
-  'svc=companion-care',
-  'svc=dementia',
-  'svc=hospice',
-  'svc=physical-therapy',
-  'svc=occupational-therapy',
-  'svc=speech-therapy',
-];
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  // Fan out per live city: city landing, filter landings, agency detail
-  // pages, neighborhood pages. As cities go live this scales automatically.
+  // Fan out per live city: city landing, agency detail pages, neighborhood pages.
+  // Filter-param URLs (?lang=spanish etc.) are intentionally excluded — they share
+  // the same canonical as the city page and submitting them would create a
+  // canonical-URL conflict with Google. They are discoverable via internal links.
   const cityEntries = (
     await Promise.all(
       LIVE_CITIES.map(async (city): Promise<MetadataRoute.Sitemap> => {
@@ -38,12 +23,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'weekly' as const,
             priority: 0.9,
           },
-          ...FILTER_LANDINGS.map((q) => ({
-            url: `${SITE_URL}/${city.slug}?${q}`,
-            lastModified: now,
-            changeFrequency: 'weekly' as const,
-            priority: 0.6,
-          })),
           ...slugs.map((slug) => ({
             url: `${SITE_URL}/${city.slug}/${slug}`,
             lastModified: now,

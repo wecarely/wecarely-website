@@ -17,6 +17,7 @@ import { LetterTile } from './LetterTile';
 
 interface Props {
   sponsors: Agency[];
+  cityName?: string;
 }
 
 const TOTAL_SLOTS = 4;
@@ -36,7 +37,7 @@ function trackSponsoredClick(slug: string, position: number) {
   });
 }
 
-export function SponsoredCarousel({ sponsors }: Props) {
+export function SponsoredCarousel({ sponsors, cityName = 'your city' }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -196,7 +197,7 @@ export function SponsoredCarousel({ sponsors }: Props) {
                   Slot {slotNum} · Available
                 </h4>
                 <p className="mt-2 text-[12.5px] leading-[1.55] text-[var(--ink-2)]">
-                  Featured visibility for verified Houston home care agencies.
+                  Featured visibility for verified {cityName} home care agencies.
                 </p>
               </div>
 
@@ -250,8 +251,9 @@ function SponsoredCard({
   const showLogo = !!agency.sponsor_logo_url && !imgFailed;
   const tagline =
     agency.sponsor_tagline ??
+    agency.overview ??
     agency.ai_summary ??
-    'Featured Houston home care agency.';
+    `Featured ${(agency.city ?? 'local').charAt(0).toUpperCase() + (agency.city ?? 'local').slice(1).toLowerCase()} home care agency.`;
 
   const citySlug = (agency.city ?? 'houston').toLowerCase();
 
