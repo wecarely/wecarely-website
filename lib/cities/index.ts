@@ -12,6 +12,7 @@
 
 import { HOUSTON_CONFIG } from './houston';
 import { DALLAS_CONFIG } from './dallas';
+import { SAN_ANTONIO_CONFIG } from './san-antonio';
 
 export type CityStatus = 'live' | 'coming-soon';
 
@@ -37,7 +38,7 @@ export interface CityConfig {
   neighborhoods: Neighborhood[];
 }
 
-export const CITIES: CityConfig[] = [HOUSTON_CONFIG, DALLAS_CONFIG];
+export const CITIES: CityConfig[] = [HOUSTON_CONFIG, DALLAS_CONFIG, SAN_ANTONIO_CONFIG];
 
 export const LIVE_CITIES = CITIES.filter((c) => c.status === 'live');
 export const COMING_SOON_CITIES = CITIES.filter((c) => c.status === 'coming-soon');

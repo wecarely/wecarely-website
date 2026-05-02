@@ -27,7 +27,7 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const COMING_SOON = ['Austin', 'San Antonio', 'Fort Worth'];
+const COMING_SOON = ['Austin', 'San Antonio', 'Fort Worth', 'El Paso'];
 
 async function getHoustonCount(): Promise<number> {
   try {
