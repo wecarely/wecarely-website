@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { LIVE_CITIES } from '@/lib/cities';
 
 const SITE_URL = 'https://www.wecarely.com';
 const APPLY_MAILTO =
@@ -8,12 +9,12 @@ const APPLY_MAILTO =
 export const metadata: Metadata = {
   title: 'For agencies — Sponsored placements on WeCarely',
   description:
-    'Reach families searching for home care in Houston & Dallas, TX. WeCarely lists every CMS-licensed agency, ranked by CMS clinical stars + Google reviews. Sponsored placement spots available — clearly labeled, never affecting default rankings.',
+    'Reach families searching for home care in your market. WeCarely lists every CMS-licensed agency, ranked by CMS clinical stars + Google reviews. Sponsored placement spots — clearly labeled, never affecting default rankings.',
   alternates: { canonical: `${SITE_URL}/for-agencies` },
   openGraph: {
     title: 'For agencies — Sponsored placements on WeCarely',
     description:
-      'Reach home care families in Houston & Dallas, TX. Transparent ranking, clearly labeled sponsored placements.',
+      'Reach home care families in your market. Transparent ranking, clearly labeled sponsored placements.',
     url: `${SITE_URL}/for-agencies`,
     type: 'website',
     siteName: 'WeCarely',
@@ -24,12 +25,12 @@ const BENEFITS = [
   {
     n: '01',
     title: 'Featured slot in your city',
-    body: 'Top-of-page Sponsored carousel on the homepage and your city\'s listing page — the two pages with the most traffic. Available now in Houston and Dallas.',
+    body: "Top-of-page Sponsored carousel on the homepage and your city's listing page — the two pages with the most traffic.",
   },
   {
     n: '02',
     title: 'Always clearly labeled',
-    body: 'Every sponsored placement carries a visible "Sponsored" tag. Families know what they\'re seeing — and trust the rest of the directory more for it.',
+    body: "Every sponsored placement carries a visible \"Sponsored\" tag. Families know what they're seeing — and trust the rest of the directory more for it.",
   },
   {
     n: '03',
@@ -39,7 +40,7 @@ const BENEFITS = [
   {
     n: '04',
     title: 'Detail-page upgrades',
-    body: 'Sponsors get a richer detail page: logo, photo, hours, services list, intake notes — the things families ask before they call.',
+    body: "Sponsors get a richer detail page: logo, photo, hours, services list, intake notes — the things families ask before they call.",
   },
 ];
 
@@ -52,7 +53,7 @@ const STEPS = [
   {
     n: '02',
     title: 'We verify',
-    body: 'Cross-check your CMS license and Google Business profile. Sponsorship is only available to verified CMS-licensed agencies serving Houston or Dallas.',
+    body: 'Cross-check your CMS license and Google Business profile. Sponsorship is available to verified CMS-licensed agencies in any city WeCarely currently covers.',
   },
   {
     n: '03',
@@ -68,23 +69,38 @@ const FAQ = [
   },
   {
     q: 'How do families know which agencies are sponsored?',
-    a: 'Every sponsored placement carries a visible "Sponsored" label. The directory\'s default order is by trust score (CMS + Google), not by who pays.',
+    a: "Every sponsored placement carries a visible \"Sponsored\" label. The directory's default order is by trust score (CMS + Google), not by who pays.",
   },
   {
     q: 'How many slots are there?',
-    a: 'Four sponsored slots per city — Houston and Dallas. We only add capacity when organic traffic supports it, so visibility stays meaningful.',
+    a: "Four sponsored slots per city. We only add capacity when organic traffic in that market supports it — we don't want to dilute visibility.",
   },
   {
     q: 'Can I cancel?',
-    a: 'Yes — month-to-month, no contract. Cancel anytime; we\'ll prorate the current month.',
+    a: "Yes — month-to-month, no contract. Cancel anytime; we'll prorate the current month.",
   },
   {
     q: 'Do you accept lead-gen referrals?',
-    a: 'No. WeCarely is a directory, not a referral service. Families contact you directly. We don\'t take a cut of placements or admissions.',
+    a: "No. WeCarely is a directory, not a referral service. Families contact you directly. We don't take a cut of placements or admissions.",
+  },
+  {
+    q: "My city isn't listed yet. Can I still reach out?",
+    a: "Yes — email us. We prioritize new cities partly based on agency demand, so an early inquiry can move your market up the list.",
   },
 ];
 
+const FEATURES = [
+  'Sponsored placement in your city',
+  'Featured visibility on / and your city listing',
+  'Detail-page upgrades (logo, photo, hours)',
+  'Month-to-month, cancel anytime',
+  'No setup fee',
+  'Verified-only — CMS license required',
+];
+
 export default function ForAgenciesPage() {
+  const cityList = LIVE_CITIES.map((c) => `${c.name}, ${c.state}`).join(' · ');
+
   return (
     <>
       {/* HERO */}
@@ -100,18 +116,18 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Reach Houston &amp; Dallas families{' '}
+            Reach families{' '}
             <em className="italic" style={{ fontWeight: 400 }}>
               actively
             </em>{' '}
-            looking for home care.
+            searching for home care in your market.
           </h1>
           <p
             className="mt-7 text-[var(--ink-2)] max-w-[58ch]"
             style={{ fontSize: 18, lineHeight: 1.55 }}
           >
-            WeCarely lists every CMS-licensed home care agency in Houston and
-            Dallas — ranked by CMS clinical ratings and Google reviews, not by
+            WeCarely lists every CMS-licensed home care agency in each city we
+            cover — ranked by CMS clinical ratings and Google reviews, not by
             who pays. Sponsorship buys you a clearly labeled featured slot above
             the fold, and nothing else.
           </p>
@@ -136,6 +152,11 @@ export default function ForAgenciesPage() {
               How it works
             </Link>
           </div>
+
+          {/* Live city list — auto-updates from registry */}
+          <p className="mt-8 font-mono text-[11.5px] text-[var(--ink-3)] tracking-[0.06em] uppercase">
+            Now live · {cityList}
+          </p>
         </div>
       </section>
 
@@ -246,7 +267,7 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Featured placements in Houston &amp; Dallas.
+            Featured placements in your city.
           </h2>
 
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-x-12 gap-y-8 items-start max-w-[80ch]">
@@ -259,22 +280,15 @@ export default function ForAgenciesPage() {
               </p>
               <p>
                 Each placement links to your detail page on WeCarely, with
-                optional upgrades (logo, photo, hours) for sponsors. Email
-                us with a short note about your agency and city, and we&apos;ll
+                optional upgrades (logo, photo, hours) for sponsors. Email us
+                with a short note about your agency and city and we&apos;ll
                 send placement details, current availability, and pricing
                 within one business day.
               </p>
             </div>
 
             <ul className="space-y-2.5 text-[14px] text-[var(--ink-2)] pt-1">
-              {[
-                'Sponsored placement in Houston or Dallas',
-                'Featured visibility on / and your city listing',
-                'Detail-page upgrades (logo, photo, hours)',
-                'Month-to-month, cancel anytime',
-                'No setup fee',
-                'Verified-only — CMS license required',
-              ].map((feature) => (
+              {FEATURES.map((feature) => (
                 <li key={feature} className="flex items-baseline gap-2.5">
                   <span
                     className="font-mono text-[var(--ink-3)] shrink-0"
@@ -302,7 +316,7 @@ export default function ForAgenciesPage() {
               </svg>
             </a>
             <p className="mt-3 text-[12.5px] text-[var(--ink-3)]">
-              Reply within 1 business day. Verified CMS-licensed agencies in Houston or Dallas only.
+              Reply within 1 business day. Verified CMS-licensed agencies in any city WeCarely covers.
             </p>
           </div>
         </div>
@@ -343,7 +357,7 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Sponsored placement spots in Houston &amp; Dallas.
+            Get your agency in front of families searching near them.
           </h2>
           <a
             href={APPLY_MAILTO}
