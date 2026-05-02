@@ -13,11 +13,7 @@ export const dallasSeniorsLanguageHomeCare2024: Article = {
     role: 'Independent home care directory',
   },
   topic: 'Data & demographics',
-  heroImage: {
-    src: '/blog/dallas-seniors-language-home-care-2024/hero.jpg',
-    alt: 'An elderly woman sitting with a caregiver in a bright home setting',
-    credit: 'Photo by Kampus Production · Pexels',
-  },
+  // heroImage: add once photo is downloaded to public/blog/dallas-seniors-language-home-care-2024/hero.jpg
   body: () => (
     <>
       <p>
