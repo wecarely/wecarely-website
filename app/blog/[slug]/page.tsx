@@ -172,6 +172,35 @@ export default async function ArticlePage({ params }: PageProps) {
         {article.body()}
       </article>
 
+      {/* SUPPORT */}
+      <div className="mx-auto max-w-[760px] px-6 lg:px-10 pb-10 lg:pb-14">
+        <div
+          className="rounded-[12px] px-7 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5"
+          style={{ background: 'var(--bg-soft)', border: '1px solid var(--line)' }}
+        >
+          <div>
+            <p className="font-display text-[var(--ink)] mb-1" style={{ fontSize: 16, fontWeight: 500 }}>
+              Found this useful?
+            </p>
+            <p className="text-[13.5px] text-[var(--ink-2)] leading-relaxed">
+              WeCarely is free, independent, and has no ads. Your support keeps it that way.
+            </p>
+          </div>
+          <a
+            href="https://ko-fi.com/brucenote"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-colors hover:opacity-90"
+            style={{ background: '#FF5E5B', color: 'white', fontSize: 14 }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+            </svg>
+            Support on Ko-fi
+          </a>
+        </div>
+      </div>
+
       {/* MORE ARTICLES */}
       {otherArticles.length > 0 && (
         <section className="border-t border-[var(--line)] bg-[var(--bg-soft)]">
