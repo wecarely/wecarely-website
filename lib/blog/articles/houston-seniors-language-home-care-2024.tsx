@@ -13,6 +13,11 @@ export const houstonSeniorsLanguageHomeCare2024: Article = {
     role: 'Independent home care directory',
   },
   topic: 'Data & demographics',
+  heroImage: {
+    src: '/blog/houston-seniors-language-home-care-2024/hero.jpg',
+    alt: 'A caregiver talking with an elderly woman in a care facility corridor',
+    credit: 'Photo by Jsme MILA · Pexels',
+  },
   body: () => (
     <>
       <p>
