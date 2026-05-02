@@ -3,17 +3,17 @@ import type { Metadata } from 'next';
 
 const SITE_URL = 'https://www.wecarely.com';
 const APPLY_MAILTO =
-  'mailto:agencies@wecarely.com?subject=Sponsored%20placement%20inquiry%20%E2%80%94%20Houston&body=Agency%20name%3A%0AContact%20name%3A%0APhone%3A%0AWebsite%3A%0ACMS%20provider%20number%20(if%20known)%3A%0A%0AAnything%20else%20we%20should%20know%3A%0A';
+  'mailto:agencies@wecarely.com?subject=Sponsored%20placement%20inquiry%20%E2%80%94%20WeCarely&body=Agency%20name%3A%0AContact%20name%3A%0ACity%3A%0APhone%3A%0AWebsite%3A%0ACMS%20provider%20number%20(if%20known)%3A%0A%0AAnything%20else%20we%20should%20know%3A%0A';
 
 export const metadata: Metadata = {
   title: 'For agencies — Sponsored placements on WeCarely',
   description:
-    'Reach Houston families searching for home care. WeCarely lists every CMS-licensed Houston agency, ranked by CMS clinical stars + Google reviews. Sponsored placement spots available — clearly labeled, never affecting default rankings.',
+    'Reach families searching for home care in Houston & Dallas, TX. WeCarely lists every CMS-licensed agency, ranked by CMS clinical stars + Google reviews. Sponsored placement spots available — clearly labeled, never affecting default rankings.',
   alternates: { canonical: `${SITE_URL}/for-agencies` },
   openGraph: {
     title: 'For agencies — Sponsored placements on WeCarely',
     description:
-      'Reach Houston families searching for home care. Transparent ranking, clearly labeled sponsored placements.',
+      'Reach home care families in Houston & Dallas, TX. Transparent ranking, clearly labeled sponsored placements.',
     url: `${SITE_URL}/for-agencies`,
     type: 'website',
     siteName: 'WeCarely',
@@ -23,8 +23,8 @@ export const metadata: Metadata = {
 const BENEFITS = [
   {
     n: '01',
-    title: 'Featured slot in Houston',
-    body: 'Top-of-page Sponsored carousel on the homepage and the /houston listing — the two pages with the most traffic.',
+    title: 'Featured slot in your city',
+    body: 'Top-of-page Sponsored carousel on the homepage and your city\'s listing page — the two pages with the most traffic. Available now in Houston and Dallas.',
   },
   {
     n: '02',
@@ -47,12 +47,12 @@ const STEPS = [
   {
     n: '01',
     title: 'Inquire',
-    body: 'Email us your agency name and contact. We reply within 1 business day with placement details and pricing.',
+    body: 'Email us your agency name, city, and contact. We reply within 1 business day with placement details and pricing.',
   },
   {
     n: '02',
     title: 'We verify',
-    body: 'Cross-check your CMS license and Google Business profile. Sponsorship is only available to verified Houston-licensed agencies.',
+    body: 'Cross-check your CMS license and Google Business profile. Sponsorship is only available to verified CMS-licensed agencies serving Houston or Dallas.',
   },
   {
     n: '03',
@@ -72,7 +72,7 @@ const FAQ = [
   },
   {
     q: 'How many slots are there?',
-    a: 'Four sponsored slots in Houston. We will only add capacity once Houston organic traffic supports it — we don\'t want to dilute visibility.',
+    a: 'Four sponsored slots per city — Houston and Dallas. We only add capacity when organic traffic supports it, so visibility stays meaningful.',
   },
   {
     q: 'Can I cancel?',
@@ -100,7 +100,7 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Reach Houston families{' '}
+            Reach Houston &amp; Dallas families{' '}
             <em className="italic" style={{ fontWeight: 400 }}>
               actively
             </em>{' '}
@@ -110,10 +110,10 @@ export default function ForAgenciesPage() {
             className="mt-7 text-[var(--ink-2)] max-w-[58ch]"
             style={{ fontSize: 18, lineHeight: 1.55 }}
           >
-            WeCarely lists every CMS-licensed Houston home care agency. We rank
-            by CMS clinical ratings and Google reviews — not by who pays.
-            Sponsorship buys you a clearly labeled featured slot above the fold,
-            and nothing else.
+            WeCarely lists every CMS-licensed home care agency in Houston and
+            Dallas — ranked by CMS clinical ratings and Google reviews, not by
+            who pays. Sponsorship buys you a clearly labeled featured slot above
+            the fold, and nothing else.
           </p>
 
           <div className="mt-10 flex flex-wrap gap-3">
@@ -246,7 +246,7 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Featured placements on the Houston homepage.
+            Featured placements in Houston &amp; Dallas.
           </h2>
 
           <div className="grid md:grid-cols-[1.2fr_1fr] gap-x-12 gap-y-8 items-start max-w-[80ch]">
@@ -260,16 +260,16 @@ export default function ForAgenciesPage() {
               <p>
                 Each placement links to your detail page on WeCarely, with
                 optional upgrades (logo, photo, hours) for sponsors. Email
-                us with a short note about your agency and we&apos;ll send
-                placement details, current availability, and pricing within
-                one business day.
+                us with a short note about your agency and city, and we&apos;ll
+                send placement details, current availability, and pricing
+                within one business day.
               </p>
             </div>
 
             <ul className="space-y-2.5 text-[14px] text-[var(--ink-2)] pt-1">
               {[
-                'Sponsored placement on the Houston homepage',
-                'Featured visibility on / and /houston',
+                'Sponsored placement in Houston or Dallas',
+                'Featured visibility on / and your city listing',
                 'Detail-page upgrades (logo, photo, hours)',
                 'Month-to-month, cancel anytime',
                 'No setup fee',
@@ -302,8 +302,7 @@ export default function ForAgenciesPage() {
               </svg>
             </a>
             <p className="mt-3 text-[12.5px] text-[var(--ink-3)]">
-              Reply within 1 business day. Verified Houston-licensed agencies
-              only.
+              Reply within 1 business day. Verified CMS-licensed agencies in Houston or Dallas only.
             </p>
           </div>
         </div>
@@ -344,7 +343,7 @@ export default function ForAgenciesPage() {
               fontWeight: 400,
             }}
           >
-            Four sponsored placement spots in Houston.
+            Sponsored placement spots in Houston &amp; Dallas.
           </h2>
           <a
             href={APPLY_MAILTO}
