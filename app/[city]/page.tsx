@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import {
   getAgenciesByCity,
@@ -143,7 +144,9 @@ export default async function CityPage({ params, searchParams }: PageProps) {
       <section className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12">
         <div className="grid lg:grid-cols-[260px_1fr] gap-x-10 gap-y-10">
           <aside className="lg:sticky lg:top-7 lg:self-start lg:max-h-[calc(100vh-3.5rem)] lg:overflow-y-auto pr-2">
-            <FilterBar />
+            <Suspense fallback={<div className="h-64 animate-pulse rounded-[8px] bg-[var(--bg-soft)]" />}>
+              <FilterBar />
+            </Suspense>
           </aside>
 
           <div>

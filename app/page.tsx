@@ -4,6 +4,7 @@ import { getSponsoredAgencies } from '@/lib/supabase/queries';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { FeaturedRow } from '@/components/home/FeaturedRow';
+import { QuickFilters } from '@/components/home/QuickFilters';
 import { ExploreSearches } from '@/components/home/ExploreSearches';
 
 export const dynamic = 'force-dynamic';
@@ -71,6 +72,9 @@ export default async function HomePage() {
 
       {/* FEATURED — top 4 by trust score */}
       <FeaturedRow />
+
+      {/* QUICK FILTERS — 6 filter tiles with city toggle */}
+      <QuickFilters />
 
       {/* EXPLORE — Yelp-style "popular searches" grid (grouped by family situation) */}
       <ExploreSearches />

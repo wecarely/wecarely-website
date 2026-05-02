@@ -61,9 +61,9 @@ export default async function ArticlePage({ params }: PageProps) {
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
     author: {
-      '@type': 'Organization',
+      '@type': 'Person',
       name: article.author.name,
-      url: SITE_URL,
+      worksFor: { '@type': 'Organization', name: 'WeCarely', url: SITE_URL },
     },
     publisher: {
       '@type': 'Organization',
@@ -161,9 +161,11 @@ export default async function ArticlePage({ params }: PageProps) {
             className="w-full h-auto rounded-[12px]"
             style={{ aspectRatio: '16 / 9', objectFit: 'cover' }}
           />
-          <figcaption className="mt-3 text-[12px] text-[var(--ink-3)] text-right font-mono tracking-wide">
-            {article.heroImage.credit}
-          </figcaption>
+          {article.heroImage.credit && (
+            <figcaption className="mt-3 text-[12px] text-[var(--ink-3)] text-right font-mono tracking-wide">
+              {article.heroImage.credit}
+            </figcaption>
+          )}
         </figure>
       )}
 
@@ -227,19 +229,31 @@ export default async function ArticlePage({ params }: PageProps) {
       {/* CTA */}
       <section className="border-t border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14 text-center">
-          <p className="font-display italic text-[var(--ink-2)] mb-5" style={{ fontSize: 18 }}>
+          <p className="font-display italic text-[var(--ink-2)] mb-7" style={{ fontSize: 18 }}>
             Ready to compare agencies?
           </p>
-          <Link
-            href="/houston"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] border border-[var(--ink)] text-[var(--ink)] font-medium hover:bg-[var(--ink)] hover:text-white transition-colors"
-            style={{ fontSize: 15 }}
-          >
-            Browse Houston home care directory
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="m9 18 6-6-6-6" />
-            </svg>
-          </Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="/houston"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] border border-[var(--ink)] text-[var(--ink)] font-medium hover:bg-[var(--ink)] hover:text-white transition-colors"
+              style={{ fontSize: 15 }}
+            >
+              Houston directory
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </Link>
+            <Link
+              href="/dallas"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[10px] border border-[var(--line-strong)] text-[var(--ink-2)] font-medium hover:border-[var(--ink)] hover:text-[var(--ink)] transition-colors"
+              style={{ fontSize: 15 }}
+            >
+              Dallas directory
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </section>
     </>

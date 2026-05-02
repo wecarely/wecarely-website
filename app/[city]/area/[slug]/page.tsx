@@ -5,7 +5,9 @@ import { getAgenciesByZips } from '@/lib/supabase/queries';
 import { AgencyList } from '@/components/agency/AgencyList';
 import { getCityConfig, findNeighborhood } from '@/lib/cities';
 
-export const dynamic = 'force-dynamic';
+// Neighborhood pages are semi-static: agency lists change at most daily.
+// ISR revalidates every 6 hours instead of hitting Supabase on every request.
+export const revalidate = 21600;
 
 const SITE_URL = 'https://www.wecarely.com';
 
