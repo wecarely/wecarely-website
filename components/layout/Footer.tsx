@@ -100,6 +100,16 @@ export function Footer() {
               >
                 {t('footer.forAgencies')} →
               </Link>
+              <br />
+              <a
+                href="https://paypal.me/brucenote"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-offset-3 hover:underline"
+                style={{ color: 'inherit' }}
+              >
+                Support this directory →
+              </a>
             </p>
           </div>
         </div>
