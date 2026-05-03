@@ -58,7 +58,7 @@ export const PASADENA_CA_CONFIG: CityConfig = {
   slug: 'pasadena-ca',
   name: 'Pasadena',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Pasadena, CA — ranked by CMS clinical stars and Google reviews. Pasadena has a diverse senior population including large Chinese and Hispanic communities.",
   neighborhoods: [],
 };
