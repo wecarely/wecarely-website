@@ -139,7 +139,7 @@ export const OAKLAND_CONFIG: CityConfig = {
   slug: 'oakland',
   name: 'Oakland',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Oakland, CA — ranked by CMS clinical stars and Google reviews. Oakland has large Chinese, Vietnamese, and Spanish-speaking senior communities in the East Bay.",
   neighborhoods: [],
 };
@@ -148,7 +148,7 @@ export const LONG_BEACH_CONFIG: CityConfig = {
   slug: 'long-beach',
   name: 'Long Beach',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Long Beach, CA — ranked by CMS clinical stars and Google reviews. Long Beach has one of the largest Cambodian communities in the US alongside significant Vietnamese and Spanish-speaking senior populations.",
   neighborhoods: [],
 };
@@ -166,7 +166,7 @@ export const SANTA_ANA_CONFIG: CityConfig = {
   slug: 'santa-ana',
   name: 'Santa Ana',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Santa Ana, CA — ranked by CMS clinical stars and Google reviews. Santa Ana is the heart of Orange County's Vietnamese community (Little Saigon corridor) and has a predominantly Spanish-speaking senior population.",
   neighborhoods: [],
 };
