@@ -5,7 +5,6 @@ import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { SponsoredCarousel } from '@/components/agency/SponsoredCarousel';
 import { FeaturedRow } from '@/components/home/FeaturedRow';
 import { QuickFilters } from '@/components/home/QuickFilters';
-import { ExploreSearches } from '@/components/home/ExploreSearches';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,57 +26,159 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const COMING_SOON = ['Austin', 'San Antonio', 'Fort Worth', 'El Paso'];
+const TX_FEATURED = [
+  { slug: 'houston',     name: 'Houston' },
+  { slug: 'dallas',      name: 'Dallas' },
+  { slug: 'san-antonio', name: 'San Antonio' },
+  { slug: 'el-paso',     name: 'El Paso' },
+  { slug: 'austin',      name: 'Austin' },
+  { slug: 'fort-worth',  name: 'Fort Worth' },
+];
 
-async function getHoustonCount(): Promise<number> {
+const CA_COMING = ['Los Angeles', 'San Diego', 'San Francisco', 'Sacramento', 'San Jose', 'Oakland'];
+
+async function getCityCount(city: string): Promise<number> {
   try {
     const sb = createServerClient();
     const { count } = await sb
       .from('agencies')
       .select('id', { count: 'exact', head: true })
-      .ilike('city', 'houston');
+      .ilike('city', city);
     return count ?? 0;
   } catch {
-    return 259;
-  }
-}
-
-async function getDallasCount(): Promise<number> {
-  try {
-    const sb = createServerClient();
-    const { count } = await sb
-      .from('agencies')
-      .select('id', { count: 'exact', head: true })
-      .ilike('city', 'dallas');
-    return count ?? 0;
-  } catch {
-    return 137;
+    return 0;
   }
 }
 
 export default async function HomePage() {
-  const [houstonCount, dallasCount, sponsors] = await Promise.all([
-    getHoustonCount(),
-    getDallasCount(),
+  const [txCounts, sponsors] = await Promise.all([
+    Promise.all(TX_FEATURED.map((c) => getCityCount(c.name))),
     getSponsoredAgencies('houston'),
   ]);
+  const txCities = TX_FEATURED.map((c, i) => ({ ...c, count: txCounts[i] }));
 
   return (
     <>
-      {/* HERO — Yelp-style photo carousel */}
+      {/* HERO */}
       <HeroCarousel />
 
-      {/* SPONSORED — featured agencies carousel (real sponsors + placeholder fillers) */}
+      {/* SPONSORED */}
       <SponsoredCarousel sponsors={sponsors} />
 
       {/* FEATURED — top 4 by trust score */}
       <FeaturedRow />
 
-      {/* QUICK FILTERS — 6 filter tiles with city toggle */}
+      {/* QUICK FILTERS */}
       <QuickFilters />
 
-      {/* EXPLORE — Yelp-style "popular searches" grid (grouped by family situation) */}
-      <ExploreSearches />
+      {/* CITY GRID — grouped by state */}
+      <section id="coverage" className="border-b border-[var(--line)]">
+        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
+          <p className="eyebrow mb-3">Start here</p>
+          <h2
+            className="font-display text-[var(--ink)] mb-12"
+            style={{
+              fontSize: 'clamp(28px, 3.6vw, 40px)',
+              lineHeight: 1.1,
+              letterSpacing: '-0.005em',
+              fontWeight: 400,
+            }}
+          >
+            Find a home care agency
+            <br className="hidden sm:block" /> that fits your family.
+          </h2>
+
+          {/* Texas */}
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-5">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-[var(--ink-3)]">
+                Texas
+              </p>
+              <div className="flex-1 border-t border-[var(--line)]" />
+              <span className="font-mono text-[11px] text-[var(--ink-3)] tabular-nums">
+                38 cities
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {txCities.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/${c.slug}`}
+                  className="group flex flex-col items-start text-left border border-[var(--line)] rounded-[12px] p-5 hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.10)] transition-all bg-white"
+                >
+                  <p className="font-mono text-[10px] text-[var(--ink-3)] mb-1.5 tracking-[0.08em] uppercase">
+                    TX
+                  </p>
+                  <p
+                    className="font-display text-[var(--ink)] mb-1 group-hover:text-[var(--accent-on)] transition-colors"
+                    style={{ fontSize: 20, fontWeight: 500 }}
+                  >
+                    {c.name}
+                  </p>
+                  {c.count > 0 && (
+                    <p className="font-mono text-[12px] text-[var(--ink-3)] tabular-nums mb-3">
+                      {c.count} agencies
+                    </p>
+                  )}
+                  <span className="mt-auto inline-flex items-center gap-1.5 text-[12px] font-medium text-[var(--ink)]">
+                    Browse
+                    <svg
+                      width="11" height="11" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" strokeWidth="2.4"
+                      strokeLinecap="round" strokeLinejoin="round" aria-hidden
+                    >
+                      <path d="M5 12h14" />
+                      <path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* California — coming soon */}
+          <div>
+            <div className="flex items-center gap-3 mb-5">
+              <p className="font-mono text-[11px] uppercase tracking-widest text-[var(--ink-3)]">
+                California
+              </p>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--line)] text-[10px] uppercase tracking-wider text-[var(--ink-3)]">
+                Coming 2026
+              </span>
+              <div className="flex-1 border-t border-[var(--line)]" />
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 opacity-40 pointer-events-none">
+              {CA_COMING.map((city) => (
+                <div
+                  key={city}
+                  className="flex flex-col items-start text-left border border-[var(--line)] rounded-[12px] p-5 bg-[var(--bg-soft)]"
+                >
+                  <p className="font-mono text-[10px] text-[var(--ink-3)] mb-1.5 tracking-[0.08em] uppercase">
+                    CA
+                  </p>
+                  <p
+                    className="font-display text-[var(--ink-2)]"
+                    style={{ fontSize: 20, fontWeight: 500 }}
+                  >
+                    {city}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="mt-8 text-[13px] text-[var(--ink-3)]">
+            More states coming —{' '}
+            <a
+              href="mailto:hello@wecarely.com?subject=City%20request"
+              className="text-[var(--ink)] underline underline-offset-3"
+            >
+              tell us where you need care
+            </a>
+            .
+          </p>
+        </div>
+      </section>
 
       {/* HOW IT WORKS */}
       <section className="border-b border-[var(--line)]">
@@ -118,89 +219,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* COVERAGE */}
-      <section className="border-b border-[var(--line)] bg-[var(--bg-soft)]">
-        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-14">
-          <p className="eyebrow mb-6">Coverage</p>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 items-start">
-            <div>
-              <p
-                className="font-display text-[var(--ink-3)] mb-3"
-                style={{ fontSize: 14, fontWeight: 500 }}
-              >
-                Now serving
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <p
-                    className="font-display text-[var(--ink)]"
-                    style={{ fontSize: 26, fontWeight: 500 }}
-                  >
-                    Houston, TX{' '}
-                    <span className="text-[var(--ink-3)] font-mono text-[15px] tabular-nums">
-                      {houstonCount}
-                    </span>
-                  </p>
-                  <p className="mt-0.5 text-[13.5px] text-[var(--ink-2)]">
-                    All licensed agencies in Harris County.{' '}
-                    <Link
-                      href="/houston"
-                      className="text-[var(--ink)] underline underline-offset-3"
-                    >
-                      Browse →
-                    </Link>
-                  </p>
-                </div>
-                <div>
-                  <p
-                    className="font-display text-[var(--ink)]"
-                    style={{ fontSize: 26, fontWeight: 500 }}
-                  >
-                    Dallas, TX{' '}
-                    <span className="text-[var(--ink-3)] font-mono text-[15px] tabular-nums">
-                      {dallasCount}
-                    </span>
-                  </p>
-                  <p className="mt-0.5 text-[13.5px] text-[var(--ink-2)]">
-                    All licensed agencies in Dallas County.{' '}
-                    <Link
-                      href="/dallas"
-                      className="text-[var(--ink)] underline underline-offset-3"
-                    >
-                      Browse →
-                    </Link>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <p
-                className="font-display text-[var(--ink-3)] mb-1"
-                style={{ fontSize: 14, fontWeight: 500 }}
-              >
-                Coming soon · Q3 2026
-              </p>
-              <p
-                className="font-display text-[var(--ink)]"
-                style={{ fontSize: 22, fontWeight: 400, lineHeight: 1.3 }}
-              >
-                {COMING_SOON.join(' · ')}
-              </p>
-              <p className="mt-2 text-[13px] text-[var(--ink-2)]">
-                Want yours next?{' '}
-                <a
-                  href="mailto:hello@wecarely.com?subject=City%20request"
-                  className="text-[var(--ink)] underline underline-offset-3"
-                >
-                  Tell us where
-                </a>
-                .
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* PLEDGE */}
       <section className="border-b border-[var(--line)]">
         <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-16 lg:py-20">
@@ -235,71 +253,6 @@ export default async function HomePage() {
                 before deciding.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section>
-        <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-20 text-center">
-          <p className="eyebrow mb-5">Start here</p>
-          <h2
-            className="font-display text-[var(--ink)] mb-10 max-w-[22ch] mx-auto"
-            style={{
-              fontSize: 'clamp(28px, 3.6vw, 40px)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.005em',
-              fontWeight: 400,
-            }}
-          >
-            Find a home care agency that fits your family.
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-4 max-w-[560px] mx-auto">
-            {/* Houston card */}
-            <Link
-              href="/houston"
-              className="group flex flex-col items-start text-left border border-[var(--line)] rounded-[12px] p-6 hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.10)] transition-all bg-white"
-            >
-              <p className="font-mono text-[11px] text-[var(--ink-3)] mb-2 tracking-[0.08em] uppercase">TX</p>
-              <p
-                className="font-display text-[var(--ink)] mb-1 group-hover:text-[var(--accent-on)] transition-colors"
-                style={{ fontSize: 22, fontWeight: 500 }}
-              >
-                Houston
-              </p>
-              <p className="font-mono text-[13px] text-[var(--ink-3)] tabular-nums mb-4">
-                {houstonCount} agencies
-              </p>
-              <span className="mt-auto inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--ink)]">
-                Browse
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
-
-            {/* Dallas card */}
-            <Link
-              href="/dallas"
-              className="group flex flex-col items-start text-left border border-[var(--line)] rounded-[12px] p-6 hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.10)] transition-all bg-white"
-            >
-              <p className="font-mono text-[11px] text-[var(--ink-3)] mb-2 tracking-[0.08em] uppercase">TX</p>
-              <p
-                className="font-display text-[var(--ink)] mb-1 group-hover:text-[var(--accent-on)] transition-colors"
-                style={{ fontSize: 22, fontWeight: 500 }}
-              >
-                Dallas
-              </p>
-              <p className="font-mono text-[13px] text-[var(--ink-3)] tabular-nums mb-4">
-                {dallasCount} agencies
-              </p>
-              <span className="mt-auto inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--ink)]">
-                Browse
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
           </div>
         </div>
       </section>
