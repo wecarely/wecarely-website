@@ -112,7 +112,7 @@ export const SACRAMENTO_CONFIG: CityConfig = {
   slug: 'sacramento',
   name: 'Sacramento',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Sacramento, CA — ranked by CMS clinical stars and Google reviews. Sacramento has significant Vietnamese, Chinese, and Spanish-speaking senior communities.",
   neighborhoods: [],
 };
