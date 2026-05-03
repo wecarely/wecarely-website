@@ -67,7 +67,7 @@ export const ENCINO_CONFIG: CityConfig = {
   slug: 'encino',
   name: 'Encino',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Encino, CA — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -76,7 +76,7 @@ export const WOODLAND_HILLS_CONFIG: CityConfig = {
   slug: 'woodland-hills',
   name: 'Woodland Hills',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Woodland Hills, CA — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
