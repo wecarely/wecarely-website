@@ -40,7 +40,7 @@ export const NORTH_HOLLYWOOD_CONFIG: CityConfig = {
   slug: 'north-hollywood',
   name: 'North Hollywood',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in North Hollywood, CA — ranked by CMS clinical stars and Google reviews. North Hollywood has a large Armenian and Hispanic senior community.",
   neighborhoods: [],
 };
