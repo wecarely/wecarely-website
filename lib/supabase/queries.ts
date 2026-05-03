@@ -20,6 +20,11 @@ interface QueryArgs {
   query?: string | null;
 }
 
+/** "san-antonio" → "san antonio" so ilike matches "San Antonio" in the DB */
+function slugToPattern(slug: string): string {
+  return slug.replace(/-/g, ' ');
+}
+
 /**
  * Fetch agencies in a city, optionally filtered by user-selected booleans
  * and/or free-text query (substring match against name + ai_summary).
@@ -35,7 +40,7 @@ export async function getAgenciesByCity(args: QueryArgs): Promise<Agency[]> {
   let query = sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', args.citySlug)
+    .ilike('city', slugToPattern(args.citySlug))
     .order('trust_score', { ascending: false, nullsFirst: false });
 
   for (const col of columns) {
@@ -67,7 +72,7 @@ export async function getAgencyBySlug(citySlug: string, slug: string): Promise<A
   const { data, error } = await sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', citySlug)
+    .ilike('city', slugToPattern(citySlug))
     .eq('slug', slug)
     .maybeSingle();
 
@@ -89,7 +94,7 @@ export async function getAgenciesByZips(citySlug: string, zips: string[]): Promi
   const { data, error } = await sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', citySlug)
+    .ilike('city', slugToPattern(citySlug))
     .in('zip', zips)
     .order('trust_score', { ascending: false, nullsFirst: false });
 
@@ -111,7 +116,7 @@ export async function getSponsoredAgencies(citySlug: string): Promise<Agency[]> 
   const { data, error } = await sb
     .from('agencies')
     .select(SELECT_COLUMNS)
-    .ilike('city', citySlug)
+    .ilike('city', slugToPattern(citySlug))
     .eq('is_sponsored', true)
     .order('sponsor_priority', { ascending: true, nullsFirst: false })
     .limit(4);
@@ -133,7 +138,7 @@ export async function getCityAgencyCount(citySlug: string): Promise<number> {
   const { count, error } = await sb
     .from('agencies')
     .select('id', { count: 'exact', head: true })
-    .ilike('city', citySlug);
+    .ilike('city', slugToPattern(citySlug));
 
   if (error) {
     console.error('[getCityAgencyCount]', error);
@@ -151,7 +156,7 @@ export async function getAllSlugsByCity(citySlug: string): Promise<string[]> {
   const { data, error } = await sb
     .from('agencies')
     .select('slug')
-    .ilike('city', citySlug);
+    .ilike('city', slugToPattern(citySlug));
 
   if (error) {
     console.error('[getAllSlugsByCity]', error);
