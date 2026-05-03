@@ -27,14 +27,6 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const CA_CITIES = [
-  { slug: 'los-angeles',    name: 'Los Angeles' },
-  { slug: 'san-diego',      name: 'San Diego' },
-  { slug: 'san-francisco',  name: 'San Francisco' },
-  { slug: 'sacramento',     name: 'Sacramento' },
-  { slug: 'san-jose',       name: 'San Jose' },
-  { slug: 'oakland',        name: 'Oakland' },
-];
 
 /** One query → city name → agency count map */
 async function fetchCityCounts(): Promise<Record<string, number>> {
@@ -68,28 +60,32 @@ export default async function HomePage() {
     getSponsoredAgencies('houston'),
   ]);
 
-  const texasCities = CITIES
-    .filter((c) => c.state === 'TX')
-    .map((c) => ({
-      slug:  c.slug,
-      name:  c.name,
-      abbr:  'TX',
-      count: cityCounts[c.name.toLowerCase().trim()] ?? 0,
-      live:  c.status === 'live',
-    }));
+  function toCityConfig(state: string, abbr: string) {
+    return CITIES
+      .filter((c) => c.state === abbr)
+      .map((c) => ({
+        slug:  c.slug,
+        name:  c.name,
+        abbr,
+        count: cityCounts[c.name.toLowerCase().trim()] ?? 0,
+        live:  c.status === 'live',
+      }));
+  }
+
+  const caCities = toCityConfig('California', 'CA');
 
   const states: GridState[] = [
     {
       name:   'Texas',
       abbr:   'TX',
       live:   true,
-      cities: texasCities,
+      cities: toCityConfig('Texas', 'TX'),
     },
     {
       name: 'California',
       abbr: 'CA',
-      live: false,
-      cities: CA_CITIES.map((c) => ({ ...c, abbr: 'CA', count: 0, live: false })),
+      live: caCities.some((c) => c.live),
+      cities: caCities,
     },
   ];
 
