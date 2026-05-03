@@ -85,7 +85,7 @@ export const NORTHRIDGE_CONFIG: CityConfig = {
   slug: 'northridge',
   name: 'Northridge',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Northridge, CA — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
