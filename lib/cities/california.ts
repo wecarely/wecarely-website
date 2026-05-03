@@ -31,7 +31,7 @@ export const LOS_ANGELES_CONFIG: CityConfig = {
   slug: 'los-angeles',
   name: 'Los Angeles',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Los Angeles, CA — ranked by CMS clinical stars and Google reviews. Los Angeles has the largest Spanish-speaking, Chinese, Korean, and Filipino senior populations in the country, making language-matched home care essential.",
   neighborhoods: [],
 };
