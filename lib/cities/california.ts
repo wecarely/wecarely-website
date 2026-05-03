@@ -4,7 +4,7 @@ export const GLENDALE_CA_CONFIG: CityConfig = {
   slug: 'glendale-ca',
   name: 'Glendale',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Glendale, CA — ranked by CMS clinical stars and Google reviews. Glendale has the largest Armenian community in the United States, making culturally matched home care a critical consideration for seniors and families.",
   neighborhoods: [],
 };

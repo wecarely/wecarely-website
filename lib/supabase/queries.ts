@@ -20,9 +20,18 @@ interface QueryArgs {
   query?: string | null;
 }
 
-/** "san-antonio" → "san antonio" so ilike matches "San Antonio" in the DB */
+/**
+ * Convert URL slug to DB city name pattern for ilike matching.
+ * "san-antonio" → "san antonio"
+ * "glendale-ca" → "glendale"  (strips 2-letter state suffix so it matches DB)
+ */
 function slugToPattern(slug: string): string {
-  return slug.replace(/-/g, ' ');
+  const parts = slug.split('-');
+  const last = parts[parts.length - 1];
+  if (parts.length > 1 && last.length === 2 && /^[a-z]{2}$/.test(last)) {
+    return parts.slice(0, -1).join(' ');
+  }
+  return parts.join(' ');
 }
 
 /**
