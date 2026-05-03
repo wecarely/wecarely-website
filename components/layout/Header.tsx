@@ -5,10 +5,16 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { CITIES } from '@/lib/cities';
 
+const FEATURED_SLUGS = ['houston', 'dallas', 'san-antonio', 'el-paso', 'austin', 'fort-worth'];
+const FEATURED_CITIES = CITIES
+  .filter((c) => FEATURED_SLUGS.includes(c.slug) && c.status === 'live')
+  .sort((a, b) => FEATURED_SLUGS.indexOf(a.slug) - FEATURED_SLUGS.indexOf(b.slug));
+
 export function Header() {
   const pathname = usePathname();
   const isHome = pathname === '/';
   const [citiesOpen, setCitiesOpen] = useState(false);
+  const [expandedState, setExpandedState] = useState<string | null>('texas');
   const citiesRef = useRef<HTMLDivElement>(null);
 
   // Click outside or Esc closes the dropdown
@@ -114,29 +120,48 @@ export function Header() {
                 role="menu"
                 className="absolute left-0 top-[calc(100%+6px)] min-w-[220px] rounded-[10px] border border-[var(--line)] bg-white shadow-[0_12px_32px_-12px_rgba(10,10,10,0.18)] py-2"
               >
-                {CITIES.map((c) =>
-                  c.status === 'live' ? (
+                {/* Texas accordion row */}
+                <button
+                  type="button"
+                  onClick={() => setExpandedState((s) => (s === 'texas' ? null : 'texas'))}
+                  className="w-full flex items-center justify-between px-4 py-2 text-[13px] font-medium text-[var(--ink-2)] hover:text-[var(--ink)] hover:bg-[var(--bg-soft)] transition-colors"
+                >
+                  <span className="eyebrow text-[11px] tracking-widest uppercase">Texas</span>
+                  <svg
+                    width="11" height="11" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2.4"
+                    strokeLinecap="round" strokeLinejoin="round"
+                    className={`transition-transform ${expandedState === 'texas' ? 'rotate-180' : ''}`}
+                    aria-hidden
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </button>
+
+                {expandedState === 'texas' && (
+                  <>
+                    {FEATURED_CITIES.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/${c.slug}`}
+                        role="menuitem"
+                        className="flex items-center justify-between px-4 pl-6 py-2 text-[14px] text-[var(--ink)] hover:bg-[var(--bg-soft)]"
+                      >
+                        <span>{c.name}</span>
+                        <span className="eyebrow text-[var(--ink-3)]">TX</span>
+                      </Link>
+                    ))}
+                    <div className="mx-3 my-1 border-t border-[var(--line)]" />
                     <Link
-                      key={c.slug}
-                      href={`/${c.slug}`}
+                      href="/#coverage"
                       role="menuitem"
-                      className="flex items-center justify-between px-4 py-2 text-[14px] text-[var(--ink)] hover:bg-[var(--bg-soft)]"
+                      className="flex items-center px-4 pl-6 py-2 text-[13px] text-[var(--ink-3)] hover:text-[var(--ink)] hover:bg-[var(--bg-soft)]"
                     >
-                      <span>{c.name}</span>
-                      <span className="eyebrow text-[var(--ink-3)]">TX</span>
+                      All Texas cities →
                     </Link>
-                  ) : (
-                    <div
-                      key={c.slug}
-                      role="menuitem"
-                      aria-disabled
-                      className="flex items-center justify-between px-4 py-2 text-[14px] text-[var(--ink-3)] cursor-not-allowed"
-                    >
-                      <span>{c.name}</span>
-                      <span className="eyebrow">Soon</span>
-                    </div>
-                  )
+                  </>
                 )}
+
                 <div className="mt-1 pt-2 px-4 border-t border-[var(--line)]">
                   <p className="text-[12px] text-[var(--ink-3)] leading-snug">
                     More cities being added — request yours at{' '}

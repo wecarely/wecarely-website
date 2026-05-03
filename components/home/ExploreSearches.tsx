@@ -104,11 +104,17 @@ function buildGroups(citySlug: string): Group[] {
   ];
 }
 
-const CITIES: City[] = CITY_REGISTRY.map((c) =>
-  c.status === 'live'
-    ? { ...c, groups: buildGroups(c.slug) }
-    : { ...c }
-);
+// Only surface major markets in the Explore section — not every indexed city.
+const FEATURED_SLUGS = ['houston', 'dallas', 'san-antonio', 'el-paso', 'austin', 'fort-worth'];
+
+const CITIES: City[] = CITY_REGISTRY
+  .filter((c) => FEATURED_SLUGS.includes(c.slug))
+  .sort((a, b) => FEATURED_SLUGS.indexOf(a.slug) - FEATURED_SLUGS.indexOf(b.slug))
+  .map((c) =>
+    c.status === 'live'
+      ? { ...c, groups: buildGroups(c.slug) }
+      : { ...c }
+  );
 
 export function ExploreSearches() {
   const [activeSlug, setActiveSlug] = useState<string>(
