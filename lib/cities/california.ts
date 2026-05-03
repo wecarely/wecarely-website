@@ -94,7 +94,7 @@ export const SAN_DIEGO_CONFIG: CityConfig = {
   slug: 'san-diego',
   name: 'San Diego',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in San Diego, CA — ranked by CMS clinical stars and Google reviews. San Diego has a large Spanish-speaking senior population and one of the highest concentrations of military veteran families in the US.",
   neighborhoods: [],
 };
@@ -103,7 +103,7 @@ export const FRESNO_CONFIG: CityConfig = {
   slug: 'fresno',
   name: 'Fresno',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Fresno, CA — ranked by CMS clinical stars and Google reviews. Fresno has a large Hmong and Southeast Asian senior community alongside a significant Spanish-speaking population.",
   neighborhoods: [],
 };
