@@ -49,7 +49,7 @@ export const SHERMAN_OAKS_CONFIG: CityConfig = {
   slug: 'sherman-oaks',
   name: 'Sherman Oaks',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Sherman Oaks, CA — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
