@@ -14,13 +14,22 @@ const CITIES = [
 ];
 
 const TILE_DEFS = [
-  { suffix: '?lang=spanish',    label: 'Spanish-speaking', glyph: 'Es' },
-  { suffix: '?lang=vietnamese', label: 'Vietnamese',       glyph: 'Vi' },
-  { suffix: '?lang=chinese',    label: 'Chinese',          glyph: '中' },
-  { suffix: '?ins=medicaid',    label: 'Accepts Medicaid', glyph: '$'  },
-  { suffix: '?svc=dementia',    label: 'Dementia care',    glyph: '⌬'  },
-  { suffix: '?svc=hospice',     label: 'Hospice',          glyph: '✜'  },
+  { suffix: '?lang=spanish',    key: 'lang=spanish',    label: 'Spanish-speaking', glyph: 'Es' },
+  { suffix: '?lang=vietnamese', key: 'lang=vietnamese', label: 'Vietnamese',       glyph: 'Vi' },
+  { suffix: '?lang=chinese',    key: 'lang=chinese',    label: 'Chinese',          glyph: '中' },
+  { suffix: '?ins=medicaid',    key: 'ins=medicaid',    label: 'Accepts Medicaid', glyph: '$'  },
+  { suffix: '?svc=dementia',    key: 'svc=dementia',    label: 'Dementia care',    glyph: '⌬'  },
+  { suffix: '?svc=hospice',     key: 'svc=hospice',     label: 'Hospice',          glyph: '✜'  },
 ];
+
+function trackFilter(filterKey: string, city: string) {
+  fetch('/api/track-filter', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filter_key: filterKey, city }),
+    keepalive: true,
+  }).catch(() => {});
+}
 
 export function QuickFilters() {
   const [city, setCity] = useState('houston');
@@ -91,6 +100,7 @@ export function QuickFilters() {
             <Link
               key={t.suffix}
               href={`/${city}${t.suffix}`}
+              onClick={() => trackFilter(t.key, city)}
               className="group flex flex-col items-start gap-3 p-5 rounded-[10px] border border-[var(--line)] bg-white hover:border-[var(--ink-3)] hover:shadow-[0_8px_24px_-12px_rgba(10,10,10,0.08)] transition-all"
             >
               <span
