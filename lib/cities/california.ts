@@ -121,7 +121,7 @@ export const SAN_JOSE_CA_CONFIG: CityConfig = {
   slug: 'san-jose',
   name: 'San Jose',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in San Jose, CA — ranked by CMS clinical stars and Google reviews. San Jose is home to one of the largest Vietnamese communities in the US (Silicon Valley's Little Saigon) as well as large Chinese and Filipino senior populations.",
   neighborhoods: [],
 };
@@ -130,7 +130,7 @@ export const SAN_FRANCISCO_CONFIG: CityConfig = {
   slug: 'san-francisco',
   name: 'San Francisco',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in San Francisco, CA — ranked by CMS clinical stars and Google reviews. San Francisco's Chinatown is the oldest in North America, and the city has one of the highest concentrations of Chinese-speaking seniors requiring language-matched home care.",
   neighborhoods: [],
 };
