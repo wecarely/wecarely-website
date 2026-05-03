@@ -13,7 +13,7 @@ export const VAN_NUYS_CONFIG: CityConfig = {
   slug: 'van-nuys',
   name: 'Van Nuys',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Van Nuys, CA — ranked by CMS clinical stars and Google reviews. Van Nuys is one of the most diverse communities in Los Angeles, with large Spanish-speaking and Armenian senior populations.",
   neighborhoods: [],
 };
