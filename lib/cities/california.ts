@@ -157,7 +157,7 @@ export const RIVERSIDE_CA_CONFIG: CityConfig = {
   slug: 'riverside-ca',
   name: 'Riverside',
   state: 'CA',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Riverside, CA — ranked by CMS clinical stars and Google reviews. Riverside is one of the fastest-growing senior markets in Southern California.",
   neighborhoods: [],
 };
