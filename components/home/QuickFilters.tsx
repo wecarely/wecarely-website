@@ -5,13 +5,21 @@ import { useState } from 'react';
 
 /**
  * Yelp-style "Categories" tile row — 6 most common filter entry points.
- * City-aware: a Houston | Dallas toggle keeps every tile href in sync.
+ * State → city two-level selector keeps every tile href in sync.
  */
 
-const CITIES = [
-  { slug: 'houston', label: 'Houston' },
-  { slug: 'dallas',  label: 'Dallas'  },
-];
+const STATE_CITIES: Record<string, { slug: string; label: string }[]> = {
+  TX: [
+    { slug: 'houston',     label: 'Houston'     },
+    { slug: 'dallas',      label: 'Dallas'      },
+    { slug: 'san-antonio', label: 'San Antonio' },
+  ],
+  CA: [
+    { slug: 'los-angeles', label: 'Los Angeles' },
+    { slug: 'glendale-ca', label: 'Glendale'    },
+    { slug: 'san-diego',   label: 'San Diego'   },
+  ],
+};
 
 const TILE_DEFS = [
   { suffix: '?lang=spanish',    key: 'lang=spanish',    label: 'Spanish-speaking', glyph: 'Es' },
@@ -32,24 +40,50 @@ function trackFilter(filterKey: string, city: string) {
 }
 
 export function QuickFilters() {
+  const [state, setState] = useState<'TX' | 'CA'>('TX');
   const [city, setCity] = useState('houston');
+
+  function switchState(s: 'TX' | 'CA') {
+    setState(s);
+    setCity(STATE_CITIES[s][0].slug);
+  }
+
+  const cities = STATE_CITIES[state];
 
   return (
     <section className="border-b border-[var(--line)]">
       <div className="mx-auto max-w-[1320px] px-6 lg:px-10 py-12 lg:py-16">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-          {/* Left: eyebrow + city pills */}
+          {/* Left: eyebrow + state pills + city pills */}
           <div className="flex items-center gap-3 flex-wrap">
             <p className="eyebrow">Popular searches</p>
-            <span className="text-[var(--ink-4)]" aria-hidden>
-              ·
-            </span>
-            <div
-              className="flex items-center gap-1.5"
-              role="group"
-              aria-label="Select city"
-            >
-              {CITIES.map((c) => (
+            <span className="text-[var(--ink-4)]" aria-hidden>·</span>
+
+            {/* State toggle */}
+            <div className="flex items-center gap-1" role="group" aria-label="Select state">
+              {(['TX', 'CA'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => switchState(s)}
+                  aria-pressed={state === s}
+                  className="px-2.5 py-0.5 rounded-full text-[11.5px] font-medium transition-all"
+                  style={
+                    state === s
+                      ? { background: 'var(--ink)', color: 'white' }
+                      : { background: 'transparent', color: 'var(--ink-3)', border: '1px solid var(--line)' }
+                  }
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+
+            <span className="text-[var(--ink-4)]" aria-hidden>·</span>
+
+            {/* City pills (change based on state) */}
+            <div className="flex items-center gap-1.5" role="group" aria-label="Select city">
+              {cities.map((c) => (
                 <button
                   key={c.slug}
                   type="button"
@@ -58,12 +92,8 @@ export function QuickFilters() {
                   className="px-2.5 py-0.5 rounded-full text-[11.5px] font-medium transition-all"
                   style={
                     city === c.slug
-                      ? { background: 'var(--ink)', color: 'white' }
-                      : {
-                          background: 'transparent',
-                          color: 'var(--ink-3)',
-                          border: '1px solid var(--line)',
-                        }
+                      ? { background: 'var(--accent-on)', color: 'white' }
+                      : { background: 'transparent', color: 'var(--ink-3)', border: '1px solid var(--line)' }
                   }
                 >
                   {c.label}
