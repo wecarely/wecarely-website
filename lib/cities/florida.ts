@@ -76,7 +76,7 @@ export const DORAL_CONFIG: CityConfig = {
   slug: 'doral',
   name: 'Doral',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Doral, FL — ranked by CMS clinical stars and Google reviews. Doral has a large Venezuelan and Colombian senior population.",
   neighborhoods: [],
 };
@@ -85,7 +85,7 @@ export const CLEARWATER_CONFIG: CityConfig = {
   slug: 'clearwater',
   name: 'Clearwater',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Clearwater, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -94,7 +94,7 @@ export const FORT_LAUDERDALE_CONFIG: CityConfig = {
   slug: 'fort-lauderdale',
   name: 'Fort Lauderdale',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Fort Lauderdale, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -103,7 +103,7 @@ export const HIALEAH_CONFIG: CityConfig = {
   slug: 'hialeah',
   name: 'Hialeah',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Hialeah, FL — ranked by CMS clinical stars and Google reviews. Hialeah is one of the most predominantly Cuban-American cities in the US, making Spanish-speaking home care a critical need.",
   neighborhoods: [],
 };
