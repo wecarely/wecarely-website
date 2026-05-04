@@ -49,7 +49,7 @@ export const FORT_MYERS_CONFIG: CityConfig = {
   slug: 'fort-myers',
   name: 'Fort Myers',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Fort Myers, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -58,7 +58,7 @@ export const WEST_PALM_BEACH_CONFIG: CityConfig = {
   slug: 'west-palm-beach',
   name: 'West Palm Beach',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in West Palm Beach, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -67,7 +67,7 @@ export const MIAMI_LAKES_CONFIG: CityConfig = {
   slug: 'miami-lakes',
   name: 'Miami Lakes',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Miami Lakes, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
