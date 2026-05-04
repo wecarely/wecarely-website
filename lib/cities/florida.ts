@@ -22,7 +22,7 @@ export const JACKSONVILLE_FL_CONFIG: CityConfig = {
   slug: 'jacksonville-fl',
   name: 'Jacksonville',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Jacksonville, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -31,7 +31,7 @@ export const ORLANDO_CONFIG: CityConfig = {
   slug: 'orlando',
   name: 'Orlando',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Orlando, FL — ranked by CMS clinical stars and Google reviews. Orlando has a large Puerto Rican and Hispanic senior community.",
   neighborhoods: [],
 };
@@ -40,7 +40,7 @@ export const BOCA_RATON_CONFIG: CityConfig = {
   slug: 'boca-raton',
   name: 'Boca Raton',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Boca Raton, FL — ranked by CMS clinical stars and Google reviews. Boca Raton has one of the highest concentrations of senior residents in South Florida.",
   neighborhoods: [],
 };
