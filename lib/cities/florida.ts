@@ -4,7 +4,7 @@ export const MIAMI_CONFIG: CityConfig = {
   slug: 'miami',
   name: 'Miami',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Miami, FL — ranked by CMS clinical stars and Google reviews. Miami has one of the largest Cuban and Latin American senior populations in the US, making Spanish-speaking home care essential.",
   neighborhoods: [],
 };
@@ -13,7 +13,7 @@ export const TAMPA_CONFIG: CityConfig = {
   slug: 'tampa',
   name: 'Tampa',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Tampa, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
