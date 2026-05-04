@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 /**
  * Yelp-style hero carousel — city-aware.
@@ -49,28 +50,65 @@ const SLIDES: Slide[] = [
 
 const STATE_CITIES: Record<string, { slug: string; label: string }[]> = {
   TX: [
-    { slug: 'houston',     label: 'Houston'     },
-    { slug: 'dallas',      label: 'Dallas'      },
-    { slug: 'san-antonio', label: 'San Antonio' },
+    { slug: 'houston',     label: 'Houston'      },
+    { slug: 'dallas',      label: 'Dallas'       },
+    { slug: 'san-antonio', label: 'San Antonio'  },
+    { slug: 'el-paso',     label: 'El Paso'      },
+    { slug: 'austin',      label: 'Austin'       },
+    { slug: 'fort-worth',  label: 'Fort Worth'   },
   ],
   CA: [
-    { slug: 'los-angeles', label: 'Los Angeles' },
-    { slug: 'glendale-ca', label: 'Glendale'    },
-    { slug: 'san-diego',   label: 'San Diego'   },
+    { slug: 'los-angeles',    label: 'Los Angeles'    },
+    { slug: 'glendale-ca',    label: 'Glendale'       },
+    { slug: 'van-nuys',       label: 'Van Nuys'       },
+    { slug: 'burbank',        label: 'Burbank'        },
+    { slug: 'pasadena-ca',    label: 'Pasadena'       },
+    { slug: 'north-hollywood',label: 'North Hollywood'},
+    { slug: 'sherman-oaks',   label: 'Sherman Oaks'   },
+    { slug: 'encino',         label: 'Encino'         },
+    { slug: 'woodland-hills', label: 'Woodland Hills' },
+    { slug: 'northridge',     label: 'Northridge'     },
+    { slug: 'san-diego',      label: 'San Diego'      },
+    { slug: 'fresno',         label: 'Fresno'         },
+    { slug: 'sacramento',     label: 'Sacramento'     },
+    { slug: 'san-jose',       label: 'San Jose'       },
+    { slug: 'san-francisco',  label: 'San Francisco'  },
+    { slug: 'oakland',        label: 'Oakland'        },
+    { slug: 'long-beach',     label: 'Long Beach'     },
+    { slug: 'riverside-ca',   label: 'Riverside'      },
+    { slug: 'santa-ana',      label: 'Santa Ana'      },
   ],
 };
+
+const SERVICES = [
+  { value: '',                  label: 'All services'      },
+  { value: '?lang=spanish',     label: 'Spanish-speaking'  },
+  { value: '?lang=vietnamese',  label: 'Vietnamese'        },
+  { value: '?lang=chinese',     label: 'Chinese'           },
+  { value: '?ins=medicaid',     label: 'Accepts Medicaid'  },
+  { value: '?svc=dementia',     label: 'Dementia care'     },
+  { value: '?svc=hospice',      label: 'Hospice'           },
+  { value: '?svc=skilled-nursing', label: 'Skilled nursing'},
+  { value: '?svc=personal-care',   label: 'Personal care'  },
+];
 
 const ADVANCE_MS = 7000;
 
 export function HeroCarousel() {
+  const router = useRouter();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [state, setState] = useState<'TX' | 'CA'>('TX');
   const [city, setCity] = useState('houston');
+  const [service, setService] = useState('');
 
   function switchState(s: 'TX' | 'CA') {
     setState(s);
     setCity(STATE_CITIES[s][0].slug);
+  }
+
+  function handleSearch() {
+    router.push(`/${city}${service}`);
   }
 
   const cities = STATE_CITIES[state];
@@ -87,7 +125,6 @@ export function HeroCarousel() {
   }, [paused]);
 
   const slide = SLIDES[index];
-  const ctaHref = `/${city}${slide.filterSuffix}`;
 
   return (
     <section
@@ -208,72 +245,97 @@ export function HeroCarousel() {
             {slide.phrase}
           </h1>
 
-          {/* State + City toggle + CTA */}
-          <div className="mt-8 flex flex-col gap-3">
-            {/* State pills */}
-            <div className="flex items-center gap-2" role="group" aria-label="Select state">
-              {(['TX', 'CA'] as const).map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => switchState(s)}
-                  aria-pressed={state === s}
-                  className="px-3 py-0.5 rounded-full text-[11px] font-semibold tracking-wide transition-all"
-                  style={
-                    state === s
-                      ? { background: 'rgba(255,255,255,0.95)', color: 'var(--ink)' }
-                      : { background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.25)' }
-                  }
+          {/* Search bar */}
+          <div className="mt-8 w-full max-w-[620px]">
+            <div
+              className="flex rounded-2xl overflow-hidden"
+              style={{ background: 'white', boxShadow: '0 8px 48px rgba(0,0,0,0.35)' }}
+            >
+              {/* State */}
+              <div className="flex flex-col justify-center px-5 py-3.5 min-w-[90px]">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-3)] mb-0.5 cursor-pointer" htmlFor="hero-state">
+                  State
+                </label>
+                <select
+                  id="hero-state"
+                  value={state}
+                  onChange={(e) => switchState(e.target.value as 'TX' | 'CA')}
+                  className="bg-transparent text-[var(--ink)] font-medium outline-none cursor-pointer appearance-none"
+                  style={{ fontSize: 14 }}
                 >
-                  {s}
-                </button>
-              ))}
-            </div>
+                  <option value="TX">Texas</option>
+                  <option value="CA">California</option>
+                </select>
+              </div>
 
-            {/* City pills */}
-            <div className="flex items-center gap-2" role="group" aria-label="Select city">
-              {cities.map((c) => (
-                <button
-                  key={c.slug}
-                  type="button"
-                  onClick={() => setCity(c.slug)}
-                  aria-pressed={city === c.slug}
-                  className="px-3.5 py-1 rounded-full text-[12.5px] font-medium transition-all"
-                  style={
-                    city === c.slug
-                      ? { background: 'rgba(255,255,255,0.95)', color: 'var(--ink)' }
-                      : { background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.3)' }
-                  }
+              {/* Divider */}
+              <div className="w-px bg-[var(--line)] my-3 shrink-0" />
+
+              {/* City */}
+              <div className="flex flex-col justify-center px-5 py-3.5 flex-1 min-w-0">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-3)] mb-0.5 cursor-pointer" htmlFor="hero-city">
+                  City
+                </label>
+                <select
+                  id="hero-city"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="bg-transparent text-[var(--ink)] font-medium outline-none cursor-pointer appearance-none truncate"
+                  style={{ fontSize: 14 }}
                 >
-                  {c.label}
-                </button>
-              ))}
-            </div>
+                  {cities.map((c) => (
+                    <option key={c.slug} value={c.slug}>{c.label}</option>
+                  ))}
+                </select>
+              </div>
 
-            {/* Main CTA row */}
-            <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
-              <Link
-                href={ctaHref}
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[var(--accent)] text-[var(--ink)] font-medium hover:bg-[var(--accent-hover)] transition-colors"
-                style={{ fontSize: 15.5 }}
+              {/* Divider */}
+              <div className="w-px bg-[var(--line)] my-3 shrink-0" />
+
+              {/* Service */}
+              <div className="flex flex-col justify-center px-5 py-3.5 flex-1 min-w-0">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-3)] mb-0.5 cursor-pointer" htmlFor="hero-service">
+                  Service
+                </label>
+                <select
+                  id="hero-service"
+                  value={service}
+                  onChange={(e) => setService(e.target.value)}
+                  className="bg-transparent text-[var(--ink)] font-medium outline-none cursor-pointer appearance-none truncate"
+                  style={{ fontSize: 14 }}
+                >
+                  {SERVICES.map((s) => (
+                    <option key={s.value} value={s.value}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Search button */}
+              <button
+                type="button"
+                onClick={handleSearch}
+                aria-label="Search"
+                className="flex items-center justify-center px-5 shrink-0 transition-colors"
+                style={{ background: 'var(--accent)' }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--accent-hover)')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--accent)')}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <circle cx="11" cy="11" r="7" />
                   <path d="m21 21-4.3-4.3" />
                 </svg>
-                {slide.ctaLabel}
-              </Link>
+              </button>
+            </div>
+
+            {/* Secondary link */}
+            <div className="mt-4">
               <Link
                 href="/for-agencies"
-                className="inline-flex items-center gap-1.5 text-white/85 hover:text-white underline-offset-4 hover:underline"
-                style={{
-                  fontSize: 14,
-                  fontWeight: 500,
-                  textShadow: '0 1px 8px rgba(0,0,0,0.35)',
-                }}
+                className="inline-flex items-center gap-1.5 text-white/75 hover:text-white underline-offset-4 hover:underline"
+                style={{ fontSize: 13.5, fontWeight: 500, textShadow: '0 1px 8px rgba(0,0,0,0.35)' }}
               >
                 For agencies
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M5 12h14" />
                   <path d="m12 5 7 7-7 7" />
                 </svg>
