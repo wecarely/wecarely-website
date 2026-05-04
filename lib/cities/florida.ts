@@ -112,7 +112,7 @@ export const HOLLYWOOD_FL_CONFIG: CityConfig = {
   slug: 'hollywood-fl',
   name: 'Hollywood',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Hollywood, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -121,7 +121,7 @@ export const BOYNTON_BEACH_CONFIG: CityConfig = {
   slug: 'boynton-beach',
   name: 'Boynton Beach',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Boynton Beach, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -130,7 +130,7 @@ export const SARASOTA_CONFIG: CityConfig = {
   slug: 'sarasota',
   name: 'Sarasota',
   state: 'FL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Sarasota, FL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
