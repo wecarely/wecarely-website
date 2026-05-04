@@ -47,17 +47,33 @@ const SLIDES: Slide[] = [
   },
 ];
 
-const CITIES = [
-  { slug: 'houston', label: 'Houston' },
-  { slug: 'dallas',  label: 'Dallas'  },
-];
+const STATE_CITIES: Record<string, { slug: string; label: string }[]> = {
+  TX: [
+    { slug: 'houston',     label: 'Houston'     },
+    { slug: 'dallas',      label: 'Dallas'      },
+    { slug: 'san-antonio', label: 'San Antonio' },
+  ],
+  CA: [
+    { slug: 'los-angeles', label: 'Los Angeles' },
+    { slug: 'glendale-ca', label: 'Glendale'    },
+    { slug: 'san-diego',   label: 'San Diego'   },
+  ],
+};
 
 const ADVANCE_MS = 7000;
 
 export function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [state, setState] = useState<'TX' | 'CA'>('TX');
   const [city, setCity] = useState('houston');
+
+  function switchState(s: 'TX' | 'CA') {
+    setState(s);
+    setCity(STATE_CITIES[s][0].slug);
+  }
+
+  const cities = STATE_CITIES[state];
   const ticker = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -176,7 +192,7 @@ export function HeroCarousel() {
             className="font-mono uppercase tracking-[0.16em] text-[11px] font-semibold mb-5"
             style={{ color: 'rgba(255,255,255,0.78)' }}
           >
-            An honest home care directory · Houston &amp; Dallas, TX
+            An honest home care directory · Texas &amp; California
           </p>
 
           <h1
@@ -192,11 +208,31 @@ export function HeroCarousel() {
             {slide.phrase}
           </h1>
 
-          {/* City toggle + CTA */}
-          <div className="mt-8 flex flex-col gap-4">
+          {/* State + City toggle + CTA */}
+          <div className="mt-8 flex flex-col gap-3">
+            {/* State pills */}
+            <div className="flex items-center gap-2" role="group" aria-label="Select state">
+              {(['TX', 'CA'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => switchState(s)}
+                  aria-pressed={state === s}
+                  className="px-3 py-0.5 rounded-full text-[11px] font-semibold tracking-wide transition-all"
+                  style={
+                    state === s
+                      ? { background: 'rgba(255,255,255,0.95)', color: 'var(--ink)' }
+                      : { background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.25)' }
+                  }
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+
             {/* City pills */}
             <div className="flex items-center gap-2" role="group" aria-label="Select city">
-              {CITIES.map((c) => (
+              {cities.map((c) => (
                 <button
                   key={c.slug}
                   type="button"
@@ -205,15 +241,8 @@ export function HeroCarousel() {
                   className="px-3.5 py-1 rounded-full text-[12.5px] font-medium transition-all"
                   style={
                     city === c.slug
-                      ? {
-                          background: 'rgba(255,255,255,0.95)',
-                          color: 'var(--ink)',
-                        }
-                      : {
-                          background: 'rgba(255,255,255,0.15)',
-                          color: 'rgba(255,255,255,0.85)',
-                          border: '1px solid rgba(255,255,255,0.3)',
-                        }
+                      ? { background: 'rgba(255,255,255,0.95)', color: 'var(--ink)' }
+                      : { background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.3)' }
                   }
                 >
                   {c.label}
