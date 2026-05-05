@@ -4,7 +4,7 @@ export const CHICAGO_CONFIG: CityConfig = {
   slug: 'chicago',
   name: 'Chicago',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Chicago, IL — ranked by CMS clinical stars and Google reviews. Chicago has one of the largest Korean, Polish, and Mexican senior populations in the US, making language-matched home care essential.",
   neighborhoods: [],
 };
@@ -13,7 +13,7 @@ export const DES_PLAINES_CONFIG: CityConfig = {
   slug: 'des-plaines',
   name: 'Des Plaines',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Des Plaines, IL — ranked by CMS clinical stars and Google reviews. Des Plaines has a significant Korean and South Asian senior community in the northwest suburbs of Chicago.",
   neighborhoods: [],
 };
@@ -22,7 +22,7 @@ export const SKOKIE_CONFIG: CityConfig = {
   slug: 'skokie',
   name: 'Skokie',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Skokie, IL — ranked by CMS clinical stars and Google reviews. Skokie has one of the most concentrated Korean communities in the Chicago metro area.",
   neighborhoods: [],
 };
