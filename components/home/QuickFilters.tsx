@@ -19,6 +19,16 @@ const STATE_CITIES: Record<string, { slug: string; label: string }[]> = {
     { slug: 'glendale-ca', label: 'Glendale'    },
     { slug: 'san-diego',   label: 'San Diego'   },
   ],
+  FL: [
+    { slug: 'miami',       label: 'Miami'       },
+    { slug: 'tampa',       label: 'Tampa'       },
+    { slug: 'orlando',     label: 'Orlando'     },
+  ],
+  IL: [
+    { slug: 'chicago',     label: 'Chicago'     },
+    { slug: 'skokie',      label: 'Skokie'      },
+    { slug: 'naperville',  label: 'Naperville'  },
+  ],
 };
 
 const TILE_DEFS = [
@@ -40,10 +50,10 @@ function trackFilter(filterKey: string, city: string) {
 }
 
 export function QuickFilters() {
-  const [state, setState] = useState<'TX' | 'CA'>('TX');
+  const [state, setState] = useState<'TX' | 'CA' | 'FL' | 'IL'>('TX');
   const [city, setCity] = useState('houston');
 
-  function switchState(s: 'TX' | 'CA') {
+  function switchState(s: 'TX' | 'CA' | 'FL' | 'IL') {
     setState(s);
     setCity(STATE_CITIES[s][0].slug);
   }
@@ -61,7 +71,7 @@ export function QuickFilters() {
 
             {/* State toggle */}
             <div className="flex items-center gap-1" role="group" aria-label="Select state">
-              {(['TX', 'CA'] as const).map((s) => (
+              {(['TX', 'CA', 'FL', 'IL'] as const).map((s) => (
                 <button
                   key={s}
                   type="button"

@@ -78,6 +78,35 @@ const STATE_CITIES: Record<string, { slug: string; label: string }[]> = {
     { slug: 'riverside-ca',   label: 'Riverside'      },
     { slug: 'santa-ana',      label: 'Santa Ana'      },
   ],
+  FL: [
+    { slug: 'miami',           label: 'Miami'          },
+    { slug: 'tampa',           label: 'Tampa'          },
+    { slug: 'jacksonville-fl', label: 'Jacksonville'   },
+    { slug: 'orlando',         label: 'Orlando'        },
+    { slug: 'fort-lauderdale', label: 'Fort Lauderdale'},
+    { slug: 'hialeah',         label: 'Hialeah'        },
+    { slug: 'boca-raton',      label: 'Boca Raton'     },
+    { slug: 'west-palm-beach', label: 'West Palm Beach'},
+    { slug: 'clearwater',      label: 'Clearwater'     },
+    { slug: 'fort-myers',      label: 'Fort Myers'     },
+    { slug: 'doral',           label: 'Doral'          },
+    { slug: 'hollywood-fl',    label: 'Hollywood'      },
+    { slug: 'boynton-beach',   label: 'Boynton Beach'  },
+    { slug: 'miami-lakes',     label: 'Miami Lakes'    },
+    { slug: 'sarasota',        label: 'Sarasota'       },
+  ],
+  IL: [
+    { slug: 'chicago',          label: 'Chicago'         },
+    { slug: 'des-plaines',      label: 'Des Plaines'     },
+    { slug: 'skokie',           label: 'Skokie'          },
+    { slug: 'lincolnwood',      label: 'Lincolnwood'     },
+    { slug: 'northbrook',       label: 'Northbrook'      },
+    { slug: 'lombard',          label: 'Lombard'         },
+    { slug: 'tinley-park',      label: 'Tinley Park'     },
+    { slug: 'arlington-heights',label: 'Arlington Heights'},
+    { slug: 'schaumburg',       label: 'Schaumburg'      },
+    { slug: 'naperville',       label: 'Naperville'      },
+  ],
 };
 
 const SERVICES = [
@@ -98,11 +127,11 @@ export function HeroCarousel() {
   const router = useRouter();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [state, setState] = useState<'TX' | 'CA'>('TX');
+  const [state, setState] = useState<'TX' | 'CA' | 'FL' | 'IL'>('TX');
   const [city, setCity] = useState('houston');
   const [service, setService] = useState('');
 
-  function switchState(s: 'TX' | 'CA') {
+  function switchState(s: 'TX' | 'CA' | 'FL' | 'IL') {
     setState(s);
     setCity(STATE_CITIES[s][0].slug);
   }
@@ -229,7 +258,7 @@ export function HeroCarousel() {
             className="font-mono uppercase tracking-[0.16em] text-[11px] font-semibold mb-5"
             style={{ color: 'rgba(255,255,255,0.78)' }}
           >
-            An honest home care directory · Texas &amp; California
+            An honest home care directory · TX · CA · FL · IL
           </p>
 
           <h1
@@ -259,12 +288,14 @@ export function HeroCarousel() {
                 <select
                   id="hero-state"
                   value={state}
-                  onChange={(e) => switchState(e.target.value as 'TX' | 'CA')}
+                  onChange={(e) => switchState(e.target.value as 'TX' | 'CA' | 'FL' | 'IL')}
                   className="bg-transparent text-[var(--ink)] font-medium outline-none cursor-pointer appearance-none"
                   style={{ fontSize: 14 }}
                 >
                   <option value="TX">Texas</option>
                   <option value="CA">California</option>
+                  <option value="FL">Florida</option>
+                  <option value="IL">Illinois</option>
                 </select>
               </div>
 
