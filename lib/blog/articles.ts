@@ -36,8 +36,14 @@ import { houstonSeniorsLanguageHomeCare2024 } from './articles/houston-seniors-l
 import { dallasSeniorsLanguageHomeCare2024 } from './articles/dallas-seniors-language-home-care-2024';
 import { careCrisisCaregiverShortage2025 } from './articles/care-crisis-caregiver-shortage-2025';
 import { dementiaHomeCareGuide } from './articles/dementia-home-care-guide';
+import { howToTalkToParentWhoRefusesHomeCare } from './articles/how-to-talk-to-parent-who-refuses-home-care';
+import { postHospitalHomeCareMedicare } from './articles/post-hospital-home-care-medicare-coverage';
+import { koreanSeniorHomeCareChicago } from './articles/korean-senior-home-care-chicago';
 
 export const ARTICLES: Article[] = [
+  koreanSeniorHomeCareChicago,
+  postHospitalHomeCareMedicare,
+  howToTalkToParentWhoRefusesHomeCare,
   dementiaHomeCareGuide,
   careCrisisCaregiverShortage2025,
   houstonSeniorsLanguageHomeCare2024,
