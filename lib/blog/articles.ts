@@ -35,8 +35,10 @@ import { medicareHomeHealthVsPrivateHomeCare } from './articles/medicare-home-he
 import { houstonSeniorsLanguageHomeCare2024 } from './articles/houston-seniors-language-home-care-2024';
 import { dallasSeniorsLanguageHomeCare2024 } from './articles/dallas-seniors-language-home-care-2024';
 import { careCrisisCaregiverShortage2025 } from './articles/care-crisis-caregiver-shortage-2025';
+import { dementiaHomeCareGuide } from './articles/dementia-home-care-guide';
 
 export const ARTICLES: Article[] = [
+  dementiaHomeCareGuide,
   careCrisisCaregiverShortage2025,
   houstonSeniorsLanguageHomeCare2024,
   dallasSeniorsLanguageHomeCare2024,
