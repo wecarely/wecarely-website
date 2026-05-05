@@ -31,7 +31,7 @@ export const LINCOLNWOOD_CONFIG: CityConfig = {
   slug: 'lincolnwood',
   name: 'Lincolnwood',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Lincolnwood, IL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -40,7 +40,7 @@ export const NORTHBROOK_CONFIG: CityConfig = {
   slug: 'northbrook',
   name: 'Northbrook',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Northbrook, IL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -49,7 +49,7 @@ export const LOMBARD_CONFIG: CityConfig = {
   slug: 'lombard',
   name: 'Lombard',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Lombard, IL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -58,7 +58,7 @@ export const TINLEY_PARK_CONFIG: CityConfig = {
   slug: 'tinley-park',
   name: 'Tinley Park',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Tinley Park, IL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -67,7 +67,7 @@ export const ARLINGTON_HEIGHTS_IL_CONFIG: CityConfig = {
   slug: 'arlington-heights',
   name: 'Arlington Heights',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Arlington Heights, IL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -76,7 +76,7 @@ export const SCHAUMBURG_CONFIG: CityConfig = {
   slug: 'schaumburg',
   name: 'Schaumburg',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Schaumburg, IL — ranked by CMS clinical stars and Google reviews, filterable by language, insurance, and service type.",
   neighborhoods: [],
 };
@@ -85,7 +85,7 @@ export const NAPERVILLE_CONFIG: CityConfig = {
   slug: 'naperville',
   name: 'Naperville',
   state: 'IL',
-  status: 'coming-soon',
+  status: 'live',
   intro: "Every Medicare-certified home care agency in Naperville, IL — ranked by CMS clinical stars and Google reviews. Naperville has a large Indian and Chinese professional community with significant senior care needs.",
   neighborhoods: [],
 };
