@@ -34,14 +34,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'WeCarely — Home Care, Honestly Compared',
   description:
-    'An honest home care directory ranked by CMS clinical stars and Google reviews — no lead-gen, no advisor calls. Currently covering Houston, expanding nationally.',
+    'An honest home care directory ranked by CMS clinical stars and Google reviews — no lead-gen, no advisor calls. Covering Texas, California, Florida, and Illinois.',
   alternates: { canonical: SITE_URL },
   openGraph: {
     type: 'website',
     siteName: 'WeCarely',
     title: 'WeCarely — Home Care, Honestly Compared',
     description:
-      'An honest home care directory ranked by CMS clinical stars and Google reviews. Currently covering Houston, expanding nationally.',
+      'An honest home care directory ranked by CMS clinical stars and Google reviews. Covering Texas, California, Florida, and Illinois.',
     url: SITE_URL,
     images: [
       {

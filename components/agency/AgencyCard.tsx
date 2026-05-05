@@ -55,7 +55,7 @@ export function AgencyCard({ agency, isSponsored = false, rank }: Props) {
 
   // Build a Google search URL that lands on the agency's Google place card.
   // We don't have place_id stored, so we approximate via name + city.
-  const googleQuery = encodeURIComponent(`${agency.name} ${agency.city ?? 'Houston'} TX`);
+  const googleQuery = encodeURIComponent(`${agency.name} ${agency.city ?? 'Houston'} ${agency.state ?? 'TX'}`);
   const googleUrl = `https://www.google.com/search?q=${googleQuery}`;
   // Derive the city slug from the agency record (DB stores city as
   // e.g. "HOUSTON" — lowercase for URL). Fallback covers older rows.

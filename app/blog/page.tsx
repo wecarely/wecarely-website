@@ -7,7 +7,7 @@ const SITE_URL = 'https://www.wecarely.com';
 export const metadata: Metadata = {
   title: 'Articles — WeCarely',
   description:
-    'Honest, source-cited guides for Houston families navigating home care, Medicare home health, hospice, and senior care decisions. No lead-gen, no sponsored content.',
+    'Honest, source-cited guides for families navigating home care, Medicare home health, hospice, and senior care decisions. No lead-gen, no sponsored content.',
   alternates: { canonical: `${SITE_URL}/blog` },
   openGraph: {
     title: 'Articles — WeCarely',
@@ -51,7 +51,7 @@ export default function BlogIndexPage() {
           </h1>
           <p className="mt-7 max-w-[60ch] text-[16px] leading-[1.6] text-[var(--ink-2)]">
             Source-cited, written without sponsorship influence, focused on the
-            decisions Houston families actually face — not generic senior-care
+            decisions families actually face — not generic senior-care
             content.
           </p>
         </div>
