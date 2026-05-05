@@ -73,6 +73,8 @@ export default async function HomePage() {
   }
 
   const caCities = toCityConfig('California', 'CA');
+  const flCities = toCityConfig('Florida', 'FL');
+  const ilCities = toCityConfig('Illinois', 'IL');
 
   const states: GridState[] = [
     {
@@ -86,6 +88,18 @@ export default async function HomePage() {
       abbr: 'CA',
       live: caCities.some((c) => c.live),
       cities: caCities,
+    },
+    {
+      name: 'Florida',
+      abbr: 'FL',
+      live: flCities.some((c) => c.live),
+      cities: flCities,
+    },
+    {
+      name: 'Illinois',
+      abbr: 'IL',
+      live: ilCities.some((c) => c.live),
+      cities: ilCities,
     },
   ];
 
