@@ -231,22 +231,22 @@ export const koreanSeniorHomeCareChicago: Article = {
 
       <ul>
         <li>
-          <Link href="/skokie?lang=korean">Korean-speaking agencies in Skokie, IL</Link>
-        </li>
-        <li>
-          <Link href="/lincolnwood?lang=korean">Korean-speaking agencies in Lincolnwood, IL</Link>
-        </li>
-        <li>
           <Link href="/chicago?lang=korean">Korean-speaking agencies in Chicago, IL</Link>
         </li>
         <li>
-          <Link href="/des-plaines?lang=korean">Home care agencies in Des Plaines, IL</Link>
+          <Link href="/naperville?lang=korean">Korean-speaking agencies in Naperville, IL</Link>
         </li>
         <li>
-          <Link href="/northbrook">Home care agencies in Northbrook, IL</Link>
+          <Link href="/arlington-heights?lang=korean">Korean-speaking agencies in Arlington Heights, IL</Link>
         </li>
         <li>
-          <Link href="/schaumburg">Home care agencies in Schaumburg, IL</Link>
+          <Link href="/skokie">All home care agencies in Skokie, IL</Link>
+        </li>
+        <li>
+          <Link href="/lincolnwood">All home care agencies in Lincolnwood, IL</Link>
+        </li>
+        <li>
+          <Link href="/des-plaines">All home care agencies in Des Plaines, IL</Link>
         </li>
         <li>
           <Link href="/skokie?svc=dementia">Dementia care agencies in Skokie, IL</Link>
