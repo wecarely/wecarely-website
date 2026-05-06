@@ -248,7 +248,7 @@ export const spanishSpeakingHomeCareMiami: Article = {
           <Link href="/miami-lakes?lang=spanish">Spanish-speaking agencies in Miami Lakes</Link>
         </li>
         <li>
-          <Link href="/hollywood-fl?lang=spanish">Spanish-speaking agencies in Hollywood, FL</Link>
+          <Link href="/hollywood-fl">Home care agencies in Hollywood, FL</Link>
         </li>
         <li>
           <Link href="/fort-lauderdale?lang=spanish">Spanish-speaking agencies in Fort Lauderdale</Link>
@@ -260,7 +260,7 @@ export const spanishSpeakingHomeCareMiami: Article = {
           <Link href="/orlando?lang=spanish">Spanish-speaking agencies in Orlando</Link>
         </li>
         <li>
-          <Link href="/miami?svc=dementia">Dementia care agencies in Miami</Link>
+          <Link href="/miami">All home care agencies in Miami</Link>
         </li>
       </ul>
     </>

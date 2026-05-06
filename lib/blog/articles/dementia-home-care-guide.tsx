@@ -343,23 +343,25 @@ export const dementiaHomeCareGuide: Article = {
 
       <p>
         WeCarely lists every Medicare-certified home care agency in the cities
-        below, ranked by CMS clinical stars and Google reviews. Use the dementia
-        care filter to see agencies that indicate dementia services, and the
-        language filters if you need language-matched care.
+        below, ranked by CMS clinical stars and Google reviews. On each city
+        page, you can use the language filters if you need language-matched care.
       </p>
 
       <ul>
         <li>
-          <Link href="/chicago?svc=dementia">Dementia care agencies in Chicago, IL</Link>
-        </li>
-        <li>
-          <Link href="/miami?svc=dementia">Dementia care agencies in Miami, FL</Link>
-        </li>
-        <li>
-          <Link href="/los-angeles?svc=dementia">Dementia care agencies in Los Angeles, CA</Link>
-        </li>
-        <li>
           <Link href="/houston?svc=dementia">Dementia care agencies in Houston, TX</Link>
+        </li>
+        <li>
+          <Link href="/chicago">Home care agencies in Chicago, IL</Link>
+        </li>
+        <li>
+          <Link href="/miami">Home care agencies in Miami, FL</Link>
+        </li>
+        <li>
+          <Link href="/los-angeles">Home care agencies in Los Angeles, CA</Link>
+        </li>
+        <li>
+          <Link href="/dallas">Home care agencies in Dallas, TX</Link>
         </li>
         <li>
           <Link href="/chicago?lang=korean">Korean-speaking agencies in Chicago</Link>
@@ -371,7 +373,7 @@ export const dementiaHomeCareGuide: Article = {
           <Link href="/miami?lang=spanish">Spanish-speaking agencies in Miami</Link>
         </li>
         <li>
-          <Link href="/skokie?svc=dementia">Dementia care agencies in Skokie, IL</Link>
+          <Link href="/skokie">Home care agencies in Skokie, IL</Link>
         </li>
       </ul>
     </>

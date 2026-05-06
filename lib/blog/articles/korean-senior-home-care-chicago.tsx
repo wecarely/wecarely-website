@@ -249,7 +249,7 @@ export const koreanSeniorHomeCareChicago: Article = {
           <Link href="/des-plaines">All home care agencies in Des Plaines, IL</Link>
         </li>
         <li>
-          <Link href="/skokie?svc=dementia">Dementia care agencies in Skokie, IL</Link>
+          <Link href="/tinley-park">Home care agencies in Tinley Park, IL</Link>
         </li>
       </ul>
     </>
