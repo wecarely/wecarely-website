@@ -39,12 +39,14 @@ import { dementiaHomeCareGuide } from './articles/dementia-home-care-guide';
 import { howToTalkToParentWhoRefusesHomeCare } from './articles/how-to-talk-to-parent-who-refuses-home-care';
 import { postHospitalHomeCareMedicare } from './articles/post-hospital-home-care-medicare-coverage';
 import { koreanSeniorHomeCareChicago } from './articles/korean-senior-home-care-chicago';
+import { koreanSeniorHomeCareNorthernVirginia } from './articles/korean-senior-home-care-northern-virginia';
 import { spanishSpeakingHomeCareMiami } from './articles/spanish-speaking-home-care-miami';
 import { whatIsCmsStarRating } from './articles/what-is-cms-star-rating-home-care';
 
 export const ARTICLES: Article[] = [
   whatIsCmsStarRating,
   spanishSpeakingHomeCareMiami,
+  koreanSeniorHomeCareNorthernVirginia,
   koreanSeniorHomeCareChicago,
   postHospitalHomeCareMedicare,
   howToTalkToParentWhoRefusesHomeCare,
